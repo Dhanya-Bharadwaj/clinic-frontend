@@ -1,0 +1,80 @@
+/* src/styles/AppointmentCard.css - REVISED */
+.appointment-card {
+    background-color: var(--card-bg);
+    padding: 40px; /* Increased padding */
+    border-radius: 18px; /* Slightly more rounded corners */
+    box-shadow: 0 10px 30px var(--shadow-light); /* More pronounced shadow */
+    text-align: center;
+    width: 420px; /* Match width of doctor info card */
+    min-height: 450px; /* Match min height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content */
+    align-items: center;
+    border: 1px solid var(--border-color); /* Subtle border */
+  }
+  
+  .appointment-card h3 {
+    font-size: 2.5rem; /* Larger hospital name */
+    color: var(--primary-color);
+    margin-bottom: 20px; /* More space below heading */
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+  
+  .appointment-card p {
+    font-size: 1.25rem; /* Larger address text */
+    color: var(--secondary-color);
+    margin-bottom: 35px; /* More space above button */
+    line-height: 1.5;
+  }
+  
+  /* Inherits button styles from index.css */
+  .appointment-card button {
+    width: 100%;
+    max-width: 320px; /* Make the button a significant size */
+    padding: 15px 30px; /* Larger button */
+    font-size: 1.1rem; /* Larger text on button */
+  }
+  
+  /* Responsive adjustments for Appointment Card */
+  @media (max-width: 1200px) {
+    .appointment-card {
+      width: 380px;
+      padding: 35px;
+    }
+    .appointment-card h3 {
+      font-size: 2.2rem;
+    }
+    .appointment-card p {
+      font-size: 1.1rem;
+    }
+    .appointment-card button {
+      padding: 12px 25px;
+      font-size: 1.05rem;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .appointment-card {
+      width: 90%;
+      max-width: 450px; /* Limit width to not be too wide on tablets */
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .appointment-card {
+      padding: 30px;
+    }
+    .appointment-card h3 {
+      font-size: 2rem;
+    }
+    .appointment-card p {
+      font-size: 1rem;
+    }
+    .appointment-card button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      max-width: 100%;
+    }
+  }

@@ -1,0 +1,509 @@
+/* src/styles/BookingModal.css - Complete & Updated for INLINE DatePicker & Confirmation View */
+
+/* --- Modal Backdrop & Container --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+  }
+  
+  .modal-content {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    max-width: 650px;
+    width: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* --- Modal Header --- */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background-color: var(--card-bg);
+    z-index: 2001;
+    padding-top: 0;
+  }
+  
+  .modal-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.9rem;
+    color: var(--primary-color);
+    margin-bottom: 0;
+    font-weight: 700;
+  }
+  
+  .modal-close-button {
+    background: none;
+    border: none;
+    font-size: 2.3rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+    box-shadow: none;
+    transform: none;
+  }
+  .modal-close-button:hover {
+    color: var(--text-color);
+    background: none;
+    transform: rotate(90deg);
+  }
+  
+  
+  /* --- Date Picker Section (Inline) --- */
+  .date-picker-container {
+    margin-bottom: 20px;
+    z-index: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .date-picker-container label {
+    font-weight: 600;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+  }
+  
+  .react-datepicker {
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 20px var(--shadow-light);
+    border-radius: 10px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 320px; /* Adjust as needed for aesthetic fit */
+    padding: 10px;
+    background-color: var(--background-light);
+    box-sizing: border-box;
+  }
+  
+  .react-datepicker__month-container {
+    float: none;
+    width: 100%;
+    display: block;
+  }
+  
+  .react-datepicker__header {
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+  }
+  .react-datepicker__current-month,
+  .react-datepicker__day-name {
+    color: white;
+    font-weight: 600;
+  }
+  .react-datepicker__navigation-icon::before {
+    border-color: white;
+  }
+  
+  .react-datepicker__day-names {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  .react-datepicker__day-name {
+    color: var(--card-bg);
+    font-size: 0.8rem;
+    width: 2.2rem;
+    margin: 0 1px;
+  }
+  
+  .react-datepicker__month {
+    padding: 8px;
+    background-color: var(--card-bg);
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+  }
+  .react-datepicker__week {
+    display: flex;
+    justify-content: space-around;
+  }
+  .react-datepicker__day {
+    width: 2.2rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
+    margin: 1px;
+    text-align: center;
+    border-radius: 0.3rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  .react-datepicker__day--today {
+    font-weight: bold;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: transparent;
+  }
+  .react-datepicker__day--today:not(.react-datepicker__day--selected) {
+    color: var(--primary-color);
+  }
+  .react-datepicker__day:hover {
+    background-color: #e0e0e0;
+  }
+  .react-datepicker__day--outside-month {
+    color: var(--border-color);
+    cursor: default;
+  }
+  .react-datepicker__day--disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  .react-datepicker__navigation {
+    top: 10px;
+    line-height: 1.7;
+  }
+  .react-datepicker__navigation--previous { left: 10px; }
+  .react-datepicker__navigation--next { right: 10px; }
+  
+  
+  /* --- Time Slots Section --- */
+  .time-slots-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    background-color: var(--background-light);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .time-slot-button {
+    background-color: var(--card-bg);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transform: none;
+  }
+  
+  .time-slot-button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  }
+  
+  .time-slot-button:disabled {
+    background-color: var(--border-color);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+  
+  .time-slot-button.selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  }
+  
+  
+  /* --- Appointment Form --- */
+  .appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 10px;
+  }
+  
+  .appointment-form h4 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+  }
+  
+  .appointment-form label {
+    font-weight: 600;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+  }
+  
+  .appointment-form input,
+  .appointment-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--background-light);
+  }
+  
+  .appointment-form input:focus,
+  .appointment-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    background-color: white;
+  }
+  
+  .appointment-form textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+  
+  /* --- Modal Actions & Messages --- */
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  
+  .modal-actions button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    min-width: 120px;
+  }
+  
+  .modal-actions .cancel-button {
+    background-color: var(--secondary-color);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+  }
+  
+  .modal-actions .cancel-button:hover {
+    background-color: #5a6268;
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.4);
+  }
+  
+  .modal-message {
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .modal-message.success {
+    color: var(--success-color);
+    background-color: rgba(40, 167, 69, 0.1);
+    border: 1px solid var(--success-color);
+  }
+  
+  .modal-message.error {
+    color: var(--error-color);
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid var(--error-color);
+  }
+  
+  /* --- Booking Confirmation View --- */
+  .booking-confirmation-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .confirmation-icon {
+      font-size: 5rem; /* Large icon */
+      color: var(--success-color);
+      margin-bottom: 20px;
+      animation: scaleIn 0.5s ease-out forwards; /* Simple animation for icon */
+  }
+  
+  @keyframes scaleIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+  }
+  
+  .confirmation-message {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+  }
+  
+  .confirmation-detail-item {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      margin-bottom: 5px;
+  }
+  .confirmation-detail-item strong {
+      color: var(--secondary-color);
+      min-width: 120px; /* Align strong tags */
+      display: inline-block;
+      text-align: right;
+      margin-right: 10px;
+  }
+  .confirmation-detail-item span {
+    text-align: left;
+  }
+  
+  .confirmation-note {
+      font-size: 0.95rem;
+      color: var(--secondary-color);
+      margin-top: 20px;
+      line-height: 1.5;
+  }
+  
+  .close-confirmation-button {
+      margin-top: 30px;
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      width: auto; /* Allow button to size based on content */
+      max-width: 250px;
+  }
+  
+  
+  /* --- Body Scroll Lock --- */
+  body.modal-open {
+    overflow: hidden;
+    padding-right: var(--scrollbar-width, 0);
+  }
+  
+  
+  /* --- Responsive Adjustments --- */
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 25px;
+      gap: 15px;
+      max-height: 95vh;
+      width: 95%;
+    }
+    .modal-header {
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .modal-header h3 {
+      font-size: 1.6rem;
+    }
+    .modal-close-button {
+      font-size: 2rem;
+    }
+  
+    .date-picker-container label,
+    .appointment-form label {
+      font-size: 1rem;
+    }
+  
+    /* Inline calendar specific responsive adjustments */
+    .react-datepicker {
+        max-width: 100%;
+        padding: 5px;
+    }
+    .react-datepicker__day-name,
+    .react-datepicker__day {
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+    }
+  
+  
+    .time-slots-container {
+      padding: 10px;
+      max-height: 180px;
+    }
+    .time-slot-button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+  
+    .appointment-form {
+      gap: 15px;
+    }
+    .appointment-form h4 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+    .appointment-form input,
+    .appointment-form textarea {
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+  
+    .modal-actions {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .modal-actions button {
+      width: 100%;
+      min-width: unset;
+      padding: 10px 20px;
+    }
+    .modal-message {
+      font-size: 0.95rem;
+      padding: 8px;
+    }
+  
+    /* Confirmation View Responsive */
+    .confirmation-icon {
+        font-size: 4rem;
+    }
+    .confirmation-message {
+        font-size: 1.4rem;
+    }
+    .confirmation-detail-item {
+        font-size: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .confirmation-detail-item strong {
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 5px;
+        min-width: unset;
+    }
+    .close-confirmation-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+  }

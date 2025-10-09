@@ -1,0 +1,79 @@
+/* src/styles/index.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --primary-color: #007bff; /* A nice blue for primary actions */
+  --secondary-color: #6c757d; /* A muted color for secondary text */
+  --text-color: #343a40; /* Dark text for readability */
+  --background-light: #f8f9fa; /* Light background */
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-light);
+  line-height: 1.6;
+  scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 0.8em;
+  color: var(--primary-color);
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+button {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px var(--shadow-light);
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue */
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Scrollbar styling (optional, but nice) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}

@@ -1,0 +1,159 @@
+/* src/styles/HeroSection.css - REVISED */
+.hero-section {
+    position: relative;
+    height: 90vh; /* Slightly more height for impact */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+  }
+  
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/hospital-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: 1;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for contrast */
+    z-index: 2;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 70px; /* Increased space between doctor info and card */
+    padding: 0 5%;
+    max-width: 1300px; /* Wider content area */
+    width: 100%;
+  }
+  
+  .doctor-info {
+    background-color: rgba(255, 255, 255, 0.18); /* Slightly less transparent */
+    padding: 40px; /* Increased padding */
+    border-radius: 18px; /* Slightly more rounded corners */
+    backdrop-filter: blur(8px); /* Stronger frosty glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* More defined border */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 420px; /* Significantly wider card */
+    min-height: 450px; /* Minimum height to give it presence */
+    justify-content: center; /* Vertically center content */
+  }
+  
+  .doctor-photo {
+    width: 200px; /* Larger photo */
+    height: 200px; /* Larger photo */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid var(--primary-color); /* Thicker border */
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.3), /* Larger outer glow */
+                0 0 30px rgba(0, 0, 0, 0.6); /* More intense shadow */
+    margin-bottom: 25px; /* More space below photo */
+  }
+  
+  .doctor-info h2 {
+    font-size: 2.8rem; /* Larger name */
+    margin-bottom: 8px;
+    color: white;
+    font-family: 'Playfair Display', serif; /* Elegant font for name */
+  }
+  
+  .doctor-info p {
+    font-size: 1.3rem; /* Larger profession text */
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95); /* Brighter text */
+    margin-top: 0;
+    margin-bottom: 10px; /* Added margin for second paragraph */
+  }
+  .doctor-info p:last-of-type { /* Adjust last paragraph */
+    margin-bottom: 0;
+    font-size: 1.1rem; /* Slightly smaller for detailed info */
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  
+  /* Responsive adjustments for Hero Section */
+  @media (max-width: 1200px) {
+    .hero-content {
+      gap: 40px;
+    }
+    .doctor-info, .appointment-card {
+      width: 380px;
+      padding: 35px;
+    }
+    .doctor-photo {
+      width: 180px;
+      height: 180px;
+    }
+    .doctor-info h2 {
+      font-size: 2.5rem;
+    }
+    .doctor-info p {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .hero-content {
+      flex-direction: column;
+      gap: 50px; /* More vertical space when stacked */
+      padding-top: 80px; /* Ensure content isn't too high */
+      padding-bottom: 80px;
+    }
+    .hero-section {
+      height: auto;
+      min-height: 90vh; /* Ensure it still looks tall */
+    }
+    .doctor-info, .appointment-card {
+      width: 90%;
+      max-width: 450px; /* Limit width to not be too wide on tablets */
+    }
+    .doctor-info p:last-of-type {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .doctor-info {
+      padding: 30px;
+    }
+    .doctor-photo {
+      width: 150px;
+      height: 150px;
+      border-width: 4px;
+      box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.3),
+                  0 0 20px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+    }
+    .doctor-info h2 {
+      font-size: 2.2rem;
+    }
+    .doctor-info p {
+      font-size: 1.1rem;
+    }
+    .hero-overlay {
+      background-color: rgba(0, 0, 0, 0.8); /* Even darker for mobile clarity */
+    }
+  }

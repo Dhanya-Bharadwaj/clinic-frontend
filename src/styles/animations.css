@@ -1,0 +1,29 @@
+/* src/styles/animations.css */
+
+/* --- Loading Spinner --- */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* --- General Animations (for Framer Motion if not using variant props) --- */
+  /* You can define keyframes here if you want to use CSS animations directly,
+     but Framer Motion handles most of the complex stuff directly in JS. */
+  /* Example for simple fade-in if needed */
+  .fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
