@@ -8,6 +8,7 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { getAvailableSlots, bookAppointment } from '../api/bookingApi';
 import LoadingSpinner from './LoadingSpinner';
 import '../styles/BookingModal.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const modalVariants = {
   hidden: { opacity: 0, scale: 0.7 },
