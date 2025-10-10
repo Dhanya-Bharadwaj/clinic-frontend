@@ -1,9 +1,10 @@
 // src/components/Navbar.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import AdminButton from './AdminButton';
 import '../styles/Navbar.css';
 
-const Navbar = ({ onBookAppointmentClick }) => {
+const Navbar = ({ onBookAppointmentClick, onAdminAccess }) => {
   return (
     <motion.nav
       className="navbar"
@@ -11,9 +12,12 @@ const Navbar = ({ onBookAppointmentClick }) => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 120, damping: 20 }}
     >
-      <a href="/" className="navbar-brand">
-        Dr Madhusudhan
-      </a>
+      <div className="navbar-left">
+        <a href="/" className="navbar-brand">
+          Dr Madhusudhan
+        </a>
+        <AdminButton onAdminAccess={onAdminAccess} />
+      </div>
       <motion.button
         className="navbar-button"
         onClick={onBookAppointmentClick}

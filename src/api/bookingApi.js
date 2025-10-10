@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NODE_ENV === 'production'
+export const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://clinic-backend-flame.vercel.app/api/bookings'  // Production URL
   : 'http://localhost:5001/api/bookings';                   // Local development URL
 
@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
  * @param {Date} date - The date object to format.
  * @returns {string} The formatted date string.
  */
-const getLocalDateString = (date) => {
+export const getLocalDateString = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-indexed
   const day = String(date.getDate()).padStart(2, '0');
