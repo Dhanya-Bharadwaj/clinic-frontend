@@ -8,11 +8,15 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { getAvailableSlots, bookAppointment } from '../api/bookingApi';
 import LoadingSpinner from './LoadingSpinner';
 import '../styles/BookingModal.css';
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css'; // This import is redundant
 
 const modalVariants = {
   hidden: { opacity: 0, scale: 0.7 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.3, type: 'spring', damping: 20, stiffness: 200 } },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3, type: 'spring', damping: 20, stiffness: 200 },
+  },
   exit: { opacity: 0, scale: 0.7, transition: { duration: 0.2 } },
 };
 
@@ -35,8 +39,14 @@ const BookingModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('modal-open');
+      // Ensure scrollbar-width is set before calculating and removing if it doesn't exist
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      if (scrollbarWidth > 0) {
+        document.documentElement.style.setProperty(
+          '--scrollbar-width',
+          `${scrollbarWidth}px`,
+        );
+      }
 
       const handleEscape = (event) => {
         if (event.key === 'Escape') {
@@ -59,7 +69,16 @@ const BookingModal = ({ isOpen, onClose }) => {
   // Effect for fetching slots & resetting state
   useEffect(() => {
     if (isOpen && selectedDate) {
-      fetchSlots(selectedDate);
+      // Ensure date is a valid Date object before trying to fetch slots
+      if (selectedDate instanceof Date && !isNaN(selectedDate)) {
+        fetchSlots(selectedDate);
+      } else {
+        console.error('Selected date is not a valid Date object:', selectedDate);
+        setBookingStatus({
+          message: 'Invalid date selected. Please choose a valid date.',
+          type: 'error',
+        });
+      }
     } else if (!isOpen) {
       // Reset all state when modal closes
       setSelectedDate(null);
@@ -72,19 +91,31 @@ const BookingModal = ({ isOpen, onClose }) => {
       setSubmittingBooking(false);
       setBookingConfirmedData(null); // IMPORTANT: Reset confirmation data too
     }
-  }, [isOpen, selectedDate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, selectedDate]); // Added selectedDate to dependency array
 
   const fetchSlots = async (date) => {
     setLoadingSlots(true);
     setAvailableSlots([]);
-    setSelectedTime('');
-    setBookingStatus({ message: '', type: '' });
+    setSelectedTime(''); // Reset selected time when date changes
+    setBookingStatus({ message: '', type: '' }); // Reset any previous error messages
+
     try {
+      // Ensure the date passed to API is in the correct format (YYYY-MM-DD)
       const slots = await getAvailableSlots(date);
       setAvailableSlots(slots.sort());
+      if (slots.length === 0) {
+        setBookingStatus({
+          message: 'No slots available for this date. Please choose another date.',
+          type: 'info',
+        });
+      }
     } catch (error) {
       console.error('Failed to fetch slots:', error);
-      setBookingStatus({ message: 'Failed to load slots. Please try again.', type: 'error' });
+      setBookingStatus({
+        message: error.message || 'Failed to load slots. Please try again.',
+        type: 'error',
+      });
     } finally {
       setLoadingSlots(false);
     }
@@ -92,10 +123,14 @@ const BookingModal = ({ isOpen, onClose }) => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    // When date changes, reset selected time and clear previous booking status
+    setSelectedTime('');
+    setBookingStatus({ message: '', type: '' });
   };
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
+    setBookingStatus({ message: '', type: '' }); // Clear status when time changes
   };
 
   const handleSubmitBooking = async (e) => {
@@ -103,7 +138,10 @@ const BookingModal = ({ isOpen, onClose }) => {
     setBookingStatus({ message: '', type: '' });
 
     if (!selectedDate || !selectedTime || !patientName || !patientEmail || !patientPhone) {
-      setBookingStatus({ message: 'Please fill in all required fields and select a date/time.', type: 'error' });
+      setBookingStatus({
+        message: 'Please fill in all required fields and select a date/time.',
+        type: 'error',
+      });
       return;
     }
 
@@ -112,32 +150,38 @@ const BookingModal = ({ isOpen, onClose }) => {
       return;
     }
 
+    // Basic phone number validation for 10 digits
     if (!/^\d{10}$/.test(patientPhone)) {
-      setBookingStatus({ message: 'Please enter a valid 10-digit phone number.', type: 'error' });
+      setBookingStatus({
+        message: 'Please enter a valid 10-digit phone number.',
+        type: 'error',
+      });
       return;
     }
 
     setSubmittingBooking(true);
     try {
-      const appointmentDetails = {
-        date: selectedDate,
+      const result = await bookAppointment({
+        date: selectedDate, // Still sending the Date object, API will convert
         time: selectedTime,
         patientName,
         patientEmail,
         patientPhone,
-        // In a real app, you'd get an actual booking ID from the backend
-        bookingId: `BK-${Date.now()}` // Mock booking ID
-      };
-      const result = await bookAppointment(appointmentDetails);
+        // The backend generates and returns the bookingId
+      });
       setBookingStatus({ message: result.message, type: 'success' });
       fetchSlots(selectedDate); // Refresh slots immediately
-      setBookingConfirmedData(appointmentDetails); // Store confirmed details
+      setBookingConfirmedData(result.appointment); // Store confirmed details from backend response
 
       // Removed immediate onClose() to show confirmation screen
       // setTimeout(() => { onClose(); }, 2000); // This will now be handled by confirmation view
     } catch (error) {
       console.error('Booking error:', error);
-      setBookingStatus({ message: error.message || 'Failed to book appointment. Please try a different slot.', type: 'error' });
+      setBookingStatus({
+        message:
+          error.message || 'Failed to book appointment. Please try a different slot.',
+        type: 'error',
+      });
     } finally {
       setSubmittingBooking(false);
     }
@@ -185,23 +229,27 @@ const BookingModal = ({ isOpen, onClose }) => {
                 transition={{ delay: 0.1, duration: 0.5 }}
               >
                 <div className="confirmation-icon">
-                    <i className="fas fa-check-circle"></i> {/* Font Awesome check icon */}
+                  <i className="fas fa-check-circle"></i> {/* Font Awesome check icon */}
                 </div>
                 <h4 className="confirmation-message">Your appointment has been successfully booked.</h4>
                 <p className="confirmation-detail-item">
-                  <strong>Booking ID:</strong> <span>{bookingConfirmedData.bookingId}</span>
+                  <strong>Booking ID:</strong>{' '}
+                  <span>{bookingConfirmedData.bookingId}</span>
                 </p>
                 <p className="confirmation-detail-item">
                   <strong>Doctor:</strong> <span>Dr. Madhusudhan</span>
                 </p>
                 <p className="confirmation-detail-item">
-                  <strong>Date:</strong> <span>{bookingConfirmedData.date.toLocaleDateString()}</span>
+                  <strong>Date:</strong>{' '}
+                  <span>{new Date(bookingConfirmedData.date).toLocaleDateString()}</span>
+                  {/* Convert date string back to Date object for display */}
                 </p>
                 <p className="confirmation-detail-item">
                   <strong>Time:</strong> <span>{bookingConfirmedData.time}</span>
                 </p>
                 <p className="confirmation-detail-item">
-                  <strong>Patient Name:</strong> <span>{bookingConfirmedData.patientName}</span>
+                  <strong>Patient Name:</strong>{' '}
+                  <span>{bookingConfirmedData.patientName}</span>
                 </p>
                 <p className="confirmation-detail-item">
                   <strong>Email:</strong> <span>{bookingConfirmedData.patientEmail}</span>
@@ -211,8 +259,8 @@ const BookingModal = ({ isOpen, onClose }) => {
                 </p>
 
                 <p className="confirmation-note">
-                  Please keep this information for your reference.
-                  An email confirmation with these details has also been sent.
+                  Please keep this information for your reference. An email confirmation with these
+                  details has also been sent.
                 </p>
 
                 <motion.button
@@ -225,7 +273,9 @@ const BookingModal = ({ isOpen, onClose }) => {
                 </motion.button>
               </motion.div>
             ) : (
-              <> {/* Original Booking Form content */}
+              <>
+                {' '}
+                {/* Original Booking Form content */}
                 <div className="date-picker-container">
                   <label>Select Date:</label>
                   <DatePicker
@@ -239,7 +289,9 @@ const BookingModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div>
-                  <label>Available Time Slots for {selectedDate?.toLocaleDateString() || 'selected date'}:</label>
+                  <label>
+                    Available Time Slots for {selectedDate?.toLocaleDateString() || 'selected date'}:
+                  </label>
                   {loadingSlots ? (
                     <LoadingSpinner />
                   ) : availableSlots.length > 0 ? (
@@ -247,7 +299,9 @@ const BookingModal = ({ isOpen, onClose }) => {
                       {availableSlots.map((time) => (
                         <motion.button
                           key={time}
-                          className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
+                          className={`time-slot-button ${
+                            selectedTime === time ? 'selected' : ''
+                          }`}
                           onClick={() => handleTimeSelect(time)}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
@@ -258,7 +312,12 @@ const BookingModal = ({ isOpen, onClose }) => {
                       ))}
                     </div>
                   ) : (
-                    <p>No slots available for this date. Please choose another date.</p>
+                    <p className="no-slots-message">
+                      {selectedDate
+                        ? bookingStatus.message ||
+                          'No slots available for this date. Please choose another date.'
+                        : 'Please select a date to see available slots.'}
+                    </p>
                   )}
                 </div>
 
@@ -267,7 +326,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                     <h4>Confirm Your Details</h4>
                     <div>
                       <label htmlFor="patient-name">Full Name:</label>
-                    <input
+                      <input
                         type="text"
                         id="patient-name"
                         value={patientName}

@@ -1,37 +1,84 @@
-// src/api/bookingApi.js - Complete & Corrected for Vercel Backend
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://clinic-backend-7gaj.vercel.app/api/bookings'  // Production URL
+  : 'http://localhost:5001/api/bookings';                  // Local development URL (updated port)
 
-// IMPORTANT: Replace with your actual Vercel backend URL!
-const API_BASE_URL = 'https://clinic-backend-7gaj.vercel.app/api/bookings';
+/**
+ * A helper function to format a Date object into a 'YYYY-MM-DD' string
+ * that respects the user's local timezone.
+ * @param {Date} date - The date object to format.
+ * @returns {string} The formatted date string.
+ */
+const getLocalDateString = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 /**
  * Fetches available slots for a given date from the backend.
  * @param {Date} date - The date to check for.
- * @returns {Promise<string[]>} A promise that resolves to an array of available time strings (e.g., "09:00").
+ * @returns {Promise<string[]>} A promise that resolves to an array of available time strings.
  */
 export const getAvailableSlots = async (date) => {
-  // Frontend Date object needs to be converted to 'YYYY-MM-DD' string for the backend.
-  const dateString = date.toISOString().split('T')[0];
+  // Use the helper to get the correct local date string
+  const dateString = getLocalDateString(date);
+  console.log('Frontend: Fetching slots for date:', dateString);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/slots?date=${dateString}`);
+    const url = `${API_BASE_URL}/slots?date=${dateString}`;
+    console.log('Frontend: API URL:', url);
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Frontend: Response status:', response.status);
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to fetch available slots.');
+    let responseText;
+    try {
+      responseText = await response.text(); // Get raw response text first
+      console.log('Raw response:', responseText); // Debug log
+      
+      if (!response.ok) {
+        let errorMessage = 'Failed to fetch available slots.';
+        if (responseText) {
+          try {
+            const errorData = JSON.parse(responseText);
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error('Error parsing error response:', e);
+          }
+        }
+        throw new Error(`${errorMessage} (Status: ${response.status})`);
+      }
+
+      const data = JSON.parse(responseText);
+      console.log('Parsed response data:', data); // Debug log
+      return data.availableSlots || [];
+      
+    } catch (parseError) {
+      console.error('Response parsing error:', parseError);
+      console.error('Raw response was:', responseText);
+      throw new Error(`Failed to parse server response: ${parseError.message}`);
     }
-    const data = await response.json();
-    return data.availableSlots;
   } catch (error) {
     console.error('API Error (getAvailableSlots):', error);
-    // Re-throw the error so the calling component can handle it (e.g., display an error message)
+    console.error('Full error details:', {
+      message: error.message,
+      stack: error.stack
+    });
     throw error;
   }
 };
 
 /**
  * Books an appointment via the backend API.
- * @param {object} appointmentDetails - Details including date (Date object), time, patient name, email, phone.
- * @returns {Promise<object>} A promise that resolves to a confirmation object or rejects on failure.
+ * @param {object} appointmentDetails - Details including date (Date object), time, patient name, etc.
+ * @returns {Promise<object>} A promise that resolves to a confirmation object.
  */
 export const bookAppointment = async (appointmentDetails) => {
   try {
@@ -42,18 +89,18 @@ export const bookAppointment = async (appointmentDetails) => {
       },
       body: JSON.stringify({
         ...appointmentDetails,
-        // Convert the Date object to an ISO string for consistent parsing on the backend
-        date: appointmentDetails.date.toISOString(),
+        // Use the helper to send the correct local date string to the backend
+        date: getLocalDateString(appointmentDetails.date),
       }),
     });
 
-    const data = await response.json(); // Always parse response, even if !ok, to get error message
+    const data = await response.json();
 
     if (!response.ok) {
       throw new Error(data.message || 'Failed to book appointment.');
     }
 
-    return data; // This should contain { message: "...", appointment: {...} }
+    return data;
   } catch (error) {
     console.error('API Error (bookAppointment):', error);
     throw error;
@@ -61,16 +108,34 @@ export const bookAppointment = async (appointmentDetails) => {
 };
 
 /**
- * (Doctor's Internal API - for demonstration purposes)
- * Marks an appointment as complete. This would typically be called from a separate,
- * authenticated doctor-facing admin interface, not directly from this public frontend.
- * @param {string} appointmentId - The unique ID of the appointment to mark complete.
- * @returns {Promise<object>} A promise that resolves to a success message or rejects on failure.
+ * Fetches general doctor information from the backend.
+ * @returns {Promise<object>} A promise that resolves to the doctor's details object.
+ */
+export const getDoctorDetails = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/doctor`);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to fetch doctor details.');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('API Error (getDoctorDetails):', error);
+    throw error;
+  }
+};
+
+/**
+ * (Internal API for Demo) Marks an appointment as complete.
+ * @param {string} appointmentId - The ID of the appointment.
+ * @returns {Promise<object>} A promise that resolves to a success message.
  */
 export const markAppointmentComplete = async (appointmentId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/${appointmentId}/complete`, {
-      method: 'PATCH', // Using PATCH for partial update (status change)
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -85,28 +150,6 @@ export const markAppointmentComplete = async (appointmentId) => {
     return data;
   } catch (error) {
     console.error('API Error (markAppointmentComplete):', error);
-    throw error;
-  }
-};
-
-/**
- * Fetches general doctor information from the backend.
- * Used for populating sections like HeroSection and AboutSection dynamically.
- * @returns {Promise<object>} A promise that resolves to the doctor's details object.
- */
-export const getDoctorDetails = async () => {
-  try {
-    // This route needs to be '/doctor' as defined in your backend bookingRoutes.js
-    const response = await fetch(`${API_BASE_URL}/doctor`);
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to fetch doctor details.');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('API Error (getDoctorDetails):', error);
     throw error;
   }
 };
