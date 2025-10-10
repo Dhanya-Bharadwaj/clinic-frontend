@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://clinic-backend-7gaj.vercel.app/api/bookings'  // Production URL
-  : 'http://localhost:5001/api/bookings';                  // Local development URL (updated port)
+  ? 'https://clinic-backend-flame.vercel.app/api/bookings'  // Production URL
+  : 'http://localhost:5001/api/bookings';                   // Local development URL
 
 /**
  * A helper function to format a Date object into a 'YYYY-MM-DD' string
