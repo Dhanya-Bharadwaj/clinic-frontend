@@ -1,12 +1,12 @@
 /* src/styles/AppointmentCard.css - REVISED */
 .appointment-card {
     background-color: var(--card-bg);
-    padding: 40px; /* Increased padding */
+  padding: 44px; /* Slightly increased padding */
     border-radius: 18px; /* Slightly more rounded corners */
     box-shadow: 0 10px 30px var(--shadow-light); /* More pronounced shadow */
     text-align: center;
-    width: 420px; /* Match width of doctor info card */
-    min-height: 450px; /* Match min height */
+  width: 460px; /* Slightly wider to match doctor card */
+  min-height: 480px; /* Slightly taller */
     display: flex;
     flex-direction: column;
     justify-content: center; /* Vertically center content */
@@ -40,8 +40,8 @@
   /* Responsive adjustments for Appointment Card */
   @media (max-width: 1200px) {
     .appointment-card {
-      width: 380px;
-      padding: 35px;
+      width: 400px; /* modest increase at this breakpoint */
+      padding: 38px;
     }
     .appointment-card h3 {
       font-size: 2.2rem;

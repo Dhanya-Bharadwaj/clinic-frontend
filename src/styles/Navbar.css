@@ -15,8 +15,9 @@
   .navbar-left {
     display: flex;
     align-items: center;
-    gap: 10px;
   }
+
+  /* Removed ordering and left margin on admin icon to allow it to appear first */
   
   .navbar-brand {
     font-size: 1.8rem;

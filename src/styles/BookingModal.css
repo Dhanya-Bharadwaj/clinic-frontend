@@ -516,3 +516,120 @@ body.modal-open {
       font-size: 1rem;
   }
 }
+
+/* --- Consulting Type Selection --- */
+.consult-type-step {
+  padding: 16px 0 8px;
+  text-align: left;
+}
+.consult-type-radio-group {
+  display: flex;
+  gap: 32px;
+  margin: 18px 0 0 0;
+  justify-content: flex-start;
+}
+.consult-type-radio {
+  display: flex;
+  align-items: center;
+  font-size: 1.08rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  padding-left: 32px;
+  margin-right: 16px;
+  transition: color 0.2s;
+}
+.consult-type-radio input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.custom-radio {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #007bff;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.consult-type-radio.selected .custom-radio {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 4px rgba(0,123,255,0.12);
+}
+.consult-type-radio input[type="radio"]:checked + .custom-radio {
+  background: radial-gradient(circle at 50% 50%, #007bff 60%, #fff 100%);
+  border-color: #0056b3;
+}
+.consult-type-next {
+  margin-top: 24px;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  padding: 12px 0;
+  box-shadow: 0 4px 16px rgba(0,123,255,0.08);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.consult-type-next:disabled {
+  background: #b3d1ff;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+/* --- Gender Selection Radio Buttons --- */
+.gender-radio-group {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin: 12px 0 18px 0;
+}
+.gender-radio {
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  padding-left: 28px;
+  margin-right: 12px;
+  transition: color 0.2s;
+}
+.gender-radio input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.gender-radio .custom-radio {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #007bff;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.gender-radio.selected .custom-radio {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
+}
+.gender-radio input[type="radio"]:checked + .custom-radio {
+  background: radial-gradient(circle at 50% 50%, #007bff 60%, #fff 100%);
+  border-color: #0056b3;
+}

@@ -22,12 +22,61 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  min-width: 100vw;
   min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: clip !important;
+  overflow-y: auto;
+  background: #f9fafb !important;
+}
+
+.app {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  background: #fff;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+
+section,
+.about-section,
+.family-section,
+.services-section,
+.why-choose-us-section {
+  overflow-x: hidden;
+  background: #fff;
+  min-width: 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+img, .card, .approach-card, .about-section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  overflow-x: clip;
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 h1 {

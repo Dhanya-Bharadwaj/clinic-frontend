@@ -48,7 +48,7 @@
   
   .doctor-info {
     background-color: rgba(255, 255, 255, 0.18); /* Slightly less transparent */
-    padding: 40px; /* Increased padding */
+    padding: 44px; /* Slightly increased padding */
     border-radius: 18px; /* Slightly more rounded corners */
     backdrop-filter: blur(8px); /* Stronger frosty glass effect */
     border: 1px solid rgba(255, 255, 255, 0.4); /* More defined border */
@@ -57,8 +57,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 420px; /* Significantly wider card */
-    min-height: 450px; /* Minimum height to give it presence */
+    width: 460px; /* Slightly wider card */
+    min-height: 480px; /* Slightly taller */
     justify-content: center; /* Vertically center content */
   }
   
@@ -78,6 +78,9 @@
     margin-bottom: 8px;
     color: white;
     font-family: 'Playfair Display', serif; /* Elegant font for name */
+    white-space: nowrap; /* keep name in a single line */
+    overflow: hidden; /* avoid overflow */
+    text-overflow: ellipsis; /* gracefully truncate if too narrow */
   }
   
   .doctor-info p {
@@ -100,8 +103,8 @@
       gap: 40px;
     }
     .doctor-info, .appointment-card {
-      width: 380px;
-      padding: 35px;
+      width: 400px; /* modest increase at this breakpoint */
+      padding: 38px;
     }
     .doctor-photo {
       width: 180px;

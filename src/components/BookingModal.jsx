@@ -1,4 +1,4 @@
-// src/components/BookingModal.jsx - REVISED for Booking Status Confirmation
+// src/components/BookingModal.jsx - REVISED for Step-by-Step Booking Flow
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,6 +32,11 @@ const BookingModal = ({ isOpen, onClose }) => {
   const [submittingBooking, setSubmittingBooking] = useState(false);
   // NEW STATE: To hold details of a successfully booked appointment
   const [bookingConfirmedData, setBookingConfirmedData] = useState(null);
+  // New state for step-by-step flow
+  const [step, setStep] = useState(0); // 0: consult type, 1: calendar, 2: slots, 3: details, 4: payment/confirm
+  const [consultType, setConsultType] = useState(''); // 'online' or 'offline'
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
 
   const modalRef = useRef(null);
 
@@ -81,6 +86,10 @@ const BookingModal = ({ isOpen, onClose }) => {
       }
     } else if (!isOpen) {
       // Reset all state when modal closes
+      setStep(0);
+      setConsultType('');
+      setGender('');
+      setAge('');
       setSelectedDate(null);
       setAvailableSlots([]);
       setSelectedTime('');
@@ -137,16 +146,31 @@ const BookingModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     setBookingStatus({ message: '', type: '' });
 
-    if (!selectedDate || !selectedTime || !patientName || !patientEmail || !patientPhone) {
+    // Debug: log all values to see what's missing
+    console.log('Validation check:', {
+      selectedDate,
+      selectedTime,
+      patientName,
+      patientPhone,
+      age,
+      gender,
+      consultType
+    });
+
+    // Updated validation for new required fields
+    if (!selectedDate || !selectedTime || !patientName || !patientPhone || !age || !gender) {
+      const missingFields = [];
+      if (!selectedDate) missingFields.push('Date');
+      if (!selectedTime) missingFields.push('Time');
+      if (!patientName) missingFields.push('Name');
+      if (!patientPhone) missingFields.push('Phone');
+      if (!age) missingFields.push('Age');
+      if (!gender) missingFields.push('Gender');
+      
       setBookingStatus({
-        message: 'Please fill in all required fields and select a date/time.',
+        message: `Missing required fields: ${missingFields.join(', ')}`,
         type: 'error',
       });
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(patientEmail)) {
-      setBookingStatus({ message: 'Please enter a valid email address.', type: 'error' });
       return;
     }
 
@@ -159,14 +183,25 @@ const BookingModal = ({ isOpen, onClose }) => {
       return;
     }
 
+    // Age validation
+    if (!age || parseInt(age) < 1 || parseInt(age) > 120) {
+      setBookingStatus({
+        message: 'Please enter a valid age between 1 and 120.',
+        type: 'error',
+      });
+      return;
+    }
+
     setSubmittingBooking(true);
     try {
       const result = await bookAppointment({
         date: selectedDate, // Still sending the Date object, API will convert
         time: selectedTime,
         patientName,
-        patientEmail,
         patientPhone,
+        age: parseInt(age),
+        gender,
+        consultType,
         // The backend generates and returns the bookingId
       });
       setBookingStatus({ message: result.message, type: 'success' });
@@ -220,8 +255,284 @@ const BookingModal = ({ isOpen, onClose }) => {
               </button>
             </div>
 
+            {/* Step 0: Consulting type selection */}
+            {!bookingConfirmedData && step === 0 && (
+              <div className="consult-type-step">
+                <h4>Choose Consulting Type</h4>
+                <div className="consult-type-radio-group">
+                  <label className={`consult-type-radio${consultType === 'online' ? ' selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="consultType"
+                      value="online"
+                      checked={consultType === 'online'}
+                      onChange={() => setConsultType('online')}
+                    />
+                    <span className="custom-radio"></span>
+                    Online Consulting
+                  </label>
+                  <label className={`consult-type-radio${consultType === 'offline' ? ' selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="consultType"
+                      value="offline"
+                      checked={consultType === 'offline'}
+                      onChange={() => setConsultType('offline')}
+                    />
+                    <span className="custom-radio"></span>
+                    Offline Consulting
+                  </label>
+                </div>
+                <motion.button
+                  className="consult-type-next"
+                  onClick={() => consultType && setStep(1)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={!consultType}
+                  style={{ marginTop: '24px', width: '100%' }}
+                >
+                  Next
+                </motion.button>
+              </div>
+            )}
+
+            {/* Step 1: Show consult mode, then calendar */}
+            {!bookingConfirmedData && step === 1 && (
+              <div className="consult-mode-step">
+                <h4>{consultType === 'online' ? 'Video Consult' : 'In Clinic Consulting'}</h4>
+                <div className="date-picker-container">
+                  <label>Select Date:</label>
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => { handleDateChange(date); setStep(2); }}
+                    minDate={new Date()}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Click to select a date"
+                    inline
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Show available slots */}
+            {!bookingConfirmedData && step === 2 && (
+              <div className="slots-step">
+                <label>
+                  Available Time Slots for {selectedDate?.toLocaleDateString() || 'selected date'}:
+                </label>
+                {loadingSlots ? (
+                  <LoadingSpinner />
+                ) : availableSlots.length > 0 ? (
+                  <div className="time-slots-container">
+                    {availableSlots.map((time) => (
+                      <motion.button
+                        key={time}
+                        className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
+                        onClick={() => { handleTimeSelect(time); setStep(3); }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        disabled={submittingBooking}
+                      >
+                        {time}
+                      </motion.button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="no-slots-message">
+                    {selectedDate
+                      ? bookingStatus.message ||
+                        'No slots available for this date. Please choose another date.'
+                      : 'Please select a date to see available slots.'}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Step 3: Mandatory details */}
+            {!bookingConfirmedData && step === 3 && (
+              <form onSubmit={(e) => { 
+                e.preventDefault(); 
+                // Validate required fields before proceeding
+                if (!patientName || !patientPhone || !age || !gender) {
+                  setBookingStatus({
+                    message: 'Please fill in all required fields.',
+                    type: 'error',
+                  });
+                  return;
+                }
+                // Clear any previous errors
+                setBookingStatus({ message: '', type: '' });
+                // Proceed to next step
+                setStep(consultType === 'online' ? 4 : 5); 
+              }} className="appointment-form">
+                <h4>Confirm Your Details</h4>
+                <div>
+                  <label htmlFor="patient-name">Full Name:</label>
+                  <input
+                    type="text"
+                    id="patient-name"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    required
+                    disabled={submittingBooking}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="patient-phone">Phone Number:</label>
+                  <input
+                    type="tel"
+                    id="patient-phone"
+                    value={patientPhone}
+                    onChange={(e) => setPatientPhone(e.target.value)}
+                    pattern="[0-9]{10}"
+                    required
+                    disabled={submittingBooking}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="age">Age:</label>
+                  <input
+                    type="number"
+                    id="age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    required
+                    min={0}
+                    max={120}
+                    disabled={submittingBooking}
+                  />
+                </div>
+                <div className="gender-radio-group">
+                  <label>Gender:</label>
+                  <label className={`gender-radio${gender === 'male' ? ' selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="male"
+                      checked={gender === 'male'}
+                      onChange={() => setGender('male')}
+                      disabled={submittingBooking}
+                    />
+                    <span className="custom-radio"></span>
+                    Male
+                  </label>
+                  <label className={`gender-radio${gender === 'female' ? ' selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="female"
+                      checked={gender === 'female'}
+                      onChange={() => setGender('female')}
+                      disabled={submittingBooking}
+                    />
+                    <span className="custom-radio"></span>
+                    Female
+                  </label>
+                </div>
+                {bookingStatus.message && (
+                  <p className={`modal-message ${bookingStatus.type}`}>
+                    {bookingStatus.message}
+                  </p>
+                )}
+                <div className="modal-actions">
+                  <motion.button
+                    type="button"
+                    onClick={onClose}
+                    className="cancel-button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={submittingBooking}
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    type="submit"
+                    disabled={submittingBooking}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Next
+                  </motion.button>
+                </div>
+              </form>
+            )}
+
+            {/* Step 4: Online payment placeholder */}
+            {!bookingConfirmedData && step === 4 && consultType === 'online' && (
+              <div className="payment-step">
+                <h4>Payment (Coming Soon)</h4>
+                <p>Online payment integration will be added here.</p>
+                <motion.button
+                  onClick={() => setStep(5)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Continue to Booking
+                </motion.button>
+              </div>
+            )}
+
+            {/* Step 5: Final booking confirmation (offline or online) */}
+            {!bookingConfirmedData && step === 5 && (
+              <form onSubmit={(e) => {
+                console.log('Form submission triggered!');
+                handleSubmitBooking(e);
+              }} className="appointment-form">
+                <h4>Confirm Booking</h4>
+                <div>
+                  <label>Date:</label>
+                  <span>{selectedDate?.toLocaleDateString()}</span>
+                </div>
+                <div>
+                  <label>Time:</label>
+                  <span>{selectedTime}</span>
+                </div>
+                <div>
+                  <label>Name:</label>
+                  <span>{patientName}</span>
+                </div>
+                <div>
+                  <label>Phone:</label>
+                  <span>{patientPhone}</span>
+                </div>
+                <div>
+                  <label>Age:</label>
+                  <span>{age}</span>
+                </div>
+                <div>
+                  <label>Gender:</label>
+                  <span>{gender}</span>
+                </div>
+                {bookingStatus.message && (
+                  <p className={`modal-message ${bookingStatus.type}`}>
+                    {bookingStatus.message}
+                  </p>
+                )}
+                <div className="modal-actions">
+                  <motion.button
+                    type="button"
+                    onClick={onClose}
+                    className="cancel-button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={submittingBooking}
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    type="submit"
+                    disabled={submittingBooking}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {submittingBooking ? 'Booking...' : 'Confirm Booking'}
+                  </motion.button>
+                </div>
+              </form>
+            )}
+
             {/* Conditional Rendering: Show Confirmation View or Booking Form */}
-            {bookingConfirmedData ? (
+            {bookingConfirmedData && (
               <motion.div
                 className="booking-confirmation-view"
                 initial={{ opacity: 0, y: 20 }}
@@ -272,122 +583,6 @@ const BookingModal = ({ isOpen, onClose }) => {
                   Close
                 </motion.button>
               </motion.div>
-            ) : (
-              <>
-                {' '}
-                {/* Original Booking Form content */}
-                <div className="date-picker-container">
-                  <label>Select Date:</label>
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    minDate={new Date()}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText="Click to select a date"
-                    inline
-                  />
-                </div>
-
-                <div>
-                  <label>
-                    Available Time Slots for {selectedDate?.toLocaleDateString() || 'selected date'}:
-                  </label>
-                  {loadingSlots ? (
-                    <LoadingSpinner />
-                  ) : availableSlots.length > 0 ? (
-                    <div className="time-slots-container">
-                      {availableSlots.map((time) => (
-                        <motion.button
-                          key={time}
-                          className={`time-slot-button ${
-                            selectedTime === time ? 'selected' : ''
-                          }`}
-                          onClick={() => handleTimeSelect(time)}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          disabled={submittingBooking}
-                        >
-                          {time}
-                        </motion.button>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="no-slots-message">
-                      {selectedDate
-                        ? bookingStatus.message ||
-                          'No slots available for this date. Please choose another date.'
-                        : 'Please select a date to see available slots.'}
-                    </p>
-                  )}
-                </div>
-
-                {selectedTime && (
-                  <form onSubmit={handleSubmitBooking} className="appointment-form">
-                    <h4>Confirm Your Details</h4>
-                    <div>
-                      <label htmlFor="patient-name">Full Name:</label>
-                      <input
-                        type="text"
-                        id="patient-name"
-                        value={patientName}
-                        onChange={(e) => setPatientName(e.target.value)}
-                        required
-                        disabled={submittingBooking}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="patient-email">Email:</label>
-                      <input
-                        type="email"
-                        id="patient-email"
-                        value={patientEmail}
-                        onChange={(e) => setPatientEmail(e.target.value)}
-                        required
-                        disabled={submittingBooking}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="patient-phone">Phone Number:</label>
-                      <input
-                        type="tel"
-                        id="patient-phone"
-                        value={patientPhone}
-                        onChange={(e) => setPatientPhone(e.target.value)}
-                        pattern="[0-9]{10}"
-                        required
-                        disabled={submittingBooking}
-                      />
-                    </div>
-
-                    {bookingStatus.message && (
-                      <p className={`modal-message ${bookingStatus.type}`}>
-                        {bookingStatus.message}
-                      </p>
-                    )}
-
-                    <div className="modal-actions">
-                      <motion.button
-                        type="button"
-                        onClick={onClose}
-                        className="cancel-button"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        disabled={submittingBooking}
-                      >
-                        Cancel
-                      </motion.button>
-                      <motion.button
-                        type="submit"
-                        disabled={submittingBooking || !selectedTime}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {submittingBooking ? 'Booking...' : 'Confirm Booking'}
-                      </motion.button>
-                    </div>
-                  </form>
-                )}
-              </>
             )}
           </motion.div>
         </motion.div>

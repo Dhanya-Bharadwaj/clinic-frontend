@@ -18,10 +18,10 @@ const HeroSection = ({ onBookAppointmentClick }) => {
         // Fallback to static or show error
         setDoctorInfo({
             name: 'Dr Madhusudhan',
-            specialization: 'General Physician | Cardiologist',
-            experience: 15,
+            specialization: 'General Physician | MD',
+            experience: 25,
             clinicName: 'Dr. Madhusudhan Clinic',
-            address: '123 Healthway, Wellness City, State 45678',
+            address: '4th cross road, New Bank Colony, Bank Colony,Konankunte, Bangalore - 560078',
             photoUrl: '/doctor-photo.jpg' // Use public path for local image
         });
       }
@@ -63,8 +63,21 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           animate="visible"
           variants={doctorInfoVariants}
         >
-          <img src={doctorInfo.photoUrl} alt={`Dr. ${doctorInfo.name}`} className="doctor-photo" />
-          <h2>Dr. {doctorInfo.name}</h2>
+          {/** Ensure single 'Dr' prefix and no duplication */}
+          {(() => {
+            const getDisplayName = (name) => {
+              if (!name) return '';
+              const withoutPrefix = String(name).trim().replace(/^(Dr\.?\s*)/i, '');
+              return `Dr ${withoutPrefix}`.trim();
+            };
+            const displayName = getDisplayName(doctorInfo.name);
+            return (
+              <>
+                <img src={doctorInfo.photoUrl} alt={displayName} className="doctor-photo" />
+                <h2>{displayName}</h2>
+              </>
+            );
+          })()}
           <p>{doctorInfo.specialization}</p>
           <p>Over {doctorInfo.experience} years of experience in patient care.</p>
         </motion.div>

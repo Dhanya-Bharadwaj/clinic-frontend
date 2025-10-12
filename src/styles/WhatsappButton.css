@@ -1,0 +1,50 @@
+/* src/styles/WhatsappButton.css */
+.whatsapp-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  color: #0a63ff; /* blue icon */
+  cursor: pointer;
+  z-index: 1100; /* above navbar and sections, below modals */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.whatsapp-fab:hover {
+  transform: translateY(-2px);
+}
+
+.whatsapp-icon {
+  font-size: 48px; /* increased for better visibility */
+}
+
+.whatsapp-tooltip {
+  position: absolute;
+  right: 40px;
+  bottom: 50%;
+  transform: translateY(50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.whatsapp-fab:hover .whatsapp-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 600px) {
+  .whatsapp-fab {
+    right: 14px;
+    bottom: 14px;
+  }
+  .whatsapp-icon {
+    font-size: 36px;
+  }
+}

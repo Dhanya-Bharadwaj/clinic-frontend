@@ -3,7 +3,8 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 0;
+    margin-right: 10px;
     z-index: 1000;
 }
 
@@ -23,26 +24,28 @@
 
 .admin-button svg {
     font-size: 28px;
-    color: #e74c3c; /* Red color for the doctor icon */
+    color: #0a63ff; /* Blue color for the doctor icon */
 }
 
 .admin-button:hover {
-    transform: scale(1.1);
-    background-color: #34495e;
+    transform: scale(1.05);
 }
 
 .admin-tooltip {
     position: absolute;
-    background-color: #2c3e50;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 14px;
-    right: 60px;
+    background-color: #0a63ff;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    top: 46px; /* below the icon */
+    left: 50%;
+    transform: translateX(-50%);
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 16px rgba(10, 99, 255, 0.25);
 }
 
 .admin-button:hover .admin-tooltip {

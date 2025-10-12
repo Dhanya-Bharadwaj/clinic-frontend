@@ -13,10 +13,10 @@ const Navbar = ({ onBookAppointmentClick, onAdminAccess }) => {
       transition={{ type: 'spring', stiffness: 120, damping: 20 }}
     >
       <div className="navbar-left">
+        <AdminButton onAdminAccess={onAdminAccess} />
         <a href="/" className="navbar-brand">
           Dr Madhusudhan
         </a>
-        <AdminButton onAdminAccess={onAdminAccess} />
       </div>
       <motion.button
         className="navbar-button"

@@ -1,133 +1,136 @@
-/* src/styles/AboutSection.css - REVISED */
+/* src/styles/AboutSection.css */
+
 .about-section {
-    padding: 100px 5%; /* Increased padding for more breathing room */
-    background-color: var(--card-bg); /* Use card-bg for a clean white background */
-    text-align: center;
-    overflow: hidden; /* Ensure animations don't cause scrollbars */
+  padding: 80px 0;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+.about-section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.about-section-text {
+  max-width: 900px;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1a3a6b;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.about-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: #007bff;
+  border-radius: 2px;
+}
+
+.intro-paragraph,
+.details-paragraph {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.about-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+}
+
+.stat-item h3 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #007bff;
+  margin: 0;
+}
+
+.stat-item p {
+  font-size: 1rem;
+  color: #1a3a6b;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.doctor-quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #333;
+  border-left: 4px solid #007bff;
+  padding-left: 20px;
+  margin: 40px auto 0;
+  max-width: 80%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 60px 0;
   }
-  
-  .about-section-content {
-    max-width: 1100px; /* Increased max-width for wider content */
-    margin: 0 auto;
+
+  .about-title {
+    font-size: 2.5rem;
   }
-  
-  .about-section h2 {
-    font-size: 3.5rem; /* Larger, more impactful heading */
-    margin-bottom: 40px; /* More space below heading */
-    color: var(--primary-color);
-    position: relative;
-    font-family: 'Playfair Display', serif; /* Consistent elegant font */
-    font-weight: 700;
-  }
-  
-  .about-section h2::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -15px; /* Adjust position relative to the text */
-    width: 100px; /* Slightly wider underline */
-    height: 5px; /* Thicker underline */
-    background-color: var(--primary-color);
-    border-radius: 2px;
-  }
-  
-  .about-section .intro-paragraph {
-    font-size: 1.25rem; /* Larger, more readable intro text */
-    line-height: 1.8;
-    color: var(--text-color);
-    margin-bottom: 30px;
-    max-width: 800px; /* Constrain width for better readability */
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .about-section .details-paragraph {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: var(--secondary-color);
-    margin-bottom: 40px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  
-  /* Grid layout for feature list */
-  .about-features-grid {
-    list-style: none;
-    padding: 0;
-    margin-top: 50px; /* More space above the grid */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 30px; /* Increased gap between items */
-  }
-  
-  .about-features-grid li {
-    background-color: var(--background-light); /* Lighter background for feature cards */
-    padding: 30px; /* More padding inside cards */
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Softer, more pronounced shadow */
-    text-align: left;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid var(--border-color); /* Subtle border */
-    display: flex; /* Use flex for icon/title alignment if we add icons later */
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-  
-  .about-features-grid li:hover {
-    transform: translateY(-8px); /* More noticeable lift effect */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Stronger hover shadow */
-  }
-  
-  .about-features-grid li h4 {
-    color: var(--primary-color);
-    margin-bottom: 15px; /* More space below heading */
-    font-size: 1.6rem; /* Larger feature title */
-    font-family: 'Playfair Display', serif;
-  }
-  
-  .about-features-grid li p {
+
+  .intro-paragraph,
+  .details-paragraph {
     font-size: 1rem;
-    margin-bottom: 0;
-    color: var(--text-color); /* Darker text for readability */
   }
-  
-  /* Responsive adjustments for About Section */
-  @media (max-width: 1024px) {
-    .about-section h2 {
-      font-size: 3rem;
-    }
-    .about-section .intro-paragraph,
-    .about-section .details-paragraph {
-      font-size: 1.1rem;
-    }
-    .about-features-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
+
+  .about-stats {
+    gap: 20px;
   }
-  
-  @media (max-width: 768px) {
-    .about-section {
-      padding: 60px 5%;
-    }
-    .about-section h2 {
-      font-size: 2.5rem;
-    }
-    .about-section .intro-paragraph,
-    .about-section .details-paragraph {
-      font-size: 1rem;
-      max-width: 100%;
-    }
-    .about-features-grid {
-      grid-template-columns: 1fr; /* Stack items vertically on small screens */
-      gap: 20px;
-    }
-    .about-features-grid li {
-      width: 90%;
-      margin: 0 auto; /* Center the stacked cards */
-    }
+
+  .stat-item h3 {
+    font-size: 2.5rem;
   }
+
+  .doctor-quote {
+    max-width: 100%;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-item {
+    width: 80%;
+  }
+}
