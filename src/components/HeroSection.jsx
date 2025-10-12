@@ -65,12 +65,8 @@ const HeroSection = ({ onBookAppointmentClick }) => {
         >
           {/** Ensure single 'Dr' prefix and no duplication */}
           {(() => {
-            const getDisplayName = (name) => {
-              if (!name) return '';
-              const withoutPrefix = String(name).trim().replace(/^(Dr\.?\s*)/i, '');
-              return `Dr ${withoutPrefix}`.trim();
-            };
-            const displayName = getDisplayName(doctorInfo.name);
+            // Always show the exact preferred display name
+            const displayName = 'Dr madhusudhana';
             return (
               <>
                 <img src={doctorInfo.photoUrl} alt={displayName} className="doctor-photo" />
@@ -78,7 +74,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
               </>
             );
           })()}
-          <p>{doctorInfo.specialization}</p>
+          <p>M.B.B.S | F.A.G.E</p>
           <p>Over {doctorInfo.experience} years of experience in patient care.</p>
         </motion.div>
 
@@ -90,8 +86,8 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           {/* Pass clinicName and address from fetched doctorInfo */}
           <AppointmentCard
             onBookAppointmentClick={onBookAppointmentClick}
-            clinicName={doctorInfo.clinicName}
-            address={doctorInfo.address}
+            clinicName={'Dr madhusudhana Clinic'}
+            address={'4th cross road, New Bank Colony, Bank Colony, Konankunte, Bangalore - 560078'}
           />
         </motion.div>
       </div>

@@ -7,8 +7,8 @@ import '../styles/AppointmentCard.css';
 const AppointmentCard = ({ onBookAppointmentClick, clinicName, address }) => {
   return (
     <div className="appointment-card">
-  <h3>{clinicName || 'Dr K Madhusudana Clinic'}</h3> {/* Use prop or fallback */}
-      <p>{address || '123 Healthway, Wellness City, State 45678'}</p> {/* Use prop or fallback */}
+  <h3>{clinicName || 'Dr madhusudhana Clinic'}</h3> {/* Use prop or fallback */}
+    {address ? <p>{address}</p> : null}
       <motion.button
         onClick={onBookAppointmentClick}
         whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
