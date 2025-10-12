@@ -86,7 +86,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           {/* Pass clinicName and address from fetched doctorInfo */}
           <AppointmentCard
             onBookAppointmentClick={onBookAppointmentClick}
-            clinicName={'Dr madhusudhana Clinic'}
+            clinicName={'Dr K Madhusudhana Clinic'}
             address={'4th cross road, New Bank Colony, Bank Colony, Konankunte, Bangalore - 560078'}
           />
         </motion.div>
