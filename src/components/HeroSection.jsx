@@ -66,7 +66,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           {/** Ensure single 'Dr' prefix and no duplication */}
           {(() => {
             // Always show the exact preferred display name
-            const displayName = 'Dr madhusudhana';
+            const displayName = 'Dr K Madhusudhana';
             return (
               <>
                 <img src={doctorInfo.photoUrl} alt={displayName} className="doctor-photo" />
