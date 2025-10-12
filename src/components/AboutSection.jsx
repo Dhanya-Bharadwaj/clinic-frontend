@@ -5,9 +5,9 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useCountUp } from '../hooks/useCountUp';
 import '../styles/AboutSection.css';
 
-const StatItem = ({ value, label, duration }) => {
-  // startOnView=true ensures count starts only when the number is in view
-  const ref = useCountUp(value, duration, true);
+const StatItem = ({ value, label, duration, formatter }) => {
+  // Supports custom formatter to render suffixes while animating
+  const ref = useCountUp(value, duration, true, 0.2, formatter);
   return (
     <div className="stat-item">
       <h3 ref={ref}>0</h3>
@@ -44,7 +44,7 @@ const AboutSection = () => {
           </p>
           <div className="about-stats">
             <StatItem value={25} label="Years Experience" duration={2} />
-            <StatItem value={8000} label="Happy Patients" duration={2.5} />
+            <StatItem value={4} label="Happy Patients" duration={2.2} formatter={(v, rounded) => `${rounded}L+`} />
             <StatItem value={98} label="Satisfaction" duration={3} />
           </div>
           <blockquote className="doctor-quote">

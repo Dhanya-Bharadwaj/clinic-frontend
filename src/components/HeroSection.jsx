@@ -17,10 +17,10 @@ const HeroSection = ({ onBookAppointmentClick }) => {
         console.error("Failed to fetch doctor details for Hero section:", error);
         // Fallback to static or show error
         setDoctorInfo({
-            name: 'Dr Madhusudhan',
-            specialization: 'General Physician | MD',
+            name: 'Dr K Madhusudana',
+            specialization: 'M.B.B.S | F.A.G.E',
             experience: 25,
-            clinicName: 'Dr. Madhusudhan Clinic',
+            clinicName: 'Dr K Madhusudana Clinic',
             address: '4th cross road, New Bank Colony, Bank Colony,Konankunte, Bangalore - 560078',
             photoUrl: '/doctor-photo.jpg' // Use public path for local image
         });

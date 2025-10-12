@@ -9,7 +9,8 @@ import { useInView } from 'react-intersection-observer';
  * @param {number} duration - The duration of the animation in seconds.
  * @returns {React.MutableRefObject} - A ref to attach to the DOM element.
  */
-export const useCountUp = (to, duration = 2, startOnView = true, threshold = 0.2) => {
+// Added optional `format` param to customize the display (e.g., add suffixes)
+export const useCountUp = (to, duration = 2, startOnView = true, threshold = 0.2, format) => {
   const nodeRef = useRef(null);
   const startedRef = useRef(false);
   const [inViewRef, inView] = useInView({ threshold, triggerOnce: true });
@@ -29,7 +30,8 @@ export const useCountUp = (to, duration = 2, startOnView = true, threshold = 0.2
     const controls = animate(0, to, {
       duration,
       onUpdate(value) {
-        node.textContent = Math.round(value);
+        const rounded = Math.round(value);
+        node.textContent = typeof format === 'function' ? format(value, rounded, to) : rounded;
       },
     });
 

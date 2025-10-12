@@ -2,6 +2,10 @@ export const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://clinic-backend-flame.vercel.app/api/bookings'  // Production URL
   : 'http://localhost:5001/api/bookings';                   // Local development URL
 
+export const PAYMENTS_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://clinic-backend-flame.vercel.app/api/payments'
+  : 'http://localhost:5001/api/payments';
+
 /**
  * A helper function to format a Date object into a 'YYYY-MM-DD' string
  * that respects the user's local timezone.
@@ -150,6 +154,40 @@ export const markAppointmentComplete = async (appointmentId) => {
     return data;
   } catch (error) {
     console.error('API Error (markAppointmentComplete):', error);
+    throw error;
+  }
+};
+
+// Create Razorpay order for online consult
+export const createPaymentOrder = async (payload) => {
+  try {
+    const response = await fetch(`${PAYMENTS_BASE_URL}/create-order`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Failed to create payment order.');
+    return data.order;
+  } catch (error) {
+    console.error('API Error (createPaymentOrder):', error);
+    throw error;
+  }
+};
+
+// Verify payment after successful checkout
+export const verifyPayment = async (payload) => {
+  try {
+    const response = await fetch(`${PAYMENTS_BASE_URL}/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Payment verification failed.');
+    return data;
+  } catch (error) {
+    console.error('API Error (verifyPayment):', error);
     throw error;
   }
 };

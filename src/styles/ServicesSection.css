@@ -1,22 +1,22 @@
 /* src/styles/ServicesSection.css */
 
 .services-section {
-  padding: 80px 0;
+  padding: 60px 0; /* Reduced from 80px */
   background-color: #ffffff;
 }
 
 .services-section-content {
-  max-width: 1200px;
+  max-width: 1000px; /* Reduced from 1200px */
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
 }
 
 .services-title {
-  font-size: 3rem;
+  font-size: 2.2rem; /* Reduced from 3rem */
   font-weight: 700;
   color: #1a3a6b;
-  margin-bottom: 50px;
+  margin-bottom: 40px; /* Reduced from 50px */
   position: relative;
   display: inline-block;
 }
@@ -24,27 +24,27 @@
 .services-title::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -8px; /* Reduced from -10px */
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
+  width: 50px; /* Reduced from 60px */
+  height: 3px; /* Reduced from 4px */
   background-color: #007bff;
   border-radius: 2px;
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Reduced from 300px */
+  gap: 24px; /* Reduced from 30px */
   text-align: left;
 }
 
 .service-card {
   background-color: #f9f9f9;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 24px; /* Reduced from 30px */
+  border-radius: 8px; /* Reduced from 10px */
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05); /* Reduced shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -52,17 +52,17 @@
 }
 
 .service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.1);
+  transform: translateY(-6px); /* Reduced from -10px */
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.1); /* Reduced shadow */
 }
 
 .service-icon {
-  font-size: 2.5rem;
+  font-size: 1.75rem; /* slightly smaller */
   color: #007bff;
-  margin-bottom: 20px;
+  margin-bottom: 14px; /* slightly tighter */
   background-color: rgba(0, 123, 255, 0.1);
-  width: 70px;
-  height: 70px;
+  width: 40px; /* slightly smaller */
+  height: 40px; /* slightly smaller */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,14 +70,14 @@
 }
 
 .service-card-title {
-  font-size: 1.5rem;
+  font-size: 1.2rem; /* Reduced from 1.5rem */
   font-weight: 600;
   color: #1a3a6b;
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Reduced from 10px */
 }
 
 .service-card-description {
-  font-size: 1rem;
+  font-size: 0.9rem; /* Reduced from 1rem */
   line-height: 1.6;
   color: #555;
   flex-grow: 1;
@@ -86,7 +86,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .services-section {
-    padding: 60px 0;
+    padding: 40px 0; /* Reduced from 60px */
   }
 
   .services-title {

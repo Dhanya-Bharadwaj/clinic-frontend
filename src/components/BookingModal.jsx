@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { IoCloseSharp } from 'react-icons/io5';
-import { getAvailableSlots, bookAppointment } from '../api/bookingApi';
+import { getAvailableSlots, bookAppointment, createPaymentOrder, verifyPayment } from '../api/bookingApi';
 import LoadingSpinner from './LoadingSpinner';
 import '../styles/BookingModal.css';
 // import 'react-datepicker/dist/react-datepicker.css'; // This import is redundant
@@ -37,6 +37,7 @@ const BookingModal = ({ isOpen, onClose }) => {
   const [consultType, setConsultType] = useState(''); // 'online' or 'offline'
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
+  const [loadingPayment, setLoadingPayment] = useState(false);
 
   const modalRef = useRef(null);
 
@@ -219,6 +220,78 @@ const BookingModal = ({ isOpen, onClose }) => {
       });
     } finally {
       setSubmittingBooking(false);
+    }
+  };
+
+  // Razorpay checkout loader
+  const loadRazorpay = () => new Promise((resolve, reject) => {
+    if (window.Razorpay) return resolve();
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Failed to load Razorpay SDK'));
+    document.body.appendChild(script);
+  });
+
+  const handleOnlinePayment = async () => {
+    try {
+      setLoadingPayment(true);
+      // Basic validation reuse
+      if (!selectedDate || !selectedTime || !patientName || !patientPhone || !age || !gender) {
+        setBookingStatus({ message: 'Please complete all details before payment.', type: 'error' });
+        return;
+      }
+      await loadRazorpay();
+
+      const order = await createPaymentOrder({
+        date: selectedDate ? selectedDate.toISOString().slice(0,10) : '',
+        time: selectedTime,
+        patientName,
+        patientPhone,
+        age: parseInt(age, 10),
+        gender,
+        consultType: 'online',
+      });
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_key',
+        amount: order.amount,
+        currency: order.currency,
+  name: 'Dr K Madhusudana Clinic',
+        description: 'Online Consultation',
+        order_id: order.id,
+        prefill: {
+          name: patientName,
+          contact: patientPhone,
+        },
+        theme: { color: '#0a63ff' },
+        handler: async function (response) {
+          try {
+            const verifyRes = await verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            setBookingStatus({ message: verifyRes.message, type: 'success' });
+            setBookingConfirmedData(verifyRes.appointment);
+          } catch (err) {
+            setBookingStatus({ message: err.message || 'Payment verification failed', type: 'error' });
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setBookingStatus({ message: 'Payment cancelled.', type: 'info' });
+          }
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Online payment error:', err);
+      setBookingStatus({ message: err.message || 'Failed to initiate payment', type: 'error' });
+    } finally {
+      setLoadingPayment(false);
     }
   };
 
@@ -460,14 +533,24 @@ const BookingModal = ({ isOpen, onClose }) => {
             {/* Step 4: Online payment placeholder */}
             {!bookingConfirmedData && step === 4 && consultType === 'online' && (
               <div className="payment-step">
-                <h4>Payment (Coming Soon)</h4>
-                <p>Online payment integration will be added here.</p>
+                <h4>Online Payment</h4>
+                <p>Pay the consultation fee securely to confirm your booking.</p>
                 <motion.button
+                  onClick={handleOnlinePayment}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={loadingPayment}
+                >
+                  {loadingPayment ? 'Processing...' : 'Pay & Confirm'}
+                </motion.button>
+                <motion.button
+                  style={{ marginLeft: 12 }}
                   onClick={() => setStep(5)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className="secondary"
                 >
-                  Continue to Booking
+                  Skip (Test Mode)
                 </motion.button>
               </div>
             )}
@@ -548,7 +631,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <span>{bookingConfirmedData.bookingId}</span>
                 </p>
                 <p className="confirmation-detail-item">
-                  <strong>Doctor:</strong> <span>Dr. Madhusudhan</span>
+                  <strong>Doctor:</strong> <span>Dr K Madhusudana</span>
                 </p>
                 <p className="confirmation-detail-item">
                   <strong>Date:</strong>{' '}

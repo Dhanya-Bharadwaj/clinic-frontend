@@ -22,7 +22,9 @@ a:hover {
   color: #535bf2;
 }
 
-html, body {
+/* Global font-size reduction for standard appearance at 100% zoom */
+html {
+  font-size: 12px; /* Reduced from 14px to 12px for more professional look */
   margin: 0 !important;
   padding: 0 !important;
   width: 100vw;
@@ -32,6 +34,31 @@ html, body {
   overflow-x: clip !important;
   overflow-y: auto;
   background: #f9fafb !important;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  min-width: 100vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: clip !important;
+  overflow-y: auto;
+  background: #f9fafb !important;
+}
+
+/* Responsive font scaling */
+@media (max-width: 768px) {
+  html {
+    font-size: 11px; /* Smaller on mobile */
+  }
+}
+
+@media (min-width: 1400px) {
+  html {
+    font-size: 13px; /* Slightly larger on very wide screens */
+  }
 }
 
 .app {
@@ -80,15 +107,15 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.2em; /* Reduced from 3.2em */
   line-height: 1.1;
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 6px; /* Reduced from 8px */
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.5em 1em; /* Reduced from 0.6em 1.2em */
+  font-size: 0.9em; /* Reduced from 1em */
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;

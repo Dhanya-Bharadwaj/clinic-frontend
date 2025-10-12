@@ -1,7 +1,7 @@
 /* src/styles/HeroSection.css - REVISED */
 .hero-section {
     position: relative;
-    height: 90vh; /* Slightly more height for impact */
+    height: 90vh; /* Reduced from 90vh */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,41 +40,41 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 70px; /* Increased space between doctor info and card */
+    gap: 50px; /* Reduced from 70px */
     padding: 0 5%;
-    max-width: 1300px; /* Wider content area */
+    max-width: 1100px; /* Reduced from 1300px */
     width: 100%;
   }
   
   .doctor-info {
     background-color: rgba(255, 255, 255, 0.18); /* Slightly less transparent */
-    padding: 44px; /* Slightly increased padding */
-    border-radius: 18px; /* Slightly more rounded corners */
+    padding: 32px; /* Reduced from 44px */
+    border-radius: 14px; /* Reduced from 18px */
     backdrop-filter: blur(8px); /* Stronger frosty glass effect */
     border: 1px solid rgba(255, 255, 255, 0.4); /* More defined border */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Reduced shadow */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 460px; /* Slightly wider card */
-    min-height: 480px; /* Slightly taller */
+    width: 380px; /* Reduced from 460px */
+    min-height: 400px; /* Reduced from 480px */
     justify-content: center; /* Vertically center content */
   }
   
   .doctor-photo {
-    width: 200px; /* Larger photo */
-    height: 200px; /* Larger photo */
+    width: 160px; /* Reduced from 200px */
+    height: 160px; /* Reduced from 200px */
     border-radius: 50%;
     object-fit: cover;
-    border: 6px solid var(--primary-color); /* Thicker border */
-    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.3), /* Larger outer glow */
-                0 0 30px rgba(0, 0, 0, 0.6); /* More intense shadow */
-    margin-bottom: 25px; /* More space below photo */
+    border: 4px solid var(--primary-color); /* Reduced from 6px */
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.3), /* Reduced outer glow */
+                0 0 24px rgba(0, 0, 0, 0.6); /* Reduced shadow */
+    margin-bottom: 20px; /* Reduced from 25px */
   }
   
   .doctor-info h2 {
-    font-size: 2.8rem; /* Larger name */
+    font-size: 2.2rem; /* Reduced from 2.8rem for professional look */
     margin-bottom: 8px;
     color: white;
     font-family: 'Playfair Display', serif; /* Elegant font for name */
@@ -84,7 +84,7 @@
   }
   
   .doctor-info p {
-    font-size: 1.3rem; /* Larger profession text */
+    font-size: 1.1rem; /* Reduced from 1.3rem */
     font-weight: 500;
     color: rgba(255, 255, 255, 0.95); /* Brighter text */
     margin-top: 0;
@@ -92,7 +92,7 @@
   }
   .doctor-info p:last-of-type { /* Adjust last paragraph */
     margin-bottom: 0;
-    font-size: 1.1rem; /* Slightly smaller for detailed info */
+    font-size: 0.95rem; /* Reduced from 1.1rem */
     color: rgba(255, 255, 255, 0.8);
   }
   
@@ -100,21 +100,21 @@
   /* Responsive adjustments for Hero Section */
   @media (max-width: 1200px) {
     .hero-content {
-      gap: 40px;
+      gap: 30px; /* Reduced from 40px */
     }
     .doctor-info, .appointment-card {
-      width: 400px; /* modest increase at this breakpoint */
-      padding: 38px;
+      width: 340px; /* Reduced from 400px */
+      padding: 28px; /* Reduced from 38px */
     }
     .doctor-photo {
-      width: 180px;
-      height: 180px;
+      width: 140px; /* Reduced from 180px */
+      height: 140px; /* Reduced from 180px */
     }
     .doctor-info h2 {
-      font-size: 2.5rem;
+      font-size: 1.8rem; /* Reduced from 2.0rem */
     }
     .doctor-info p {
-      font-size: 1.2rem;
+      font-size: 0.9rem; /* Reduced from 1.0rem */
     }
   }
   

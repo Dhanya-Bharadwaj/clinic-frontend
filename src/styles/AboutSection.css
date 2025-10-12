@@ -1,13 +1,13 @@
 /* src/styles/AboutSection.css */
 
 .about-section {
-  padding: 80px 0;
+  padding: 60px 0; /* Reduced from 80px */
   background-color: #f9f9f9;
   overflow: hidden;
 }
 
 .about-section-content {
-  max-width: 1200px;
+  max-width: 1000px; /* Reduced from 1200px */
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -15,12 +15,12 @@
 }
 
 .about-section-text {
-  max-width: 900px;
+  max-width: 800px; /* Reduced from 900px */
   text-align: center;
 }
 
 .about-title {
-  font-size: 3rem;
+  font-size: 2.2rem; /* Reduced from 3rem for professional look */
   font-weight: 700;
   color: #1a3a6b;
   margin-bottom: 20px;
@@ -31,63 +31,66 @@
 .about-title::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -8px; /* Reduced from -10px */
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
+  width: 50px; /* Reduced from 60px */
+  height: 3px; /* Reduced from 4px */
   background-color: #007bff;
   border-radius: 2px;
 }
 
 .intro-paragraph,
 .details-paragraph {
-  font-size: 1.1rem;
+  font-size: 0.95rem; /* Reduced from 1.1rem */
   line-height: 1.8;
   color: #555;
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Reduced from 25px */
 }
 
 .about-stats {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin: 40px 0;
+  gap: 28px; /* slightly tighter */
+  margin: 28px 0; /* slightly tighter */
   flex-wrap: wrap;
 }
 
 .stat-item {
   text-align: center;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stat-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px); /* Reduced from -5px */
 }
 
 .stat-item h3 {
-  font-size: 3rem;
+  font-size: 2.2rem;
+  line-height: 1.05;
   font-weight: 700;
   color: #007bff;
   margin: 0;
+  letter-spacing: 0.2px;
 }
 
 .stat-item p {
-  font-size: 1rem;
+  font-size: 0.86rem;
   color: #1a3a6b;
-  margin-top: 5px;
+  margin-top: 2px;
   font-weight: 500;
 }
 
 .doctor-quote {
-  font-size: 1.2rem;
-  font-style: italic;
-  color: #333;
-  border-left: 4px solid #007bff;
-  padding-left: 20px;
-  margin: 40px auto 0;
+  font-size: 0.95rem; /* match paragraphs */
+  line-height: 1.8;   /* match paragraphs */
+  color: #555;        /* match paragraphs */
+  font-style: normal; /* remove italics for consistency */
+  border-left: 3px solid #007bff; /* slightly slimmer */
+  padding-left: 16px; /* slightly tighter */
+  margin: 24px auto 0; /* align rhythm with text spacing */
   max-width: 80%;
 }
 
@@ -116,7 +119,7 @@
 
   .doctor-quote {
     max-width: 100%;
-    font-size: 1.1rem;
+    font-size: 0.95rem; /* keep consistent on mobile too */
   }
 }
 

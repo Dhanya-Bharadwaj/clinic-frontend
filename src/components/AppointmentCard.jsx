@@ -7,7 +7,7 @@ import '../styles/AppointmentCard.css';
 const AppointmentCard = ({ onBookAppointmentClick, clinicName, address }) => {
   return (
     <div className="appointment-card">
-      <h3>{clinicName || 'Dr. Madhusudhan Clinic'}</h3> {/* Use prop or fallback */}
+  <h3>{clinicName || 'Dr K Madhusudana Clinic'}</h3> {/* Use prop or fallback */}
       <p>{address || '123 Healthway, Wellness City, State 45678'}</p> {/* Use prop or fallback */}
       <motion.button
         onClick={onBookAppointmentClick}

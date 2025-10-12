@@ -35,7 +35,7 @@ const approachItems = [
   {
     title: "Patient Psychology",
     description:
-      'Dr. Madhusudhan has specialized training in managing patient behavior and anxiety during consultations.',
+  'Dr K Madhusudana has specialized training in managing patient behavior and anxiety during consultations.',
     icon: 'fa-solid fa-face-smile-beam',
   },
   {
@@ -83,7 +83,7 @@ const FamilyHealthcareSection = ({ onBookAppointmentClick }) => {
           </motion.h2>
 
           <motion.p className="family-degree" variants={fadeUp}>
-            MBBS, MD (General Medicine)
+            M.B.B.S | F.A.G.E
           </motion.p>
 
           <motion.p className="family-intro" variants={fadeUp}>

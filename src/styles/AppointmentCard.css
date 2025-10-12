@@ -1,12 +1,12 @@
 /* src/styles/AppointmentCard.css - REVISED */
 .appointment-card {
     background-color: var(--card-bg);
-  padding: 44px; /* Slightly increased padding */
-    border-radius: 18px; /* Slightly more rounded corners */
-    box-shadow: 0 10px 30px var(--shadow-light); /* More pronounced shadow */
+    padding: 32px; /* Reduced from 44px */
+    border-radius: 14px; /* Reduced from 18px */
+    box-shadow: 0 8px 24px var(--shadow-light); /* Reduced shadow */
     text-align: center;
-  width: 460px; /* Slightly wider to match doctor card */
-  min-height: 480px; /* Slightly taller */
+    width: 380px; /* Reduced from 460px */
+    min-height: 400px; /* Reduced from 480px */
     display: flex;
     flex-direction: column;
     justify-content: center; /* Vertically center content */
@@ -15,7 +15,7 @@
   }
   
   .appointment-card h3 {
-    font-size: 2.5rem; /* Larger hospital name */
+    font-size: 1.8rem; /* Reduced from 2.5rem for professional look */
     color: var(--primary-color);
     margin-bottom: 20px; /* More space below heading */
     font-family: 'Playfair Display', serif;
@@ -23,35 +23,35 @@
   }
   
   .appointment-card p {
-    font-size: 1.25rem; /* Larger address text */
+    font-size: 0.95rem; /* Reduced from 1.25rem */
     color: var(--secondary-color);
-    margin-bottom: 35px; /* More space above button */
+    margin-bottom: 28px; /* Reduced from 35px */
     line-height: 1.5;
   }
   
   /* Inherits button styles from index.css */
   .appointment-card button {
     width: 100%;
-    max-width: 320px; /* Make the button a significant size */
-    padding: 15px 30px; /* Larger button */
-    font-size: 1.1rem; /* Larger text on button */
+    max-width: 280px; /* Reduced from 320px */
+    padding: 12px 24px; /* Reduced from 15px 30px */
+    font-size: 0.95rem; /* Reduced from 1.1rem */
   }
   
   /* Responsive adjustments for Appointment Card */
   @media (max-width: 1200px) {
     .appointment-card {
-      width: 400px; /* modest increase at this breakpoint */
-      padding: 38px;
+      width: 340px; /* Reduced from 400px */
+      padding: 28px; /* Reduced from 38px */
     }
     .appointment-card h3 {
-      font-size: 2.2rem;
+      font-size: 1.6rem; /* Reduced from 2.2rem */
     }
     .appointment-card p {
-      font-size: 1.1rem;
+      font-size: 0.9rem; /* Reduced from 1.1rem */
     }
     .appointment-card button {
-      padding: 12px 25px;
-      font-size: 1.05rem;
+      padding: 10px 20px; /* Reduced from 12px 25px */
+      font-size: 0.9rem; /* Reduced from 1.05rem */
     }
   }
   
