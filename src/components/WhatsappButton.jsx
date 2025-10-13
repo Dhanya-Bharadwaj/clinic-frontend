@@ -3,7 +3,7 @@ import React from 'react';
 import { RiWhatsappLine } from 'react-icons/ri';
 import '../styles/WhatsappButton.css';
 
-const WhatsappButton = ({ phone = '+919448883063' }) => {
+const WhatsappButton = ({ phone = '+918431609250' }) => {
   const handleClick = () => {
     // Use wa.me for direct chat; strip non-digits and ensure country code
     const digits = phone.replace(/\D/g, '');

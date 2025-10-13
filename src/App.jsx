@@ -9,6 +9,7 @@ import DoctorDashboard from './components/DoctorDashboard';
 import ServicesSection from './components/ServicesSection'; // Importing ServicesSection component
 import WhyChooseUsSection from './components/WhyChooseUsSection'; // Importing WhyChooseUsSection component
 import FamilyHealthcareSection from './components/FamilyHealthcareSection';
+import HappyClientsSection from './components/HappyClientsSection';
 import ContactSection from './components/ContactSection';
 import WhatsappButton from './components/WhatsappButton';
 // No App.css needed if using component-specific CSS
@@ -40,8 +41,9 @@ function App() {
           <ServicesSection /> {/* Adding ServicesSection to the main App component */}
           <WhyChooseUsSection /> {/* Adding WhyChooseUsSection to the main App component */}
           <FamilyHealthcareSection onBookAppointmentClick={handleOpenBookingModal} />
+          <HappyClientsSection isAdmin={isDashboardVisible} />
           <ContactSection onBookAppointmentClick={handleOpenBookingModal} />
-          <WhatsappButton phone="+919448883063" />
+          <WhatsappButton phone="+918431609250" />
         </>
       )}
       

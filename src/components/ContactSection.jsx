@@ -41,7 +41,7 @@ const ContactSection = ({ onBookAppointmentClick }) => {
               <div className="chip"><i className="fa-solid fa-phone" /></div>
               <div>
                 <h4>Phone</h4>
-                <a href="tel:+919448883063">+91 94488 83063</a>
+                <a href="tel:+918431609250">+91 84316 09250</a>
               </div>
             </div>
 
@@ -58,10 +58,9 @@ const ContactSection = ({ onBookAppointmentClick }) => {
               <div>
                 <h4>Hours</h4>
                 <p>
-                  Monday to Saturday<br/>
-                  Morning: 10:00 AM - 1:00 PM<br/>
-                  Evening: 5:00 PM - 8:00 PM<br/>
-                  Sunday: 10:00 AM - 1:00 PM
+                  Tuesday to Saturday<br/>
+                  Morning: 10:00 AM - 2:00 PM<br/>
+                  Evening: 3:00 PM - 6:00 PM
                 </p>
               </div>
             </div>
