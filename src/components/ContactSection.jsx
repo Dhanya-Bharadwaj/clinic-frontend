@@ -59,8 +59,8 @@ const ContactSection = ({ onBookAppointmentClick }) => {
                 <h4>Hours</h4>
                 <p>
                   Tuesday to Saturday<br/>
-                  Morning: 10:00 AM - 2:00 PM<br/>
-                  Evening: 3:00 PM - 6:00 PM
+                  Morning: 10:15 AM - 2:00 PM<br/>
+                  Afternoon: 3:15 PM - 6:00 PM
                 </p>
               </div>
             </div>

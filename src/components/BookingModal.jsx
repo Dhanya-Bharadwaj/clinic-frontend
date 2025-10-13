@@ -396,19 +396,54 @@ const BookingModal = ({ isOpen, onClose }) => {
                 {loadingSlots ? (
                   <LoadingSpinner />
                 ) : availableSlots.length > 0 ? (
-                  <div className="time-slots-container">
-                    {availableSlots.map((time) => (
-                      <motion.button
-                        key={time}
-                        className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
-                        onClick={() => { handleTimeSelect(time); setStep(3); }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        disabled={submittingBooking}
-                      >
-                        {time}
-                      </motion.button>
-                    ))}
+                  <div className="time-slots-grouped">
+                    {(() => {
+                      const sorted = [...availableSlots].sort();
+                      const morningSlots = sorted.filter(t => t < '14:00');
+                      const afternoonSlots = sorted.filter(t => t >= '14:00');
+                      return (
+                        <>
+                          {morningSlots.length > 0 && (
+                            <div className="slot-section">
+                              <h5 className="slot-section-title">Morning</h5>
+                              <div className="time-slots-container">
+                                {morningSlots.map((time) => (
+                                  <motion.button
+                                    key={`m-${time}`}
+                                    className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
+                                    onClick={() => { handleTimeSelect(time); setStep(3); }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    disabled={submittingBooking}
+                                  >
+                                    {time}
+                                  </motion.button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {afternoonSlots.length > 0 && (
+                            <div className="slot-section">
+                              <h5 className="slot-section-title">Afternoon</h5>
+                              <div className="time-slots-container">
+                                {afternoonSlots.map((time) => (
+                                  <motion.button
+                                    key={`a-${time}`}
+                                    className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
+                                    onClick={() => { handleTimeSelect(time); setStep(3); }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    disabled={submittingBooking}
+                                  >
+                                    {time}
+                                  </motion.button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 ) : (
                   <p className="no-slots-message">
