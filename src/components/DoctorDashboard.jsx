@@ -9,12 +9,14 @@ import '../styles/DoctorDashboard.css';
 const DoctorDashboard = ({ onClose }) => {
     console.log('🏥 DoctorDashboard component rendered!');
 
+    const today = new Date();
+    
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState('all');
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [startDate, setStartDate] = useState(today);
+    const [endDate, setEndDate] = useState(today);
 
     useEffect(() => {
         localStorage.setItem('doctorDashboardFilters', JSON.stringify({
@@ -34,18 +36,20 @@ const DoctorDashboard = ({ onClose }) => {
             try {
                 const queryParams = new URLSearchParams();
                 if (statusFilter !== 'all') queryParams.append('status', statusFilter);
-                // Only apply date filters if user has set them  
+                // Apply date filters (default to today's appointments)
                 if (startDate) queryParams.append('startDate', getLocalDateString(startDate));
                 if (endDate) queryParams.append('endDate', getLocalDateString(endDate));
                 const url = `${API_BASE_URL}/doctor/appointments?${queryParams}`;
                 console.log('📡 Fetching URL:', url);
                 console.log('🌐 API_BASE_URL:', API_BASE_URL);
                 
-                // Test with a hardcoded URL first
-                const testUrl = 'http://localhost:5001/api/bookings/doctor/appointments?status=all';
-                console.log('🧪 Testing with hardcoded URL:', testUrl);
-                
-                const response = await fetch(testUrl);
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
                 console.log('📥 Response status:', response.status, response.statusText);
                 let rawText = await response.text();
                 console.log('📄 Raw response text length:', rawText.length);
@@ -100,11 +104,7 @@ const DoctorDashboard = ({ onClose }) => {
                 Close Dashboard
             </button>
             <h2>Doctor's Dashboard</h2>
-            <div style={{background: '#f0f0f0', padding: '10px', margin: '10px', borderRadius: '5px'}}>
-                <strong>Debug Info:</strong> Loading: {loading ? 'Yes' : 'No'}, 
-                Appointments: {appointments.length}, 
-                Error: {error ? 'Yes' : 'No'}
-            </div>
+
             <div className="dashboard-filters">
                 <div className="filter-group">
                     <label>Status:</label>
@@ -145,6 +145,10 @@ const DoctorDashboard = ({ onClose }) => {
                         />
                     </div>
                 </div>
+                <div className="booking-count">
+                    <span className="count-label">Total Bookings:</span>
+                    <span className="count-number">{appointments.length}</span>
+                </div>
             </div>
             {error && <div className="error-message">{error}</div>}
             {appointments.length === 0 ? (
@@ -153,18 +157,55 @@ const DoctorDashboard = ({ onClose }) => {
                 </div>
             ) : (
                 <div className="appointments-list">
-                    {appointments.map((apt) => (
-                        <div key={apt._id || apt.bookingId || Math.random()} className="appointment-card">
-                            <div><strong>Booking ID:</strong> {apt.bookingId || apt._id || 'N/A'}</div>
-                            <div><strong>Name:</strong> {apt.patientName || 'N/A'}</div>
-                            <div><strong>Phone:</strong> {apt.patientPhone || 'N/A'}</div>
-                            <div><strong>Age:</strong> {apt.age || 'N/A'}</div>
-                            <div><strong>Gender:</strong> {apt.gender || 'N/A'}</div>
-                            <div><strong>Consult Type:</strong> {apt.consultType || 'N/A'}</div>
-                            <div><strong>Date:</strong> {apt.date || 'N/A'}</div>
-                            <div><strong>Time:</strong> {apt.time || 'N/A'}</div>
-                            <div><strong>Status:</strong> {apt.status || 'N/A'}</div>
-                            {apt.createdAt && <div><strong>Booked At:</strong> {new Date(apt.createdAt).toLocaleDateString()}</div>}
+                    {appointments.map((apt, index) => (
+                        <div 
+                            key={apt._id || apt.bookingId || Math.random()} 
+                            className="appointment-card"
+                        >
+                            <div>
+                                <strong>Booking ID:</strong> 
+                                <span>{apt.bookingId || apt._id || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Patient Name:</strong> 
+                                <span>{apt.patientName || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Phone:</strong> 
+                                <span>{apt.patientPhone || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Age:</strong> 
+                                <span>{apt.age || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Gender:</strong> 
+                                <span style={{ textTransform: 'capitalize' }}>{apt.gender || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Consult Type:</strong> 
+                                <span style={{ textTransform: 'capitalize' }}>{apt.consultType || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Date:</strong> 
+                                <span>{apt.date ? new Date(apt.date).toLocaleDateString() : 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Time:</strong> 
+                                <span>{apt.time || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <strong>Status:</strong> 
+                                <span className={`status-${apt.status || 'unknown'}`}>
+                                    {(apt.status || 'N/A').toUpperCase()}
+                                </span>
+                            </div>
+                            {apt.createdAt && (
+                                <div>
+                                    <strong>Booked At:</strong> 
+                                    <span>{new Date(apt.createdAt).toLocaleDateString()} at {new Date(apt.createdAt).toLocaleTimeString()}</span>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

@@ -1,24 +1,122 @@
 .doctor-dashboard {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 1.5rem;
+    width: 100%;
+    min-height: 100vh;
+    background: #f8fafc;
+    color: #334155;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.5rem 1rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.close-button:hover {
+    background: #dc2626;
 }
 
 .doctor-dashboard h2 {
-    color: #2c3e50;
-    margin-bottom: 2rem;
-    text-align: center;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .dashboard-filters {
     display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #f8f9fa;
+    background: white;
     border-radius: 8px;
     align-items: center;
+    flex-wrap: nowrap;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+    overflow-x: auto;
+}
+
+.filters-left {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
     flex-wrap: wrap;
+}
+
+.booking-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+    background: #f1f5f9;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+}
+
+.count-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+}
+
+.count-number {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #0f172a;
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    min-width: 2rem;
+    text-align: center;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .filter-group {
@@ -28,20 +126,317 @@
 }
 
 .filter-group label {
-    font-weight: 600;
-    color: #2c3e50;
+    font-weight: 500;
+    color: #64748b;
+    font-size: 0.875rem;
 }
 
 .filter-group select,
 .filter-group input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+    color: #374151;
+    transition: border-color 0.2s ease;
+    height: 36px;
+    line-height: 1.25;
+}
+
+/* Make date pickers visually match the Status select */
+.date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-picker-container .react-datepicker-wrapper,
+.date-picker-container .react-datepicker__input-container input {
+    width: 140px;
+}
+
+.date-picker-container .react-datepicker__input-container input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+    color: #374151;
+}
+
+/* Ensure booking count stays on the far right */
+.booking-count {
+    margin-left: auto;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .appointments-list {
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.5rem;
+    align-items: start;
+}
+
+.appointment-card {
+    background: white;
+    border-radius: 8px;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.appointment-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+.appointment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 8px 8px 0 0;
+}
+
+/* New compact card structure */
+.appointment-card.compact .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+}
+
+.appointment-card.compact .title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.appointment-card.compact .patient-name {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.appointment-card.compact .meta {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.appointment-card.compact .badges {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.status-badge {
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.status-badge.booked { background: #dbeafe; color: #1e3a8a; }
+.status-badge.completed { background: #dcfce7; color: #166534; }
+.status-badge.cancelled { background: #fee2e2; color: #991b1b; }
+
+.time-badge {
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.appointment-card.compact .card-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.45rem 0.6rem;
+    margin-top: 0.5rem;
+}
+
+.appointment-card.compact .info {
+    display: flex;
+    gap: 0.35rem;
+    min-width: 0;
+    line-height: 1.2;
+}
+
+.appointment-card.compact .info label {
+    color: #64748b;
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.appointment-card.compact .info span {
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 0.84rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.no-appointments {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    border: 2px dashed #d1d5db;
+    color: #6b7280;
+    font-size: 1rem;
+    font-weight: 500;
+    grid-column: 1 / -1;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid #fecaca;
+    font-size: 0.875rem;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Date picker styling */
+.date-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.react-datepicker-wrapper {
+    display: block;
+}
+
+.react-datepicker__input-container input {
+    padding: 0.75rem 1rem !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #2c3e50 !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.react-datepicker__input-container input:focus {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Loading animation */
+.loading-spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Status badges */
+.status-booked {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+    border-color: #bbf7d0 !important;
+}
+
+.status-completed {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+    border-color: #bfdbfe !important;
+}
+
+.status-cancelled {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .doctor-dashboard {
+        padding: 1rem;
+    }
+    
+    .dashboard-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        justify-content: space-between;
+    }
+    
+    .appointment-card {
+        padding: 1rem;
+    }
+    
+    .appointment-card div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
 }
 
 table {
