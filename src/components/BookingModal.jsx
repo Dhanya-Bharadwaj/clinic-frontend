@@ -720,9 +720,6 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <span>{bookingConfirmedData.patientName}</span>
                 </p>
                 <p className="confirmation-detail-item">
-                  <strong>Email:</strong> <span>{bookingConfirmedData.patientEmail}</span>
-                </p>
-                <p className="confirmation-detail-item">
                   <strong>Phone:</strong> <span>{bookingConfirmedData.patientPhone}</span>
                 </p>
 
