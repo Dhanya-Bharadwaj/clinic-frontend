@@ -1,4 +1,4 @@
-// src/components/BookingModal.jsx - REVISED for Step-by-Step Booking Flow
+// src/components/BookingModal.jsx - REVISED for Step-by-Step Booking Flow with Razorpay
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -236,7 +236,7 @@ const BookingModal = ({ isOpen, onClose }) => {
   const handleOnlinePayment = async () => {
     try {
       setLoadingPayment(true);
-      // Basic validation reuse
+      // Basic validation
       if (!selectedDate || !selectedTime || !patientName || !patientPhone || !age || !gender) {
         setBookingStatus({ message: 'Please complete all details before payment.', type: 'error' });
         return;
@@ -253,18 +253,47 @@ const BookingModal = ({ isOpen, onClose }) => {
         consultType: 'online',
       });
 
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Windows Phone/i.test(navigator.userAgent);
+
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_key',
         amount: order.amount,
         currency: order.currency,
-  name: 'Dr K Madhusudana Clinic',
+        name: 'Dr K Madhusudana Clinic',
         description: 'Online Consultation',
         order_id: order.id,
+        method: {
+          upi: true,
+          card: true,
+          netbanking: true,
+          wallet: true
+        },
         prefill: {
           name: patientName,
           contact: patientPhone,
+          email: 'patient@example.com', // optional but improves Checkout defaults
         },
         theme: { color: '#0a63ff' },
+        // Encourage UPI (including QR) to show prominently
+        config: {
+          display: {
+            // Define a dedicated UPI block and put it first
+            blocks: {
+              upi: {
+                name: 'UPI / QR',
+                instruments: [
+                  {
+                    method: 'upi'
+                  }
+                ]
+              }
+            },
+            sequence: ['block.upi', 'block.card', 'block.netbanking', 'block.wallet'],
+            preferences: { show_default_blocks: true }
+          },
+          // Use intent on mobile (opens GPay/PhonePe), collect on desktop (VPA + QR)
+          upi: { flow: isMobile ? 'intent' : 'collect' }
+        },
         handler: async function (response) {
           try {
             const verifyRes = await verifyPayment({
@@ -565,18 +594,28 @@ const BookingModal = ({ isOpen, onClose }) => {
               </form>
             )}
 
-            {/* Step 4: Online payment placeholder */}
+            {/* Step 4: Razorpay Payment for online consultation only */}
             {!bookingConfirmedData && step === 4 && consultType === 'online' && (
               <div className="payment-step">
                 <h4>Online Payment</h4>
-                <p>Pay the consultation fee securely to confirm your booking.</p>
+                <p>Pay the consultation fee securely via Razorpay to confirm your online booking.</p>
+                <div className="payment-info">
+                  <div className="fee-display">
+                    <span className="fee-amount">₹1</span>
+                    <span className="fee-label">Consultation Fee (Trial Mode)</span>
+                  </div>
+                  <p style={{ marginTop: '12px', fontSize: '0.9rem', color: '#718096' }}>
+                    Secure payment powered by Razorpay
+                  </p>
+                </div>
                 <motion.button
                   onClick={handleOnlinePayment}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   disabled={loadingPayment}
+                  className="razorpay-pay-btn"
                 >
-                  {loadingPayment ? 'Processing...' : 'Pay & Confirm'}
+                  {loadingPayment ? 'Processing...' : 'Pay & Confirm Booking'}
                 </motion.button>
                 <motion.button
                   style={{ marginLeft: 12 }}

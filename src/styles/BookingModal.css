@@ -633,3 +633,67 @@ body.modal-open {
   background: radial-gradient(circle at 50% 50%, #007bff 60%, #fff 100%);
   border-color: #0056b3;
 }
+
+/* --- UPI Payment Styles --- */
+.payment-step {
+  text-align: center;
+  padding: 20px;
+}
+
+.payment-step h4 {
+  color: #2d3748;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.payment-info {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+.fee-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.fee-amount {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0a63ff;
+}
+
+.fee-label {
+  font-size: 0.9rem;
+  color: #718096;
+  font-weight: 500;
+}
+
+.razorpay-pay-btn {
+  background: #0a63ff;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 12px;
+}
+
+.razorpay-pay-btn:hover:not(:disabled) {
+  background: #0751d4;
+  box-shadow: 0 4px 12px rgba(10, 99, 255, 0.3);
+}
+
+.razorpay-pay-btn:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

@@ -161,10 +161,16 @@ export const markAppointmentComplete = async (appointmentId) => {
 // Create Razorpay order for online consult
 export const createPaymentOrder = async (payload) => {
   try {
+    // Set default amount to ₹1 for trial mode
+    const razorpayPayload = {
+      ...payload,
+      amountInINR: 1
+    };
+    
     const response = await fetch(`${PAYMENTS_BASE_URL}/create-order`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(razorpayPayload),
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || 'Failed to create payment order.');
@@ -175,7 +181,7 @@ export const createPaymentOrder = async (payload) => {
   }
 };
 
-// Verify payment after successful checkout
+// Verify Razorpay payment after successful checkout
 export const verifyPayment = async (payload) => {
   try {
     const response = await fetch(`${PAYMENTS_BASE_URL}/verify`, {
@@ -184,6 +190,8 @@ export const verifyPayment = async (payload) => {
       body: JSON.stringify(payload),
     });
     const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Payment verification failed.');
+    return data;
     if (!response.ok) throw new Error(data.message || 'Payment verification failed.');
     return data;
   } catch (error) {

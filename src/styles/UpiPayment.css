@@ -1,0 +1,367 @@
+/* src/styles/UpiPayment.css */
+.upi-payment-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.upi-payment-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f4f8;
+}
+
+.upi-payment-header h4 {
+  color: #2d3748;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.payment-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0a63ff;
+}
+
+.amount-label {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.upi-payment-methods {
+  margin-bottom: 24px;
+}
+
+.qr-code-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.qr-code-section h5 {
+  color: #2d3748;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.qr-code {
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #718096;
+}
+
+.qr-fallback i {
+  font-size: 3rem;
+}
+
+.qr-instruction {
+  color: #4a5568;
+  font-size: 0.9rem;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.upi-pay-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+
+.upi-pay-link:hover {
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.upi-pay-link i {
+  font-size: 1.2rem;
+}
+
+.payment-divider {
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+}
+
+.payment-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.payment-divider span {
+  background: white;
+  padding: 0 16px;
+  color: #718096;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+.manual-upi-section h5 {
+  color: #2d3748;
+  margin-bottom: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.upi-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.upi-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.upi-detail-item label {
+  font-weight: 600;
+  color: #4a5568;
+  min-width: 120px;
+}
+
+.upi-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.upi-value span {
+  color: #2d3748;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.copy-btn {
+  background: #0a63ff;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.copy-btn:hover {
+  background: #0751d4;
+  transform: scale(1.05);
+}
+
+.payment-instructions {
+  margin: 24px 0;
+  padding: 16px;
+  background: #ebf8ff;
+  border-radius: 8px;
+  border-left: 4px solid #0a63ff;
+}
+
+.payment-instructions h5 {
+  color: #2d3748;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.payment-instructions ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #4a5568;
+}
+
+.payment-instructions li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.transaction-input {
+  margin-bottom: 24px;
+}
+
+.transaction-input label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.transaction-input input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  font-family: 'Courier New', monospace;
+}
+
+.transaction-input input:focus {
+  outline: none;
+  border-color: #0a63ff;
+  box-shadow: 0 0 0 3px rgba(10, 99, 255, 0.1);
+}
+
+.transaction-input input::placeholder {
+  color: #a0aec0;
+  font-family: inherit;
+}
+
+.upi-payment-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.cancel-btn, .confirm-btn {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  background: #f7fafc;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+}
+
+.cancel-btn:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.confirm-btn {
+  background: #0a63ff;
+  color: white;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background: #0751d4;
+  box-shadow: 0 4px 12px rgba(10, 99, 255, 0.3);
+}
+
+.confirm-btn:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Payment Success Styles */
+.upi-payment-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.success-icon {
+  margin-bottom: 20px;
+}
+
+.success-icon i {
+  font-size: 4rem;
+  color: #28a745;
+}
+
+.upi-payment-success h4 {
+  color: #2d3748;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.upi-payment-success p {
+  color: #4a5568;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .upi-payment-container {
+    padding: 16px;
+    margin: 0 16px;
+  }
+  
+  .qr-code-container {
+    padding: 16px;
+  }
+  
+  .qr-code {
+    max-width: 160px;
+  }
+  
+  .amount {
+    font-size: 1.75rem;
+  }
+  
+  .upi-payment-actions {
+    flex-direction: column;
+  }
+  
+  .upi-detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .upi-value {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}

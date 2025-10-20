@@ -1,217 +1,180 @@
-// src/components/DoctorDashboard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { getLocalDateString, API_BASE_URL } from '../api/bookingApi';
 import LoadingSpinner from './LoadingSpinner';
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DoctorDashboard.css';
 
-const DoctorDashboard = ({ onClose }) => {
-    console.log('🏥 DoctorDashboard component rendered!');
-
-    const today = new Date();
-    
+// Small hook to encapsulate fetching logic
+function useAppointments(statusFilter, startDate, endDate) {
     const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const load = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const qs = new URLSearchParams();
+            if (statusFilter !== 'all') qs.append('status', statusFilter);
+            if (startDate) qs.append('startDate', getLocalDateString(startDate));
+            if (endDate) qs.append('endDate', getLocalDateString(endDate));
+            const res = await fetch(`${API_BASE_URL}/doctor/appointments?${qs}`);
+            const raw = await res.text();
+            let data;
+            try { data = JSON.parse(raw); } catch { throw new Error('Invalid JSON: ' + raw); }
+            if (!res.ok || !data.success || !Array.isArray(data.appointments)) {
+                setAppointments([]);
+                setError((data.message || 'Failed to load appointments.') + '\nRaw response: ' + raw);
+                return;
+            }
+            setAppointments(data.appointments);
+        } catch (e) {
+            setAppointments([]);
+            setError(e.message);
+        } finally {
+            setLoading(false);
+        }
+    }, [statusFilter, startDate, endDate]);
+
+    useEffect(() => { load(); }, [load]);
+    return { appointments, loading, error, reload: load, setAppointments };
+}
+
+function DoctorDashboard({ onClose }) {
+    const today = new Date();
     const [statusFilter, setStatusFilter] = useState('all');
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
 
-    useEffect(() => {
-        localStorage.setItem('doctorDashboardFilters', JSON.stringify({
-            status: statusFilter,
-            start: startDate?.toISOString(),
-            end: endDate?.toISOString()
-        }));
-    }, [statusFilter, startDate, endDate]);
+    const { appointments, loading, error, setAppointments } = useAppointments(statusFilter, startDate, endDate);
 
-    useEffect(() => {
-        console.log('🔄 useEffect triggered for fetchAppointments');
-        const fetchAppointments = async () => {
-            console.log('🔄 Starting to fetch appointments...');
-            console.log('Current filters:', { statusFilter, startDate, endDate });
-            setLoading(true);
-            setError(null);
-            try {
-                const queryParams = new URLSearchParams();
-                if (statusFilter !== 'all') queryParams.append('status', statusFilter);
-                // Apply date filters (default to today's appointments)
-                if (startDate) queryParams.append('startDate', getLocalDateString(startDate));
-                if (endDate) queryParams.append('endDate', getLocalDateString(endDate));
-                const url = `${API_BASE_URL}/doctor/appointments?${queryParams}`;
-                console.log('📡 Fetching URL:', url);
-                console.log('🌐 API_BASE_URL:', API_BASE_URL);
-                
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-                console.log('📥 Response status:', response.status, response.statusText);
-                let rawText = await response.text();
-                console.log('📄 Raw response text length:', rawText.length);
-                console.log('📄 Raw response preview:', rawText.substring(0, 200));
-                let data;
-                try {
-                    data = JSON.parse(rawText);
-                    console.log('✅ Parsed JSON successfully:', data);
-                } catch (jsonErr) {
-                    console.error('❌ JSON Parse Error:', jsonErr);
-                    setAppointments([]);
-                    setError('Server returned invalid JSON: ' + rawText);
-                    return;
-                }
-                if (response.ok && data && data.success && Array.isArray(data.appointments)) {
-                    console.log('✅ Successfully loaded appointments:', data.appointments.length);
-                    console.log('📋 Appointments data:', data.appointments);
-                    setAppointments(data.appointments);
-                } else {
-                    console.error('❌ Failed to load appointments:', data);
-                    setAppointments([]);
-                    setError((data.message || 'Failed to load appointments.') + '\nRaw response: ' + rawText);
-                }
-            } catch (err) {
-                console.error('❌ Fetch Error:', err);
-                setAppointments([]);
-                setError('Failed to load appointments: ' + err.message);
-            } finally {
-                console.log('🔚 Finished fetching, setting loading to false');
-                setLoading(false);
+    const confirmAppointment = useCallback(async (apt) => {
+        const id = apt._id || apt.bookingId;
+        if (!id) return alert('Missing appointment ID');
+        try {
+            const res = await fetch(`${API_BASE_URL}/${id}/confirm`, { method: 'PATCH' });
+            const raw = await res.text();
+            let data;
+            try { data = JSON.parse(raw); } catch { throw new Error('Bad JSON while confirming: ' + raw); }
+            if (!res.ok) return alert(data.message || 'Failed to confirm');
+            setAppointments(list => list.map(a => (a._id === id || a.bookingId === id)
+                ? { ...a, status: 'confirmed', paymentStatus: 'verified' }
+                : a));
+            if (apt.patientPhone) {
+                const message = `Appointment booked successfully for ${apt.patientName} on ${apt.date ? new Date(apt.date).toLocaleDateString() : ''} at ${apt.time || ''}.`;
+                Promise.all([
+                    fetch(`${API_BASE_URL}/notify/whatsapp`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: apt.patientPhone, message })
+                    }),
+                    fetch(`${API_BASE_URL}/notify/sms`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: apt.patientPhone, message })
+                    })
+                ]).catch(e => console.warn('Notification error', e));
             }
-        };
-        fetchAppointments();
-    }, [statusFilter, startDate, endDate]);
-
-    if (loading) return (
-        <div style={{padding: '20px'}}>
-            <h2>Doctor Dashboard - Loading...</h2>
-            <LoadingSpinner />
-            <p>Check browser console for debug logs</p>
-        </div>
-    );
-
-    // Debug: log raw appointments to console
-    console.log('🏥 Dashboard State - appointments:', appointments);
-    console.log('🏥 Dashboard State - loading:', loading);
-    console.log('🏥 Dashboard State - error:', error);
+        } catch (e) {
+            console.error(e);
+            alert('Error confirming appointment: ' + e.message);
+        }
+    }, [setAppointments]);
 
     return (
-        <div className="doctor-dashboard">
-            <button className="close-button" onClick={onClose}>
-                Close Dashboard
-            </button>
-            <h2>Doctor's Dashboard</h2>
-
+        <div className="doctor-dashboard-modal">
+            <div className="dashboard-header">
+                <h2>Doctor Dashboard</h2>
+                <button className="close-btn" onClick={onClose} type="button">X</button>
+            </div>
             <div className="dashboard-filters">
                 <div className="filter-group">
-                    <label>Status:</label>
-                    <select 
-                        value={statusFilter} 
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                    >
+                    <label htmlFor="statusFilter">Status:</label>
+                    <select id="statusFilter" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
                         <option value="all">All</option>
                         <option value="booked">Booked</option>
+                        <option value="confirmed">Confirmed</option>
                         <option value="completed">Completed</option>
                         <option value="cancelled">Cancelled</option>
                     </select>
                 </div>
-                <div className="filter-group date-range-group">
-                    <div className="date-picker-container">
-                        <label>From:</label>
-                        <DatePicker
-                            selected={startDate}
-                            onChange={date => setStartDate(date)}
-                            selectsStart
-                            startDate={startDate}
-                            endDate={endDate}
-                            dateFormat="dd/MM/yyyy"
-                            placeholderText="Start Date"
-                        />
-                    </div>
-                    <div className="date-picker-container">
-                        <label>To:</label>
-                        <DatePicker
-                            selected={endDate}
-                            onChange={date => setEndDate(date)}
-                            selectsEnd
-                            startDate={startDate}
-                            endDate={endDate}
-                            minDate={startDate}
-                            dateFormat="dd/MM/yyyy"
-                            placeholderText="End Date"
-                        />
-                    </div>
+                <div className="date-picker-container">
+                    <label>From:</label>
+                    <DatePicker
+                        selected={startDate}
+                        onChange={d => setStartDate(d)}
+                        selectsStart
+                        startDate={startDate}
+                        endDate={endDate}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Start Date"
+                    />
                 </div>
-                <div className="booking-count">
-                    <span className="count-label">Total Bookings:</span>
-                    <span className="count-number">{appointments.length}</span>
+                <div className="date-picker-container">
+                    <label>To:</label>
+                    <DatePicker
+                        selected={endDate}
+                        onChange={d => setEndDate(d)}
+                        selectsEnd
+                        startDate={startDate}
+                        endDate={endDate}
+                        minDate={startDate}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="End Date"
+                    />
                 </div>
             </div>
-            {error && <div className="error-message">{error}</div>}
-            {appointments.length === 0 ? (
-                <div className="no-appointments">
-                    No appointments found for the selected criteria.
-                </div>
+            <div className="booking-count">
+                <span className="count-label">Total Bookings:</span>
+                <span className="count-number">{appointments.length}</span>
+            </div>
+            {error && <div className="error-message" role="alert">{error}</div>}
+            {loading ? (
+                <LoadingSpinner />
+            ) : appointments.length === 0 ? (
+                <div className="no-appointments">No appointments found for the selected criteria.</div>
             ) : (
                 <div className="appointments-list">
-                    {appointments.map((apt, index) => (
-                        <div 
-                            key={apt._id || apt.bookingId || Math.random()} 
-                            className="appointment-card"
-                        >
-                            <div>
-                                <strong>Booking ID:</strong> 
-                                <span>{apt.bookingId || apt._id || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Patient Name:</strong> 
-                                <span>{apt.patientName || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Phone:</strong> 
-                                <span>{apt.patientPhone || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Age:</strong> 
-                                <span>{apt.age || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Gender:</strong> 
-                                <span style={{ textTransform: 'capitalize' }}>{apt.gender || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Consult Type:</strong> 
-                                <span style={{ textTransform: 'capitalize' }}>{apt.consultType || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Date:</strong> 
-                                <span>{apt.date ? new Date(apt.date).toLocaleDateString() : 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Time:</strong> 
-                                <span>{apt.time || 'N/A'}</span>
-                            </div>
-                            <div>
-                                <strong>Status:</strong> 
-                                <span className={`status-${apt.status || 'unknown'}`}>
-                                    {(apt.status || 'N/A').toUpperCase()}
-                                </span>
-                            </div>
-                            {apt.createdAt && (
-                                <div>
-                                    <strong>Booked At:</strong> 
-                                    <span>{new Date(apt.createdAt).toLocaleDateString()} at {new Date(apt.createdAt).toLocaleTimeString()}</span>
+                    {appointments.map(apt => {
+                        const id = apt._id || apt.bookingId;
+                        const paymentStatus = apt.paymentStatus || 'not_provided';
+                        const showConfirm = apt.consultType === 'online' && apt.status === 'booked' && paymentStatus === 'pending_verification';
+                        return (
+                            <div key={id} className="appointment-card compact">
+                                <div className="card-header">
+                                    <div className="title">
+                                        <span className="patient-name">{apt.patientName || 'Unknown'}</span>
+                                        <span className="meta">{apt.gender ? apt.gender.charAt(0).toUpperCase() + apt.gender.slice(1) : ''}{apt.age ? ` • ${apt.age}` : ''}</span>
+                                    </div>
+                                    <div className="badges">
+                                        <span className={`status-badge ${apt.status}`}>{(apt.status || 'BOOKED').toUpperCase()}</span>
+                                        <span className="time-badge">{apt.date ? new Date(apt.date).toLocaleDateString() : '-'} • {apt.time || '-'}</span>
+                                        {apt.consultType === 'online' && (
+                                            <span className={`payment-badge ${paymentStatus}`}>{paymentStatus.replace('_', ' ')}</span>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    ))}
+                                <div className="card-body">
+                                    <div className="info"><label>Phone</label><span>{apt.patientPhone || '-'}</span></div>
+                                    <div className="info"><label>Consult</label><span>{apt.consultType || '-'}</span></div>
+                                    <div className="info"><label>Booking ID</label><span>{id}</span></div>
+                                    {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
+                                    {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
+                                </div>
+                                {showConfirm && (
+                                    <div className="card-actions">
+                                        <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>
     );
+}
+
+DoctorDashboard.propTypes = {
+    onClose: PropTypes.func.isRequired,
 };
 
 export default DoctorDashboard;
