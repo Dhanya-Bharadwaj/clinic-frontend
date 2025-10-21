@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { getLocalDateString, API_BASE_URL } from '../api/bookingApi';
 import LoadingSpinner from './LoadingSpinner';
+import VideoCall from './VideoCall';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DoctorDashboard.css';
 
@@ -47,6 +48,7 @@ function DoctorDashboard({ onClose }) {
     const [statusFilter, setStatusFilter] = useState('all');
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
+    const [activeVideoCall, setActiveVideoCall] = useState(null);
 
     const { appointments, loading, error, setAppointments } = useAppointments(statusFilter, startDate, endDate);
 
@@ -78,6 +80,39 @@ function DoctorDashboard({ onClose }) {
             alert('Error confirming appointment: ' + e.message);
         }
     }, [setAppointments]);
+
+    // Check if video call button should be enabled (5 minutes before appointment)
+    const canJoinCall = useCallback((apt) => {
+        if (apt.consultType !== 'online') return false;
+        if (!apt.date || !apt.time) return false;
+        
+        try {
+            // Parse appointment date and time
+            const [day, month, year] = apt.date.split('/');
+            const [hours, minutes] = apt.time.split(':');
+            const appointmentTime = new Date(year, month - 1, day, hours, minutes);
+            
+            // Get current time
+            const now = new Date();
+            
+            // Calculate time difference in minutes
+            const timeDiff = (appointmentTime - now) / (1000 * 60);
+            
+            // Enable button 5 minutes before until 30 minutes after appointment
+            return timeDiff <= 5 && timeDiff >= -30;
+        } catch (e) {
+            console.error('Error parsing appointment time:', e);
+            return false;
+        }
+    }, []);
+
+    const joinVideoCall = useCallback((apt) => {
+        setActiveVideoCall(apt);
+    }, []);
+
+    const closeVideoCall = useCallback(() => {
+        setActiveVideoCall(null);
+    }, []);
 
     return (
         <div className="doctor-dashboard-modal">
@@ -121,10 +156,10 @@ function DoctorDashboard({ onClose }) {
                         placeholderText="End Date"
                     />
                 </div>
-            </div>
-            <div className="booking-count">
-                <span className="count-label">Total Bookings:</span>
-                <span className="count-number">{appointments.length}</span>
+                <div className="booking-count">
+                    <span className="count-label">Total Bookings:</span>
+                    <span className="count-number">{appointments.length}</span>
+                </div>
             </div>
             {error && <div className="error-message" role="alert">{error}</div>}
             {loading ? (
@@ -137,6 +172,7 @@ function DoctorDashboard({ onClose }) {
                         const id = apt._id || apt.bookingId;
                         const paymentStatus = apt.paymentStatus || 'not_provided';
                         const showConfirm = apt.consultType === 'online' && apt.status === 'booked' && paymentStatus === 'pending_verification';
+                        const showJoinCall = apt.consultType === 'online' && canJoinCall(apt);
                         return (
                             <div key={id} className="appointment-card compact">
                                 <div className="card-header">
@@ -159,15 +195,30 @@ function DoctorDashboard({ onClose }) {
                                     {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
                                     {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
                                 </div>
-                                {showConfirm && (
+                                {(showConfirm || showJoinCall) && (
                                     <div className="card-actions">
-                                        <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
+                                        {showConfirm && (
+                                            <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
+                                        )}
+                                        {showJoinCall && (
+                                            <button className="join-call-btn" type="button" onClick={() => joinVideoCall(apt)}>
+                                                <i className="fas fa-video"></i> Join Video Call
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </div>
                         );
                     })}
                 </div>
+            )}
+            {activeVideoCall && (
+                <VideoCall
+                    bookingId={activeVideoCall._id || activeVideoCall.bookingId}
+                    patientName={activeVideoCall.patientName}
+                    doctorName="Dr K Madhusudana"
+                    onClose={closeVideoCall}
+                />
             )}
         </div>
     );

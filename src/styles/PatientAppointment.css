@@ -1,0 +1,243 @@
+/* Patient Appointment View */
+.patient-appointment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.appointment-details {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.appointment-header h2 {
+  color: #2d3748;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #718096;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: #f7fafc;
+  color: #2d3748;
+}
+
+.appointment-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.consult-type {
+  background: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.booking-id {
+  font-family: 'Courier New', monospace;
+  background: #f7fafc;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem !important;
+}
+
+/* Video Call Section */
+.video-call-section {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.call-status {
+  margin-bottom: 1.5rem;
+}
+
+.call-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.call-icon.active {
+  color: #28a745;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.call-icon.waiting {
+  color: #ffc107;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.status-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.status-text.active {
+  color: #2e7d32;
+}
+
+.status-text.waiting {
+  color: #f57c00;
+}
+
+.join-call-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.join-call-button.active {
+  background: #28a745;
+  color: white;
+}
+
+.join-call-button.active:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
+.join-call-button.disabled {
+  background: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.join-call-button i {
+  font-size: 1.3rem;
+}
+
+.call-note {
+  font-size: 0.9rem;
+  color: #1b5e20;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .appointment-details {
+    padding: 1.5rem;
+  }
+
+  .appointment-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .appointment-info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .video-call-section {
+    padding: 1.5rem;
+  }
+
+  .call-icon {
+    font-size: 2.5rem;
+  }
+
+  .status-text {
+    font-size: 1rem;
+  }
+
+  .join-call-button {
+    font-size: 1.1rem;
+    padding: 0.875rem 1.5rem;
+  }
+}

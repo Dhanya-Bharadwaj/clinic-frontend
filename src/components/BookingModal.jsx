@@ -241,6 +241,7 @@ const BookingModal = ({ isOpen, onClose }) => {
         setBookingStatus({ message: 'Please complete all details before payment.', type: 'error' });
         return;
       }
+      // Load Razorpay SDK early in the user gesture chain
       await loadRazorpay();
 
       const order = await createPaymentOrder({
@@ -255,8 +256,15 @@ const BookingModal = ({ isOpen, onClose }) => {
 
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Windows Phone/i.test(navigator.userAgent);
 
+      const publicKey = import.meta.env.VITE_RAZORPAY_KEY_ID || '';
+      if (!publicKey) {
+        console.error('Razorpay key missing. Set VITE_RAZORPAY_KEY_ID in frontend environment (Vercel).');
+        setBookingStatus({ message: 'Payment configuration error. Please try again later.', type: 'error' });
+        return;
+      }
+
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_key',
+        key: publicKey,
         amount: order.amount,
         currency: order.currency,
         name: 'Dr K Madhusudana Clinic',
@@ -315,7 +323,21 @@ const BookingModal = ({ isOpen, onClose }) => {
       };
 
       const rzp = new window.Razorpay(options);
-      rzp.open();
+      // Attach failure listener for better diagnostics (especially on production)
+      rzp.on('payment.failed', function (resp) {
+        console.error('Razorpay payment.failed:', resp?.error || resp);
+        setBookingStatus({
+          message: resp?.error?.description || 'Payment failed. Please try another method or card.',
+          type: 'error',
+        });
+      });
+
+      try {
+        rzp.open();
+      } catch (openErr) {
+        console.error('Failed to open Razorpay Checkout:', openErr);
+        setBookingStatus({ message: 'Could not open payment window. Please check your browser settings and try again.', type: 'error' });
+      }
     } catch (err) {
       console.error('Online payment error:', err);
       setBookingStatus({ message: err.message || 'Failed to initiate payment', type: 'error' });
@@ -617,15 +639,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                 >
                   {loadingPayment ? 'Processing...' : 'Pay & Confirm Booking'}
                 </motion.button>
-                <motion.button
-                  style={{ marginLeft: 12 }}
-                  onClick={() => setStep(5)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="secondary"
-                >
-                  Skip (Test Mode)
-                </motion.button>
+                {/* Test-mode skip removed for production safety */}
               </div>
             )}
 
@@ -722,6 +736,21 @@ const BookingModal = ({ isOpen, onClose }) => {
                 <p className="confirmation-detail-item">
                   <strong>Phone:</strong> <span>{bookingConfirmedData.patientPhone}</span>
                 </p>
+
+                {bookingConfirmedData.consultType === 'online' && (
+                  <div className="video-call-info">
+                    <p className="video-call-notice">
+                      <i className="fas fa-video"></i> This is an <strong>Online Consultation</strong>
+                    </p>
+                    <p className="video-call-instruction">
+                      The "Join Video Call" button will become active <strong>5 minutes before</strong> your appointment time.
+                      Please join on time for your consultation with Dr K Madhusudana.
+                    </p>
+                    <div className="video-call-link">
+                      <strong>Meeting Room ID:</strong> <span>DrMadhusudhan-{bookingConfirmedData.bookingId}</span>
+                    </div>
+                  </div>
+                )}
 
                 <p className="confirmation-note">
                   Please keep this information for your reference. An email confirmation with these

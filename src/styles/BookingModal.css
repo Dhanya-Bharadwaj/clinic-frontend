@@ -395,6 +395,56 @@
   text-align: left;
 }
 
+/* Video Call Info in Confirmation */
+.video-call-info {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: 12px;
+    border: 2px solid #4caf50;
+}
+
+.video-call-notice {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.video-call-notice i {
+    font-size: 1.3rem;
+}
+
+.video-call-instruction {
+    font-size: 0.95rem;
+    color: #1b5e20;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.video-call-link {
+    padding: 0.75rem 1rem;
+    background: white;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.video-call-link strong {
+    color: #2e7d32;
+}
+
+.video-call-link span {
+    color: #424242;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
 .confirmation-note {
     font-size: 0.95rem;
     color: var(--secondary-color);
