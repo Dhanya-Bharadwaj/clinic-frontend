@@ -38,6 +38,10 @@ const BookingModal = ({ isOpen, onClose }) => {
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
   const [loadingPayment, setLoadingPayment] = useState(false);
+  // Razorpay preflight
+  const [razorpayReady, setRazorpayReady] = useState(false);
+  const [razorpayKeyPresent, setRazorpayKeyPresent] = useState(!!import.meta.env.VITE_RAZORPAY_KEY_ID);
+  const [razorpayLoadError, setRazorpayLoadError] = useState('');
 
   const modalRef = useRef(null);
 
@@ -232,6 +236,20 @@ const BookingModal = ({ isOpen, onClose }) => {
     script.onerror = () => reject(new Error('Failed to load Razorpay SDK'));
     document.body.appendChild(script);
   });
+
+  // Pre-load SDK and check key when entering payment step
+  useEffect(() => {
+    if (isOpen && step === 4 && consultType === 'online') {
+      setRazorpayKeyPresent(!!import.meta.env.VITE_RAZORPAY_KEY_ID);
+      loadRazorpay()
+        .then(() => { setRazorpayReady(true); setRazorpayLoadError(''); })
+        .catch((e) => { setRazorpayReady(false); setRazorpayLoadError(e.message || 'Failed to load Razorpay'); });
+    } else {
+      setRazorpayReady(false);
+      setRazorpayLoadError('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, step, consultType]);
 
   const handleOnlinePayment = async () => {
     try {
@@ -629,15 +647,26 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <p style={{ marginTop: '12px', fontSize: '0.9rem', color: '#718096' }}>
                     Secure payment powered by Razorpay
                   </p>
+                  <div style={{ marginTop: '8px' }}>
+                    {!razorpayKeyPresent && (
+                      <p className="modal-message error">Payment is not configured for this site. Missing Razorpay public key.</p>
+                    )}
+                    {razorpayLoadError && (
+                      <p className="modal-message error">{razorpayLoadError}</p>
+                    )}
+                    {razorpayKeyPresent && !razorpayLoadError && (
+                      <p className="modal-message info">Razorpay is ready.</p>
+                    )}
+                  </div>
                 </div>
                 <motion.button
                   onClick={handleOnlinePayment}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  disabled={loadingPayment}
+                  disabled={loadingPayment || !razorpayKeyPresent || !razorpayReady}
                   className="razorpay-pay-btn"
                 >
-                  {loadingPayment ? 'Processing...' : 'Pay & Confirm Booking'}
+                  {loadingPayment ? 'Processing...' : (!razorpayKeyPresent ? 'Payment Not Configured' : (!razorpayReady ? 'Loading Payment…' : 'Pay & Confirm Booking'))}
                 </motion.button>
                 {/* Test-mode skip removed for production safety */}
               </div>
