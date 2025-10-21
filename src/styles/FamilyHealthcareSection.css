@@ -174,3 +174,155 @@
     order: 2;
   }
 }
+
+@media (max-width: 768px) {
+  .family-section {
+    padding: 50px 0 60px;
+  }
+
+  .family-container {
+    padding: 0 15px;
+    row-gap: 15px;
+  }
+
+  .family-title {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+
+  .family-degree {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .family-intro {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .family-features {
+    gap: 12px;
+  }
+
+  .family-feature {
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .family-feature .feature-text h4 {
+    font-size: 0.9rem;
+  }
+
+  .family-feature .feature-text p {
+    font-size: 0.8rem;
+  }
+
+  .chip {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+
+  .family-cta {
+    margin-top: 15px;
+    padding: 11px 18px;
+    font-size: 0.85rem;
+  }
+
+  .approach-card {
+    padding: 20px 16px;
+  }
+
+  .approach-card h3 {
+    font-size: 1rem;
+  }
+
+  .approach-list {
+    gap: 10px;
+  }
+
+  .approach-item {
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .approach-text h5 {
+    font-size: 0.85rem;
+  }
+
+  .approach-text p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .family-section {
+    padding: 40px 0 50px;
+  }
+
+  .family-title {
+    font-size: 22px;
+  }
+
+  .family-degree {
+    font-size: 0.85rem;
+  }
+
+  .family-intro {
+    font-size: 0.82rem;
+    margin-bottom: 15px;
+  }
+
+  .family-feature {
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .family-feature .feature-text h4 {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+
+  .family-feature .feature-text p {
+    font-size: 0.75rem;
+  }
+
+  .chip {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .family-cta {
+    padding: 10px 16px;
+    font-size: 0.82rem;
+  }
+
+  .approach-card {
+    padding: 16px 12px;
+  }
+
+  .approach-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .approach-item {
+    grid-template-columns: 32px 1fr;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .approach-text h5 {
+    font-size: 0.8rem;
+  }
+
+  .approach-text p {
+    font-size: 0.72rem;
+  }
+}

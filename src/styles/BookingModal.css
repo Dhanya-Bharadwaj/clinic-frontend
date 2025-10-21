@@ -471,99 +471,203 @@ body.modal-open {
 /* --- Responsive Adjustments --- */
 @media (max-width: 600px) {
   .modal-content {
-    padding: 25px;
-    gap: 15px;
+    padding: 20px 15px;
+    gap: 12px;
     max-height: 95vh;
     width: 95%;
+    margin: 10px;
   }
+  
   .modal-header {
     padding-bottom: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
+  
   .modal-header h3 {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
+    line-height: 1.3;
   }
+  
   .modal-close-button {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    top: 10px;
+    right: 10px;
   }
 
   .date-picker-container label,
   .appointment-form label {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   /* Inline calendar specific responsive adjustments */
   .react-datepicker {
-      max-width: 100%;
-      padding: 5px;
+    max-width: 100%;
+    padding: 5px;
+    font-size: 0.85rem;
   }
+  
   .react-datepicker__day-name,
   .react-datepicker__day {
-      width: 2rem;
-      height: 2rem;
-      line-height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    font-size: 0.8rem;
   }
-
 
   .time-slots-container {
-    padding: 10px;
-    max-height: 180px;
+    padding: 8px;
+    max-height: 150px;
   }
+  
   .time-slot-button {
-    padding: 8px 12px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    min-width: 70px;
+  }
+  
+  .slot-section-title {
     font-size: 0.9rem;
   }
 
   .appointment-form {
-    gap: 15px;
+    gap: 12px;
   }
+  
   .appointment-form h4 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin-bottom: 8px;
   }
+  
   .appointment-form input,
   .appointment-form textarea {
     padding: 10px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .modal-actions {
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 15px;
   }
+  
   .modal-actions button {
     width: 100%;
     min-width: unset;
-    padding: 10px 20px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
   }
+  
   .modal-message {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     padding: 8px;
+  }
+
+  /* Consulting type selection */
+  .consult-type-step h4,
+  .consult-mode-step h4,
+  .slots-step label,
+  .payment-step h4 {
+    font-size: 1.2rem;
+  }
+  
+  .consult-type-radio,
+  .gender-radio {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .consult-type-next {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  /* Payment step responsive */
+  .payment-step {
+    gap: 12px;
+  }
+  
+  .fee-display {
+    padding: 15px;
+  }
+  
+  .fee-amount {
+    font-size: 2rem;
+  }
+  
+  .fee-label {
+    font-size: 0.85rem;
+  }
+  
+  .razorpay-pay-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 
   /* Confirmation View Responsive */
   .confirmation-icon {
-      font-size: 4rem;
+    font-size: 3rem;
   }
+  
   .confirmation-message {
-      font-size: 1.4rem;
+    font-size: 1.2rem;
+    line-height: 1.3;
   }
+  
   .confirmation-detail-item {
-      font-size: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
   }
+  
   .confirmation-detail-item strong {
-      text-align: center;
-      margin-right: 0;
-      margin-bottom: 5px;
-      min-width: unset;
+    text-align: left;
+    margin-right: 0;
+    margin-bottom: 3px;
+    min-width: unset;
+    font-size: 0.85rem;
   }
+  
+  .video-call-info {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+  
+  .video-call-notice {
+    font-size: 0.9rem;
+  }
+  
   .close-confirmation-button {
-      padding: 12px 25px;
-      font-size: 1rem;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-content {
+    padding: 15px 10px;
+    width: 98%;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .time-slot-button {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+    min-width: 65px;
+  }
+  
+  .appointment-form input,
+  .appointment-form textarea {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+  
+  .fee-amount {
+    font-size: 1.7rem;
   }
 }
 

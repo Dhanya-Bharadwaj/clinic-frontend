@@ -38,7 +38,7 @@
     z-index: 3;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start; /* Align to top for consistent baseline */
     justify-content: center;
     gap: 50px; /* Reduced from 70px */
     padding: 0 5%;
@@ -57,9 +57,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 380px; /* Reduced from 460px */
-    min-height: 400px; /* Reduced from 480px */
+    width: 380px; /* Same as appointment card */
+    height: 460px; /* Fixed height instead of min-height */
     justify-content: center; /* Vertically center content */
+    flex-shrink: 0; /* Prevent shrinking */
   }
   
   .doctor-photo {
@@ -78,9 +79,10 @@
     margin-bottom: 8px;
     color: white;
     font-family: 'Playfair Display', serif; /* Elegant font for name */
-    white-space: nowrap; /* keep name in a single line */
-    overflow: hidden; /* avoid overflow */
-    text-overflow: ellipsis; /* gracefully truncate if too narrow */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
   }
   
   .doctor-info p {
@@ -102,9 +104,10 @@
     .hero-content {
       gap: 30px; /* Reduced from 40px */
     }
-    .doctor-info, .appointment-card {
-      width: 340px; /* Reduced from 400px */
-      padding: 28px; /* Reduced from 38px */
+    .doctor-info {
+      width: 340px;
+      height: 420px; /* Maintain fixed height */
+      padding: 28px;
     }
     .doctor-photo {
       width: 140px; /* Reduced from 180px */
@@ -129,9 +132,11 @@
       height: auto;
       min-height: 90vh; /* Ensure it still looks tall */
     }
-    .doctor-info, .appointment-card {
+    .doctor-info {
       width: 90%;
       max-width: 450px; /* Limit width to not be too wide on tablets */
+      height: auto; /* Allow auto height on mobile */
+      min-height: 380px;
     }
     .doctor-info p:last-of-type {
       font-size: 1rem;
@@ -139,24 +144,66 @@
   }
   
   @media (max-width: 600px) {
+    .hero-content {
+      padding: 20px 15px;
+      gap: 25px;
+    }
     .doctor-info {
-      padding: 30px;
+      padding: 20px 16px;
+      width: 90%;
+      max-width: 100%;
+      height: auto; /* Auto height for mobile */
+      min-height: 320px;
     }
     .doctor-photo {
-      width: 150px;
-      height: 150px;
-      border-width: 4px;
-      box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.3),
-                  0 0 20px rgba(0, 0, 0, 0.5);
-      margin-bottom: 20px;
+      width: 100px;
+      height: 100px;
+      border-width: 3px;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3),
+                  0 0 12px rgba(0, 0, 0, 0.5);
+      margin-bottom: 12px;
     }
     .doctor-info h2 {
-      font-size: 2.2rem;
+      font-size: 1.4rem;
+      white-space: normal;
+      word-wrap: break-word;
+      line-height: 1.3;
+      margin-bottom: 6px;
     }
     .doctor-info p {
-      font-size: 1.1rem;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .doctor-info p:last-of-type {
+      font-size: 0.8rem;
     }
     .hero-overlay {
-      background-color: rgba(0, 0, 0, 0.8); /* Even darker for mobile clarity */
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    .hero-section {
+      min-height: 100vh;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .doctor-info {
+      padding: 18px 14px;
+      min-height: 300px;
+    }
+    .doctor-photo {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 10px;
+    }
+    .doctor-info h2 {
+      font-size: 1.3rem;
+    }
+    .doctor-info p {
+      font-size: 0.82rem;
+    }
+    .doctor-info p:last-of-type {
+      font-size: 0.75rem;
     }
   }

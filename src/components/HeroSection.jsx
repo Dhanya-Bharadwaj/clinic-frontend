@@ -75,7 +75,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
             );
           })()}
           <p>M.B.B.S | F.A.G.E</p>
-          <p>Over {doctorInfo.experience} years of experience in patient care.</p>
+          <p>Over 25+ years of experience in patient care.</p>
         </motion.div>
 
         <motion.div

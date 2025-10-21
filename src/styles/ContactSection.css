@@ -80,3 +80,86 @@
   .info-card { min-width: unset; max-width: unset; height: unset; }
   .map-card { min-height: 180px; height: 180px; }
 }
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 60px 0 70px;
+  }
+
+  .contact-container {
+    padding: 0 15px;
+  }
+
+  .contact-header .title {
+    font-size: 24px;
+  }
+
+  .contact-header .subtitle {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .info-card {
+    padding: 15px;
+  }
+
+  .info-card h3 {
+    font-size: 1rem;
+  }
+
+  .map-card {
+    min-height: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 50px 0 60px;
+  }
+
+  .contact-header .title {
+    font-size: 20px;
+  }
+
+  .contact-header .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .info-card {
+    padding: 12px;
+  }
+
+  .info-row {
+    grid-template-columns: 20px 1fr;
+    gap: 6px;
+  }
+
+  .chip {
+    width: 18px;
+    height: 18px;
+  }
+
+  .info-row h4 {
+    font-size: 0.85rem;
+  }
+
+  .info-row p, .info-row a {
+    font-size: 0.7rem;
+  }
+
+  .contact-cta {
+    padding: 7px 10px;
+    font-size: 0.85rem;
+  }
+
+  .map-card {
+    min-height: 200px;
+    height: 200px;
+  }
+
+  .open-maps-link {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}

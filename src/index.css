@@ -24,14 +24,14 @@ a:hover {
 
 /* Global font-size reduction for standard appearance at 100% zoom */
 html {
-  font-size: 12px; /* Reduced from 14px to 12px for more professional look */
+  font-size: 14px; /* Base font size for desktop */
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw;
-  min-width: 100vw;
+  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
   overflow-y: auto;
   background: #f9fafb !important;
 }
@@ -39,25 +39,43 @@ html {
 body {
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw;
-  min-width: 100vw;
+  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
   overflow-y: auto;
   background: #f9fafb !important;
 }
 
 /* Responsive font scaling */
+@media (max-width: 1200px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 992px) {
+  html {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   html {
-    font-size: 11px; /* Smaller on mobile */
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 10px;
   }
 }
 
 @media (min-width: 1400px) {
   html {
-    font-size: 13px; /* Slightly larger on very wide screens */
+    font-size: 15px; /* Slightly larger on very wide screens */
   }
 }
 
@@ -67,11 +85,10 @@ body {
   margin-right: auto;
   width: 100%;
   min-width: 0;
-  overflow-x: clip;
+  overflow-x: hidden;
   background: #fff;
   box-shadow: 0 0 0 1px #e5e7eb;
 }
-
 
 section,
 .about-section,
@@ -81,16 +98,17 @@ section,
   overflow-x: hidden;
   background: #fff;
   min-width: 0;
-  max-width: 1200px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 }
+
 img, .card, .approach-card, .about-section img {
   max-width: 100%;
   height: auto;
   display: block;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 body {
@@ -104,11 +122,31 @@ body {
 
 *, *::before, *::after {
   box-sizing: inherit;
+  max-width: 100%;
+}
+
+/* Better text wrapping on mobile */
+h1, h2, h3, h4, h5, h6, p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 h1 {
-  font-size: 2.2em; /* Reduced from 3.2em */
-  line-height: 1.1;
+  font-size: 2.5em;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.7em;
+  }
 }
 
 button {
