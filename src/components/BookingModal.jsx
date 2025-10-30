@@ -78,7 +78,7 @@ const BookingModal = ({ isOpen, onClose }) => {
 
   // Effect for fetching slots & resetting state
   useEffect(() => {
-    if (isOpen && selectedDate) {
+    if (isOpen && selectedDate && consultType) {
       // Ensure date is a valid Date object before trying to fetch slots
       if (selectedDate instanceof Date && !isNaN(selectedDate)) {
         fetchSlots(selectedDate);
@@ -106,7 +106,7 @@ const BookingModal = ({ isOpen, onClose }) => {
       setBookingConfirmedData(null); // IMPORTANT: Reset confirmation data too
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, selectedDate]); // Added selectedDate to dependency array
+  }, [isOpen, selectedDate, consultType]); // Added consultType to refetch slots when it changes
 
   const fetchSlots = async (date) => {
     setLoadingSlots(true);
@@ -116,7 +116,8 @@ const BookingModal = ({ isOpen, onClose }) => {
 
     try {
       // Ensure the date passed to API is in the correct format (YYYY-MM-DD)
-      const slots = await getAvailableSlots(date);
+      // Pass the consultation type to get appropriate slots
+      const slots = await getAvailableSlots(date, consultType);
       setAvailableSlots(slots.sort());
       if (slots.length === 0) {
         setBookingStatus({
@@ -468,8 +469,9 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <div className="time-slots-grouped">
                     {(() => {
                       const sorted = [...availableSlots].sort();
-                      const morningSlots = sorted.filter(t => t < '14:00');
-                      const afternoonSlots = sorted.filter(t => t >= '14:00');
+                      const morningSlots = sorted.filter(t => t < '12:00');
+                      const afternoonSlots = sorted.filter(t => t >= '12:00' && t < '18:00');
+                      const eveningSlots = sorted.filter(t => t >= '18:00');
                       return (
                         <>
                           {morningSlots.length > 0 && (
@@ -498,6 +500,25 @@ const BookingModal = ({ isOpen, onClose }) => {
                                 {afternoonSlots.map((time) => (
                                   <motion.button
                                     key={`a-${time}`}
+                                    className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
+                                    onClick={() => { handleTimeSelect(time); setStep(3); }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    disabled={submittingBooking}
+                                  >
+                                    {time}
+                                  </motion.button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {eveningSlots.length > 0 && (
+                            <div className="slot-section">
+                              <h5 className="slot-section-title">Evening</h5>
+                              <div className="time-slots-container">
+                                {eveningSlots.map((time) => (
+                                  <motion.button
+                                    key={`e-${time}`}
                                     className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
                                     onClick={() => { handleTimeSelect(time); setStep(3); }}
                                     whileHover={{ scale: 1.05 }}

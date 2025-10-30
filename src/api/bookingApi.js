@@ -22,15 +22,16 @@ export const getLocalDateString = (date) => {
 /**
  * Fetches available slots for a given date from the backend.
  * @param {Date} date - The date to check for.
+ * @param {string} consultType - The consultation type ('online' or 'offline').
  * @returns {Promise<string[]>} A promise that resolves to an array of available time strings.
  */
-export const getAvailableSlots = async (date) => {
+export const getAvailableSlots = async (date, consultType = 'offline') => {
   // Use the helper to get the correct local date string
   const dateString = getLocalDateString(date);
-  console.log('Frontend: Fetching slots for date:', dateString);
+  console.log('Frontend: Fetching slots for date:', dateString, 'consultType:', consultType);
 
   try {
-    const url = `${API_BASE_URL}/slots?date=${dateString}`;
+    const url = `${API_BASE_URL}/slots?date=${dateString}&consultType=${consultType}`;
     console.log('Frontend: API URL:', url);
     
     const response = await fetch(url, {
