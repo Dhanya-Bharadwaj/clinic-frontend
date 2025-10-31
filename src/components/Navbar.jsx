@@ -1,10 +1,11 @@
 // src/components/Navbar.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaUserCircle } from 'react-icons/fa';
 import AdminButton from './AdminButton';
 import '../styles/Navbar.css';
 
-const Navbar = ({ onBookAppointmentClick, onAdminAccess }) => {
+const Navbar = ({ onBookAppointmentClick, onAdminAccess, onCheckAppointments }) => {
   return (
     <motion.nav
       className="navbar"
@@ -18,14 +19,25 @@ const Navbar = ({ onBookAppointmentClick, onAdminAccess }) => {
           Dr K Madhusudana
         </a>
       </div>
-      <motion.button
-        className="navbar-button"
-        onClick={onBookAppointmentClick}
-        whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Book an Appointment
-      </motion.button>
+      <div className="navbar-right">
+        <motion.button
+          className="navbar-button"
+          onClick={onBookAppointmentClick}
+          whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Book an Appointment
+        </motion.button>
+        <motion.button
+          className="navbar-icon-button"
+          onClick={onCheckAppointments}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          title="Check Your Appointments"
+        >
+          <FaUserCircle />
+        </motion.button>
+      </div>
     </motion.nav>
   );
 };

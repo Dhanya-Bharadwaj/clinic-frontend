@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 5%; /* Reduced from 15px */
+    padding: 12px 2.5%; /* Reduced from 5% */
     background-color: var(--card-bg);
     box-shadow: 0 2px 8px var(--shadow-light); /* Reduced shadow */
     position: sticky;
@@ -15,6 +15,12 @@
   .navbar-left {
     display: flex;
     align-items: center;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
   }
 
   /* Removed ordering and left margin on admin icon to allow it to appear first */
@@ -30,6 +36,33 @@
   .navbar-brand:hover {
     color: #0056b3;
   }
+
+  .navbar-icon-button {
+    background: transparent !important;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.2s ease;
+    box-shadow: none !important;
+  }
+
+  .navbar-icon-button:hover {
+    background: transparent !important;
+    color: #0056b3;
+    box-shadow: none !important;
+  }
+
+  .navbar-icon-button:focus,
+  .navbar-icon-button:active {
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none;
+  }
   
   .navbar-button {
     /* Inherits button styles from index.css */
@@ -41,19 +74,28 @@
     .navbar {
       flex-direction: row;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: space-between;
       padding: 12px 15px;
       gap: 10px;
     }
     
     .navbar-left {
       flex: 1;
-      justify-content: center;
+      justify-content: flex-start;
+    }
+
+    .navbar-right {
+      flex-shrink: 0;
+      gap: 10px;
     }
     
     .navbar-brand {
       font-size: 1.2rem;
-      text-align: center;
+    }
+
+    .navbar-icon-button {
+      font-size: 1.5rem;
+      padding: 0;
     }
     
     .navbar-button {
@@ -69,6 +111,11 @@
     
     .navbar-brand {
       font-size: 1.1rem;
+    }
+
+    .navbar-icon-button {
+      font-size: 1.4rem;
+      padding: 0;
     }
     
     .navbar-button {

@@ -253,15 +253,27 @@ const BookingModal = ({ isOpen, onClose }) => {
   }, [isOpen, step, consultType]);
 
   const handleOnlinePayment = async () => {
+    console.log('=== handleOnlinePayment clicked ===');
+    console.log('Razorpay ready:', razorpayReady);
+    console.log('Razorpay key present:', razorpayKeyPresent);
+    console.log('Form data:', { selectedDate, selectedTime, patientName, patientPhone, age, gender });
+    
     try {
       setLoadingPayment(true);
+      console.log('Loading payment set to true');
+      
       // Basic validation
       if (!selectedDate || !selectedTime || !patientName || !patientPhone || !age || !gender) {
+        console.log('Validation failed - missing fields');
         setBookingStatus({ message: 'Please complete all details before payment.', type: 'error' });
+        setLoadingPayment(false);
         return;
       }
+      
       // Load Razorpay SDK early in the user gesture chain
+      console.log('About to load Razorpay...');
       await loadRazorpay();
+      console.log('Razorpay loaded successfully');
 
       const order = await createPaymentOrder({
         date: selectedDate ? selectedDate.toISOString().slice(0,10) : '',
