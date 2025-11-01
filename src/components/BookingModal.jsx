@@ -32,6 +32,7 @@ const BookingModal = ({ isOpen, onClose }) => {
   const [submittingBooking, setSubmittingBooking] = useState(false);
   // NEW STATE: To hold details of a successfully booked appointment
   const [bookingConfirmedData, setBookingConfirmedData] = useState(null);
+  const [whatsappNotifications, setWhatsappNotifications] = useState(null); // WhatsApp notification URLs
   // New state for step-by-step flow
   const [step, setStep] = useState(0); // 0: consult type, 1: calendar, 2: slots, 3: details, 4: payment/confirm
   const [consultType, setConsultType] = useState(''); // 'online' or 'offline'
@@ -342,6 +343,10 @@ const BookingModal = ({ isOpen, onClose }) => {
             });
             setBookingStatus({ message: verifyRes.message, type: 'success' });
             setBookingConfirmedData(verifyRes.appointment);
+            // Store WhatsApp notification URLs if available
+            if (verifyRes.whatsappNotifications) {
+              setWhatsappNotifications(verifyRes.whatsappNotifications);
+            }
           } catch (err) {
             setBookingStatus({ message: err.message || 'Payment verification failed', type: 'error' });
           }
@@ -804,13 +809,56 @@ const BookingModal = ({ isOpen, onClose }) => {
                     <p className="video-call-notice">
                       <i className="fas fa-video"></i> This is an <strong>Online Consultation</strong>
                     </p>
-                    <p className="video-call-instruction">
-                      The "Join Video Call" button will become active <strong>5 minutes before</strong> your appointment time.
-                      Please join on time for your consultation with Dr K Madhusudana.
-                    </p>
-                    <div className="video-call-link">
-                      <strong>Meeting Room ID:</strong> <span>DrMadhusudhan-{bookingConfirmedData.bookingId}</span>
-                    </div>
+                    {bookingConfirmedData.meetLink && (
+                      <div className="meet-link-section">
+                        <p className="video-call-instruction">
+                          <strong>📹 Google Meet Link:</strong>
+                        </p>
+                        <a 
+                          href={bookingConfirmedData.meetLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="meet-link-button"
+                        >
+                          {bookingConfirmedData.meetLink}
+                        </a>
+                        <p className="video-call-instruction" style={{ marginTop: '10px', fontSize: '0.9rem' }}>
+                          Please join the meeting <strong>5 minutes before</strong> your appointment time.
+                        </p>
+                      </div>
+                    )}
+
+                    {whatsappNotifications && (
+                      <div className="whatsapp-notifications">
+                        <p style={{ marginTop: '15px', marginBottom: '10px', fontWeight: '600' }}>
+                          📱 Send Meeting Details via WhatsApp:
+                        </p>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                          <motion.a
+                            href={whatsappNotifications.patientUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="whatsapp-button patient-button"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <i className="fab fa-whatsapp"></i> Send to My WhatsApp
+                          </motion.a>
+                          <motion.button
+                            onClick={() => window.open(whatsappNotifications.doctorUrl, '_blank')}
+                            className="whatsapp-button doctor-button"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            style={{ background: '#25D366', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                          >
+                            <i className="fab fa-whatsapp"></i> Notify Doctor
+                          </motion.button>
+                        </div>
+                        <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '8px' }}>
+                          💡 Click to send the Google Meet link and appointment details via WhatsApp
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
 

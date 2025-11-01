@@ -26,6 +26,7 @@ body {
   background-color: var(--background-light);
   line-height: 1.6;
   scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+  padding-top: 64px; /* Offset for fixed navbar */
 }
 
 h1, h2, h3, h4, h5, h6 {

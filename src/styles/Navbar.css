@@ -6,9 +6,12 @@
     padding: 12px 2.5%; /* Reduced from 5% */
     background-color: var(--card-bg);
     box-shadow: 0 2px 8px var(--shadow-light); /* Reduced shadow */
-    position: sticky;
+    position: fixed;          /* Keep navbar visible on scroll */
     top: 0;
-    z-index: 1000;
+    left: 0;
+    right: 0;
+    width: 100%;
+  z-index: 1200;            /* Above content but below modals */
     transition: background-color 0.3s ease;
   }
 
@@ -80,13 +83,15 @@
     }
     
     .navbar-left {
-      flex: 1;
+      flex: 1 1 auto;
       justify-content: flex-start;
     }
 
     .navbar-right {
       flex-shrink: 0;
       gap: 10px;
+      width: 100%;              /* take full row when wrapping */
+      justify-content: flex-end; /* push actions to right corner */
     }
     
     .navbar-brand {
@@ -111,6 +116,11 @@
     
     .navbar-brand {
       font-size: 1.1rem;
+    }
+
+    .navbar-right {              /* keep right-aligned on very small screens */
+      width: 100%;
+      justify-content: flex-end;
     }
 
     .navbar-icon-button {

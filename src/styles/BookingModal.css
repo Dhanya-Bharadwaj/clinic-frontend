@@ -851,3 +851,77 @@ body.modal-open {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+/* WhatsApp Notification Buttons */
+.whatsapp-notifications {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0fdf4;
+  border-radius: 12px;
+  border: 2px solid #86efac;
+}
+
+.whatsapp-button {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.whatsapp-button:hover {
+  background: #1fb855;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-button i {
+  font-size: 1.2rem;
+}
+
+.patient-button {
+  background: #25D366;
+}
+
+.doctor-button {
+  background: #128C7E;
+}
+
+.doctor-button:hover {
+  background: #075E54;
+}
+
+/* Meet Link Section */
+.meet-link-section {
+  margin-top: 15px;
+  padding: 15px;
+  background: #eff6ff;
+  border-radius: 10px;
+  border: 2px solid #93c5fd;
+}
+
+.meet-link-button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #0a63ff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  word-break: break-all;
+  margin-top: 8px;
+}
+
+.meet-link-button:hover {
+  background: #0751d4;
+  box-shadow: 0 4px 12px rgba(10, 99, 255, 0.3);
+  transform: translateY(-2px);
+}
