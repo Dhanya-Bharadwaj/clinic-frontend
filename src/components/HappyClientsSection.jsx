@@ -219,7 +219,7 @@ const HappyClientsSection = ({ isAdmin = false }) => {
         <motion.div className="section-header" variants={sectionVariants}>
           <h2 className="section-title">Happy Clients</h2>
           <p className="section-subtitle">
-            Read what our satisfied patients have to say about their experience
+            "Healing begins with trust"
           </p>
         </motion.div>
 

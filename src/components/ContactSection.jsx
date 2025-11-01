@@ -45,13 +45,7 @@ const ContactSection = ({ onBookAppointmentClick }) => {
               </div>
             </div>
 
-            <div className="info-row">
-              <div className="chip"><i className="fa-solid fa-envelope" /></div>
-              <div>
-                <h4>Email</h4>
-                <a href="mailto:drmadhusudan.clinic@gmail.com">drmadhusudan.clinic@gmail.com</a>
-              </div>
-            </div>
+            
 
             <div className="info-row">
               <div className="chip"><i className="fa-solid fa-clock" /></div>
@@ -59,8 +53,8 @@ const ContactSection = ({ onBookAppointmentClick }) => {
                 <h4>Hours</h4>
                 <p>
                   Tuesday to Saturday<br/>
-                  Morning: 10:15 AM - 2:00 PM<br/>
-                  Afternoon: 3:15 PM - 6:00 PM
+                  Morning: 10:00 AM - 2:00 PM<br/>
+                  Afternoon: 3:00 PM - 6:00 PM
                 </p>
               </div>
             </div>

@@ -29,6 +29,40 @@
     margin-bottom: 28px; /* Reduced from 35px */
     line-height: 1.5;
   }
+
+  /* Tagline under clinic name */
+  .appointment-card .clinic-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    /* Keep tagline smaller than the clinic heading (~50%) */
+    font-size: 0.9rem; /* 50% of 1.8rem base h3 */
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 0.3px;
+    padding: 4px 10px;
+    background: rgba(10, 99, 255, 0.08);
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    margin-top: -2px;
+    margin-bottom: 12px; /* slightly tighter than address */
+  }
+
+  .appointment-card .clinic-tagline .quote-mark {
+    font-size: 1rem;
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  .appointment-card .clinic-tagline .tagline-text {
+    line-height: 1.2;
+  }
+
+  /* Address paragraph spacing */
+  .appointment-card .clinic-address {
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
   
   /* Inherits button styles from index.css */
   .appointment-card button {
@@ -47,6 +81,9 @@
     }
     .appointment-card h3 {
       font-size: 1.6rem; /* Reduced from 2.2rem */
+    }
+    .appointment-card .clinic-tagline {
+      font-size: 0.8rem; /* 50% of 1.6rem */
     }
     .appointment-card p {
       font-size: 0.9rem; /* Reduced from 1.1rem */
@@ -80,6 +117,12 @@
       word-wrap: break-word;
       margin-bottom: 15px;
     }
+    .appointment-card .clinic-tagline {
+      font-size: 0.68rem; /* 50% of 1.35rem */
+      margin-bottom: 10px;
+      padding: 4px 8px;
+      gap: 4px;
+    }
     .appointment-card p {
       font-size: 0.85rem;
       line-height: 1.5;
@@ -100,6 +143,9 @@
     .appointment-card h3 {
       font-size: 1.25rem;
       margin-bottom: 12px;
+    }
+    .appointment-card .clinic-tagline {
+      font-size: 0.625rem; /* 50% of 1.25rem */
     }
     .appointment-card p {
       font-size: 0.8rem;

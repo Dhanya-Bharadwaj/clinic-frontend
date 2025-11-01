@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 2.5%; /* Reduced from 5% */
+    padding: 12px 2.5%; /* base padding */
     background-color: var(--card-bg);
     box-shadow: 0 2px 8px var(--shadow-light); /* Reduced shadow */
     position: fixed;          /* Keep navbar visible on scroll */
@@ -13,6 +13,9 @@
     width: 100%;
   z-index: 1200;            /* Above content but below modals */
     transition: background-color 0.3s ease;
+    /* Respect device safe areas to avoid clipping on phones with notches */
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
   }
 
   .navbar-left {
@@ -78,7 +81,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
-      padding: 12px 15px;
+  padding: 12px max(18px, env(safe-area-inset-right, 0px)) 12px max(18px, env(safe-area-inset-left, 0px));
       gap: 10px;
     }
     
@@ -111,7 +114,7 @@
 
   @media (max-width: 480px) {
     .navbar {
-      padding: 10px;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
     }
     
     .navbar-brand {

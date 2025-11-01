@@ -23,6 +23,13 @@
     z-index: 1;
   }
   
+  /* Prevent mobile zoom/cropping glitches from background-attachment: fixed */
+  @media (max-width: 1024px) {
+    .hero-background {
+      background-attachment: scroll;
+    }
+  }
+  
   .hero-overlay {
     position: absolute;
     top: 0;
@@ -75,13 +82,11 @@
   }
   
   .doctor-info h2 {
-    font-size: 2.2rem; /* Reduced from 2.8rem for professional look */
+    font-size: 1.85rem; /* Reduced to fit name on one line */
     margin-bottom: 8px;
     color: white;
     font-family: 'Playfair Display', serif; /* Elegant font for name */
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    white-space: nowrap; /* Prevent line breaks */
     line-height: 1.3;
   }
   

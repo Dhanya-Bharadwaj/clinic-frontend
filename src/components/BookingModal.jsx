@@ -465,11 +465,35 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <DatePicker
                     selected={selectedDate}
                     onChange={(date) => { handleDateChange(date); setStep(2); }}
-                    minDate={new Date()}
+                    minDate={(() => {
+                      const tomorrow = new Date();
+                      tomorrow.setDate(tomorrow.getDate() + 1);
+                      tomorrow.setHours(0, 0, 0, 0);
+                      return tomorrow;
+                    })()}
+                    maxDate={(() => {
+                      const dayAfterTomorrow = new Date();
+                      dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+                      dayAfterTomorrow.setHours(0, 0, 0, 0);
+                      return dayAfterTomorrow;
+                    })()}
+                    filterDate={(date) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      const tomorrow = new Date(today);
+                      tomorrow.setDate(tomorrow.getDate() + 1);
+                      const dayAfterTomorrow = new Date(today);
+                      dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+                      const checkDate = new Date(date);
+                      checkDate.setHours(0, 0, 0, 0);
+                      // Only allow tomorrow and day after tomorrow
+                      return checkDate >= tomorrow && checkDate <= dayAfterTomorrow;
+                    }}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Click to select a date"
                     inline
                   />
+                  <p className="booking-notice">Only 48 hrs advance booking available (excluding today)</p>
                 </div>
               </div>
             )}
@@ -786,7 +810,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                   <span>{bookingConfirmedData.bookingId}</span>
                 </p>
                 <p className="confirmation-detail-item">
-                  <strong>Doctor:</strong> <span>Dr K Madhusudana</span>
+                  <strong>Doctor:</strong> <span>Dr. K. Madhusudana</span>
                 </p>
                 <p className="confirmation-detail-item">
                   <strong>Date:</strong>{' '}

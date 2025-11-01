@@ -35,17 +35,17 @@ const AboutSection = () => {
     >
       <div className="about-section-content">
         <div className="about-section-text">
-          <h2 className="about-title">Meet Dr. K Madhusudana</h2>
+          <h2 className="about-title">Meet Dr. K. Madhusudana</h2>
           <p className="intro-paragraph">
             Dr. K Madhusudana is a distinguished general physician with over 25 years of experience in providing comprehensive healthcare services. Specializing in diabetes management, hypertension treatment, and preventive medicine, he brings expertise, compassion, and evidence-based care to every patient consultation.
           </p>
           <p className="details-paragraph">
-            Known for his patient-centered approach and thorough diagnostic skills, Dr. Madhusudana creates a comfortable environment where patients feel confident discussing their health concerns. He believes in building long-term relationships with his patients, focusing on preventive care, lifestyle modifications, and personalized treatment plans for optimal health outcomes.
+            Known for his patient-centered approach and thorough diagnostic skills, Dr. K. Madhusudana creates a comfortable environment where patients feel confident discussing their health concerns. He believes in building long-term relationships with his patients, focusing on preventive care, lifestyle modifications, and personalized treatment plans for optimal health outcomes.
           </p>
           <div className="about-stats">
             <StatItem value={25} label="Years Experience" duration={2} />
             <StatItem value={4} label="Happy Patients" duration={2.2} formatter={(v, rounded) => `${rounded}L+`} />
-            <StatItem value={98} label="Satisfaction" duration={3} />
+            <StatItem value={98} label="Satisfaction" duration={3} formatter={(v, rounded) => `${rounded}%`} />
           </div>
           <blockquote className="doctor-quote">
             "My commitment is to provide comprehensive healthcare that not only treats illness but also promotes wellness through preventive care and patient education for a healthier community."

@@ -88,6 +88,16 @@
   font-size: 1.05rem;
 }
 
+/* Booking notice below calendar */
+.booking-notice {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  font-style: italic;
+  margin-top: 12px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
 /* --- Core react-datepicker (inline calendar) styles --- */
 .react-datepicker {
   font-family: 'Montserrat', sans-serif;

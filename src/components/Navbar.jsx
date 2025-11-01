@@ -16,7 +16,7 @@ const Navbar = ({ onBookAppointmentClick, onAdminAccess, onCheckAppointments }) 
       <div className="navbar-left">
         <AdminButton onAdminAccess={onAdminAccess} />
         <a href="/" className="navbar-brand">
-          Dr K Madhusudana
+          Dr. K. Madhusudana
         </a>
       </div>
       <div className="navbar-right">

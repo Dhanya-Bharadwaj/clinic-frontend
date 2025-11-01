@@ -41,7 +41,7 @@ const approachItems = [
   {
     title: 'Specialized Treatments',
     description:
-      'From early interventions to special needs dentistry, complete family healthcare solutions are offered.',
+      'From early interventions to special needs care, complete family healthcare solutions are offered.',
     icon: 'fa-solid fa-stethoscope',
   },
   {

@@ -17,10 +17,10 @@ const HeroSection = ({ onBookAppointmentClick }) => {
         console.error("Failed to fetch doctor details for Hero section:", error);
         // Fallback to static or show error
         setDoctorInfo({
-            name: 'Dr K Madhusudana',
+          name: 'Dr. K. Madhusudana',
             specialization: 'M.B.B.S | F.A.G.E',
             experience: 25,
-            clinicName: 'Dr K Madhusudana Clinic',
+            clinicName: 'Dr. K. Madhusudana Clinic',
             address: '4th cross road, New Bank Colony, Bank Colony,Konankunte, Bangalore - 560078',
             photoUrl: '/doctor-photo.jpg' // Use public path for local image
         });
@@ -66,7 +66,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           {/** Ensure single 'Dr' prefix and no duplication */}
           {(() => {
             // Always show the exact preferred display name
-            const displayName = 'Dr K Madhusudhana';
+        const displayName = 'Dr. K. Madhusudana';
             return (
               <>
                 <img src={doctorInfo.photoUrl} alt={displayName} className="doctor-photo" />
@@ -87,6 +87,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
           <AppointmentCard
             onBookAppointmentClick={onBookAppointmentClick}
             clinicName={'Balakrishna Clinic'}
+            tagline={'Empathy, Expertise, Earnestness'}
             address={'4th cross road, New Bank Colony, Bank Colony, Konankunte, Bangalore - 560078'}
           />
         </motion.div>

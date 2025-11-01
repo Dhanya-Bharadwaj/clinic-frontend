@@ -20,6 +20,11 @@
   padding: 0;
 }
 
+html {
+  /* Prevent iOS from auto-zooming text which can feel like the page is zoomed */
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   color: var(--text-color);
