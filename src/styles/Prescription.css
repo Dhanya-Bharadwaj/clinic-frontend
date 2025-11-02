@@ -1,0 +1,359 @@
+/* Prescription modal styles - professional and printable */
+
+.prescription-modal {
+  max-width: 950px;
+  max-height: 92vh;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content.prescription-modal {
+  overflow: hidden;
+}
+
+.rx-editor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.rx-row { 
+  display: flex; 
+  gap: 8px; 
+  align-items: center;
+}
+.rx-row label { 
+  width: 90px; 
+  font-weight: 600; 
+  color: #1e293b; 
+  font-size: 0.8rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rx-row input { 
+  flex: 1; 
+  padding: 6px 8px; 
+  border: 2px solid #e2e8f0; 
+  border-radius: 6px; 
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+}
+.rx-row input:focus {
+  outline: none;
+  border-color: #0a63ff;
+  box-shadow: 0 0 0 2px rgba(10, 99, 255, 0.1);
+}
+
+.rx-split { 
+  display: contents;
+}
+
+.rx-add-panel { 
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 100px 1.8fr 0.4fr 0.6fr 1.2fr;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+.rx-add-panel .secondary-button {
+  background: linear-gradient(135deg, #0a63ff 0%, #0751d4 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(10, 99, 255, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.rx-add-panel .secondary-button:hover {
+  background: linear-gradient(135deg, #0751d4 0%, #0540b0 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(10, 99, 255, 0.35);
+}
+.rx-add-panel input {
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+}
+.rx-add-panel input:focus {
+  outline: none;
+  border-color: #0a63ff;
+  box-shadow: 0 0 0 2px rgba(10, 99, 255, 0.1);
+}
+
+.rx-print-wrapper { 
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.rx-paper {
+  background: #fff;
+  border: 2px solid #0f172a;
+  border-radius: 0;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-height: auto;
+}
+
+.rx-header { 
+  text-align: center; 
+  margin-bottom: 16px; 
+  padding-bottom: 12px; 
+  border-bottom: 3px double #1e40af;
+}
+.rx-title { 
+  font-size: 1.5rem; 
+  font-weight: 700; 
+  color: #0f172a; 
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.rx-doctor-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 3px;
+}
+.rx-doctor-qualification {
+  font-size: 0.82rem;
+  color: #475569;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.rx-sub { 
+  font-size: 0.82rem; 
+  color: #64748b; 
+  margin-top: 4px;
+  font-style: italic;
+}
+.rx-meta { 
+  display: flex; 
+  justify-content: center; 
+  gap: 12px; 
+  color: #475569; 
+  font-size: 0.8rem; 
+  margin-top: 10px; 
+  flex-wrap: wrap;
+  font-weight: 500;
+}
+.rx-meta span {
+  padding: 3px 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.rx-symbol {
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #1e293b;
+  font-family: 'Times New Roman', serif;
+  margin: 12px 0 10px 0;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.rx-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 0; 
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.rx-table th, .rx-table td { 
+  border: 1px solid #cbd5e1; 
+  padding: 8px; 
+  vertical-align: middle;
+}
+.rx-table th { 
+  background: linear-gradient(to bottom, #f8fafc, #f1f5f9); 
+  color: #0f172a; 
+  text-align: left; 
+  font-weight: 700; 
+  font-size: 0.8rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #94a3b8;
+}
+
+.rx-medline { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 8px;
+}
+.rx-medline span { 
+  font-weight: 600; 
+  color: #1e293b;
+  font-size: 0.88rem;
+}
+
+.rx-remove { 
+  border: none; 
+  background: #fee2e2; 
+  color: #991b1b; 
+  border-radius: 4px; 
+  font-weight: 700; 
+  width: 22px; 
+  height: 22px; 
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+.rx-remove:hover { 
+  background: #fecaca;
+  transform: scale(1.1);
+}
+
+.rx-pills { 
+  display: inline-flex; 
+  gap: 5px; 
+  justify-content: center;
+}
+.rx-pills span { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 30px; 
+  height: 30px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  font-size: 0.85rem; 
+  border: 2px solid;
+  transition: all 0.2s ease;
+}
+.rx-pills span.on { 
+  background: #dcfce7; 
+  border-color: #22c55e; 
+  color: #065f46;
+  box-shadow: 0 1px 4px rgba(34, 197, 94, 0.2);
+}
+.rx-pills span.off { 
+  background: #f8fafc; 
+  color: #cbd5e1;
+  border-color: #e2e8f0;
+}
+
+.rx-instructions { 
+  font-size: 0.85rem; 
+  color: #475569; 
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.rx-footer { 
+  display: flex; 
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 24px; 
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.rx-sign { 
+  border-top: 2px solid #1e293b; 
+  padding-top: 8px; 
+  width: 220px; 
+  text-align: center; 
+  color: #1e293b; 
+  font-weight: 600; 
+  font-size: 0.85rem;
+}
+
+/* Print only the prescription paper */
+@media print {
+  body * { visibility: hidden !important; }
+  .print-area, .print-area * { visibility: visible !important; }
+  .print-area { 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    padding: 20px;
+  }
+  .modal-backdrop { background: transparent !important; }
+  .modal-content { box-shadow: none !important; }
+  .rx-remove { display: none !important; }
+  .rx-paper { 
+    border: 2px solid #000; 
+    box-shadow: none;
+    padding: 30px;
+  }
+  .rx-table { page-break-inside: avoid; }
+  .rx-table th, .rx-table td { border: 1px solid #333; padding: 10px; }
+  .rx-table th { background: #f5f5f5 !important; }
+  .rx-pills span { border-width: 2px; }
+  .rx-print-wrapper {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .prescription-modal {
+    max-width: 95%;
+  }
+  
+  .rx-split {
+    grid-template-columns: 1fr;
+  }
+  
+  .rx-add-panel {
+    flex-wrap: wrap;
+  }
+  
+  .rx-add-panel input {
+    min-width: 100px;
+  }
+  
+  .rx-paper {
+    padding: 20px;
+  }
+  
+  .rx-title {
+    font-size: 1.4rem;
+  }
+  
+  .rx-meta {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+  
+  .rx-table {
+    font-size: 0.85rem;
+  }
+  
+  .rx-table th, .rx-table td {
+    padding: 8px;
+  }
+  
+  .rx-pills span {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
+}

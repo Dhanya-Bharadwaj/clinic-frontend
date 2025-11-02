@@ -96,8 +96,17 @@
   border-radius: 6px;
 }
 
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.button-group button {
+  flex: 1;
+}
+
 .search-button {
-  width: 100%;
   padding: 12px 20px;
   background-color: #007bff;
   color: white;
@@ -109,8 +118,25 @@
   transition: background-color 0.3s;
 }
 
+.prescription-button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 .search-button:hover:not(:disabled) {
   background-color: #0056b3;
+}
+
+.prescription-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
 .search-button:disabled {
@@ -223,6 +249,11 @@
 
   .check-appointment-header h3 {
     font-size: 1.2rem;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .appointment-item {

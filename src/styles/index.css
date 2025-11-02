@@ -66,6 +66,70 @@ button:active {
   transform: translateY(0);
 }
 
+/* Generic layout utilities */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: 48px 0;
+}
+
+/* Unified button system */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn:active { transform: translateY(0); }
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(10, 99, 255, 0.18);
+}
+.btn-primary:hover { background: #0751d4; }
+
+.btn-secondary {
+  background: #fff;
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+.btn-secondary:hover { background: #f8fafc; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-outline:hover { background: rgba(10,99,255,0.08); }
+
+/* Inputs baseline */
+input[type="text"], input[type="tel"], input[type="email"], input[type="number"], textarea, select {
+  font-family: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+/* Card utility */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px var(--shadow-light);
+}
+
 /* Scrollbar styling (optional, but nice) */
 ::-webkit-scrollbar {
   width: 8px;

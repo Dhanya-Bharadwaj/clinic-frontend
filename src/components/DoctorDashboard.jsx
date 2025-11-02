@@ -6,6 +6,8 @@ import LoadingSpinner from './LoadingSpinner';
 import VideoCall from './VideoCall';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DoctorDashboard.css';
+import EditAvailabilityModal from './EditAvailabilityModal';
+import PrescriptionModal from './PrescriptionModal.jsx';
 
 // Small hook to encapsulate fetching logic
 function useAppointments(statusFilter, startDate, endDate) {
@@ -49,6 +51,8 @@ function DoctorDashboard({ onClose }) {
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
     const [activeVideoCall, setActiveVideoCall] = useState(null);
+    const [editAvailabilityOpen, setEditAvailabilityOpen] = useState(false);
+    const [prescriptionOpen, setPrescriptionOpen] = useState(false);
 
     const { appointments, loading, error, setAppointments } = useAppointments(statusFilter, startDate, endDate);
 
@@ -116,10 +120,14 @@ function DoctorDashboard({ onClose }) {
 
     return (
         <div className="doctor-dashboard-modal">
-            <div className="dashboard-header">
-                <h2>Doctor Dashboard</h2>
-                <button className="close-btn" onClick={onClose} type="button">X</button>
-            </div>
+                        <div className="dashboard-header">
+                                <h2>Doctor Dashboard</h2>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <button className="confirm-btn" type="button" onClick={() => setPrescriptionOpen(true)}>Prescription</button>
+                                    <button className="confirm-btn" type="button" onClick={() => setEditAvailabilityOpen(true)}>Edit</button>
+                                    <button className="close-btn" onClick={onClose} type="button">X</button>
+                                </div>
+                        </div>
             <div className="dashboard-filters">
                 <div className="filter-group">
                     <label htmlFor="statusFilter">Status:</label>
@@ -219,6 +227,10 @@ function DoctorDashboard({ onClose }) {
                     doctorName="Dr K Madhusudana"
                     onClose={closeVideoCall}
                 />
+            )}
+            <EditAvailabilityModal isOpen={editAvailabilityOpen} onClose={() => setEditAvailabilityOpen(false)} />
+            {prescriptionOpen && (
+                <PrescriptionModal isOpen={prescriptionOpen} onClose={() => setPrescriptionOpen(false)} />
             )}
         </div>
     );

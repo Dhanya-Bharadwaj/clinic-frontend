@@ -21,7 +21,7 @@ const Navbar = ({ onBookAppointmentClick, onAdminAccess, onCheckAppointments }) 
       </div>
       <div className="navbar-right">
         <motion.button
-          className="navbar-button"
+          className="navbar-button btn btn-primary"
           onClick={onBookAppointmentClick}
           whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
           whileTap={{ scale: 0.95 }}

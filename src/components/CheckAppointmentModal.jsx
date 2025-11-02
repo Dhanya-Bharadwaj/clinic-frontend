@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoCloseSharp } from 'react-icons/io5';
 import LoadingSpinner from './LoadingSpinner';
+import ViewPrescriptionModal from './ViewPrescriptionModal';
 import '../styles/CheckAppointmentModal.css';
 
 const CheckAppointmentModal = ({ isOpen, onClose }) => {
@@ -11,6 +12,7 @@ const CheckAppointmentModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searched, setSearched] = useState(false);
+  const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -146,15 +148,27 @@ const CheckAppointmentModal = ({ isOpen, onClose }) => {
               
               {error && <p className="error-message">{error}</p>}
               
-              <motion.button
-                type="submit"
-                className="search-button"
-                disabled={loading}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {loading ? 'Searching...' : 'Search Appointments'}
-              </motion.button>
+              <div className="button-group">
+                <motion.button
+                  type="submit"
+                  className="search-button"
+                  disabled={loading}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {loading ? 'Searching...' : 'Search Appointments'}
+                </motion.button>
+                
+                <motion.button
+                  type="button"
+                  className="prescription-button"
+                  onClick={() => setShowPrescriptionModal(true)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  📋 View Prescription
+                </motion.button>
+              </div>
             </form>
 
             {loading && <LoadingSpinner />}
@@ -206,6 +220,11 @@ const CheckAppointmentModal = ({ isOpen, onClose }) => {
           </motion.div>
         </motion.div>
       )}
+      
+      <ViewPrescriptionModal 
+        isOpen={showPrescriptionModal}
+        onClose={() => setShowPrescriptionModal(false)}
+      />
     </AnimatePresence>
   );
 };
