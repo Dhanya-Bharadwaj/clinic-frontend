@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import '../styles/Prescription.css';
 
 export default function ViewPrescriptionModal({ isOpen, onClose }) {
@@ -6,6 +8,8 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
   const [prescriptions, setPrescriptions] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(null);
+  const prescriptionRefs = useRef({});
 
   const handleSearch = async () => {
     if (!phoneNumber || phoneNumber.length !== 10) {
@@ -53,6 +57,60 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
     setPhoneNumber('');
     setPrescriptions([]);
     setSearchPerformed(false);
+  };
+
+  const handleDownload = async (prescriptionId) => {
+    try {
+      setDownloading(prescriptionId);
+      const element = prescriptionRefs.current[prescriptionId];
+      
+      if (!element) {
+        alert('Prescription element not found');
+        return;
+      }
+
+      // Capture the prescription as canvas
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      });
+
+      // Create PDF
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgData = canvas.toDataURL('image/png');
+      
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add new pages if prescription is longer than one page
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // Find prescription details for filename
+      const prescription = prescriptions.find(p => p.id === prescriptionId);
+      const filename = `Prescription_${prescription?.patientName || 'Patient'}_${new Date(prescription?.createdAt).toLocaleDateString('en-IN').replace(/\//g, '-')}.pdf`;
+      
+      pdf.save(filename);
+      
+    } catch (error) {
+      console.error('Error downloading prescription:', error);
+      alert('Failed to download prescription. Please try again.');
+    } finally {
+      setDownloading(null);
+    }
   };
 
   if (!isOpen) return null;
@@ -129,83 +187,112 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
                     Sent prescriptions: {prescriptions.length}
                   </h4>
                   {prescriptions.map((prescription) => (
-                    <div 
-                      key={prescription.id} 
-                      className="rx-paper" 
-                      style={{ 
-                        marginBottom: '20px',
-                        background: 'white',
-                        border: '2px solid #cbd5e1'
-                      }}
-                    >
-                      <div className="rx-header">
-                        <h2 className="rx-clinic-name">{prescription.clinicName}</h2>
-                        {prescription.sent && (
-                          <span style={{
-                            display: 'inline-block',
-                            marginTop: '6px',
-                            background: '#d1fae5',
-                            color: '#065f46',
-                            padding: '4px 10px',
-                            borderRadius: '999px',
-                            fontSize: '0.8rem',
-                            fontWeight: 700
-                          }}>SENT</span>
-                        )}
-                        <div className="rx-doctor-name">{prescription.doctorName}</div>
-                        <div className="rx-doctor-qualification">{prescription.doctorQualification}</div>
-                        <div className="rx-address">{prescription.clinicAddress}</div>
-                        
-                        <div className="rx-meta">
-                          <div>
-                            <strong>Name:</strong> {prescription.patientName} &nbsp;|&nbsp; 
-                            <strong>Age:</strong> {prescription.patientAge} &nbsp;|&nbsp; 
-                            <strong>Gender:</strong> {prescription.patientGender}
-                          </div>
-                          <div>
-                            <strong>Phone:</strong> {prescription.patientPhone}
-                          </div>
-                          <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px' }}>
-                            <strong>Date:</strong> {new Date(prescription.createdAt).toLocaleDateString('en-IN', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
+                    <div key={prescription.id} style={{ marginBottom: '20px' }}>
+                      <div
+                        ref={el => prescriptionRefs.current[prescription.id] = el}
+                        className="rx-paper" 
+                        style={{ 
+                          background: 'white',
+                          border: '2px solid #cbd5e1'
+                        }}
+                      >
+                        <div className="rx-header">
+                          <h2 className="rx-clinic-name">{prescription.clinicName}</h2>
+                          {prescription.sent && (
+                            <span style={{
+                              display: 'inline-block',
+                              marginTop: '6px',
+                              background: '#d1fae5',
+                              color: '#065f46',
+                              padding: '4px 10px',
+                              borderRadius: '999px',
+                              fontSize: '0.8rem',
+                              fontWeight: 700
+                            }}>SENT</span>
+                          )}
+                          <div className="rx-doctor-name">{prescription.doctorName}</div>
+                          <div className="rx-doctor-qualification">{prescription.doctorQualification}</div>
+                          <div className="rx-address">{prescription.clinicAddress}</div>
+                          
+                          <div className="rx-meta">
+                            <div>
+                              <strong>Name:</strong> {prescription.patientName} &nbsp;|&nbsp; 
+                              <strong>Age:</strong> {prescription.patientAge} &nbsp;|&nbsp; 
+                              <strong>Gender:</strong> {prescription.patientGender}
+                            </div>
+                            <div>
+                              <strong>Phone:</strong> {prescription.patientPhone}
+                            </div>
+                            <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px' }}>
+                              <strong>Date:</strong> {new Date(prescription.createdAt).toLocaleDateString('en-IN', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="rx-symbol">℞</div>
+                        <div className="rx-symbol">℞</div>
 
-                      <table className="rx-table">
-                        <thead>
-                          <tr>
-                            <th>Medicine/Tablet</th>
-                            <th>Days</th>
-                            <th>M-A-N</th>
-                            <th>Instructions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {prescription.items.map((item, idx) => (
-                            <tr key={idx}>
-                              <td>{item.medicine}</td>
-                              <td>{item.days}</td>
-                              <td>
-                                <div className="rx-pills">
-                                  {item.pattern.split('').map((v, i) => (
-                                    <div key={i} className={`pill ${v === '1' ? 'active' : ''}`} />
-                                  ))}
-                                </div>
-                              </td>
-                              <td>{item.notes || '—'}</td>
+                        <table className="rx-table">
+                          <thead>
+                            <tr>
+                              <th>Medicine/Tablet</th>
+                              <th>Days</th>
+                              <th>M-A-N</th>
+                              <th>Instructions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {prescription.items.map((item, idx) => (
+                              <tr key={idx}>
+                                <td>{item.medicine}</td>
+                                <td>{item.days}</td>
+                                <td>
+                                  <div className="rx-pills">
+                                    {item.pattern.split('').map((v, i) => (
+                                      <div key={i} className={`pill ${v === '1' ? 'active' : ''}`} />
+                                    ))}
+                                  </div>
+                                </td>
+                                <td>{item.notes || '—'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
 
-                      <div className="rx-footer">
-                        <div className="signature-line">Doctor's Signature</div>
+                        <div className="rx-footer">
+                          <div className="signature-line">Doctor's Signature</div>
+                        </div>
+                      </div>
+                      
+                      {/* Download button below prescription */}
+                      <div style={{ marginTop: '12px', textAlign: 'right' }}>
+                        <button
+                          onClick={() => handleDownload(prescription.id)}
+                          disabled={downloading === prescription.id}
+                          className="btn btn-primary"
+                          style={{
+                            padding: '10px 24px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            opacity: downloading === prescription.id ? 0.6 : 1
+                          }}
+                        >
+                          {downloading === prescription.id ? (
+                            <>
+                              <span>⏳</span>
+                              <span>Downloading...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>📥</span>
+                              <span>Download PDF</span>
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
                   ))}

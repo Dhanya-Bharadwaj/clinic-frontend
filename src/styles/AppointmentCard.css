@@ -1,9 +1,9 @@
 /* src/styles/AppointmentCard.css - REVISED */
-.appointment-card {
-    background-color: var(--card-bg);
+  .appointment-card {
+    background: var(--glass-bg);
     padding: 32px; /* Same as doctor-info */
     border-radius: 14px; /* Same as doctor-info */
-    box-shadow: 0 8px 24px var(--shadow-light); /* Reduced shadow */
+    box-shadow: var(--glass-shadow);
     text-align: center;
     width: 380px; /* Same as doctor-info */
     height: 460px; /* Fixed height to match doctor-info */
@@ -11,11 +11,11 @@
     flex-direction: column;
     justify-content: center; /* Vertically center content */
     align-items: center;
-    border: 1px solid var(--border-color); /* Subtle border */
+    border: 1px solid var(--glass-border); /* Subtle border */
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
     flex-shrink: 0; /* Prevent shrinking */
-  }
-  
-  .appointment-card h3 {
+  }  .appointment-card h3 {
     font-size: 1.8rem; /* Reduced from 2.5rem for professional look */
     color: var(--primary-color);
     margin-bottom: 20px; /* More space below heading */

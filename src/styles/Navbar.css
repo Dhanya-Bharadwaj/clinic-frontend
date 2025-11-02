@@ -4,8 +4,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 2.5%; /* base padding */
-    background-color: var(--card-bg);
-    box-shadow: 0 2px 8px var(--shadow-light); /* Reduced shadow */
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 24px rgba(2,6,23,0.06);
     position: fixed;          /* Keep navbar visible on scroll */
     top: 0;
     left: 0;
@@ -39,9 +42,7 @@
     transition: color 0.3s ease;
   }
   
-  .navbar-brand:hover {
-    color: #0056b3;
-  }
+  .navbar-brand:hover { opacity: 0.9; }
 
   .navbar-icon-button {
     background: transparent !important;

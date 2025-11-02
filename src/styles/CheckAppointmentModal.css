@@ -6,7 +6,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(2, 6, 23, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,14 +15,17 @@
 }
 
 .check-appointment-content {
-  background: white;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
   padding: 30px;
   max-width: 600px;
   width: 100%;
   max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  box-shadow: var(--glass-shadow);
 }
 
 .check-appointment-header {
@@ -31,7 +34,7 @@
   align-items: center;
   margin-bottom: 25px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
 }
 
 .check-appointment-header h3 {
@@ -76,10 +79,11 @@
 .form-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 2px solid #d1d5db;
+  border: 1px solid rgba(255,255,255,0.6);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  background: rgba(255,255,255,0.7);
 }
 
 .form-group input:focus {

@@ -3,15 +3,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
 
 :root {
-  --primary-color: #007bff; /* A nice blue for primary actions */
+  --primary-color: #2563eb; /* refined blue */
   --secondary-color: #6c757d; /* A muted color for secondary text */
   --text-color: #343a40; /* Dark text for readability */
-  --background-light: #f8f9fa; /* Light background */
+  --background-light: #f5f7fb; /* Slightly cooler light */
   --card-bg: #ffffff;
   --border-color: #e0e0e0;
   --success-color: #28a745;
   --error-color: #dc3545;
   --shadow-light: rgba(0, 0, 0, 0.1);
+
+  /* Glassmorphism + gradient system */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 10px 30px rgba(2, 6, 23, 0.12);
+  --blur-amount: 14px;
+
+  --gradient-1: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 50%, #ecfeff 100%);
+  --gradient-2: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #38bdf8 100%);
+  --gradient-accent: linear-gradient(135deg, #10b981 0%, #22c55e 100%);
 }
 
 * {
@@ -28,7 +38,7 @@ html {
 body {
   font-family: 'Montserrat', sans-serif;
   color: var(--text-color);
-  background-color: var(--background-light);
+  background: var(--gradient-1);
   line-height: 1.6;
   scroll-behavior: smooth; /* Smooth scrolling for anchor links */
   padding-top: 64px; /* Offset for fixed navbar */
@@ -128,6 +138,45 @@ input[type="text"], input[type="tel"], input[type="email"], input[type="number"]
   border: 1px solid var(--border-color);
   border-radius: 14px;
   box-shadow: 0 8px 24px var(--shadow-light);
+}
+
+/* Glass utilities */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-dark {
+  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #f8fafc;
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+}
+
+.gradient-text {
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-gradient {
+  background: var(--gradient-2);
+  color: #fff;
+  border: 0;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+}
+.btn-gradient:hover { filter: brightness(0.95); }
+
+.surface {
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(148,163,184,0.3);
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.06);
+  border-radius: 16px;
 }
 
 /* Scrollbar styling (optional, but nice) */

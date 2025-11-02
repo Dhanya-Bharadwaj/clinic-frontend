@@ -15,13 +15,13 @@ const Navbar = ({ onBookAppointmentClick, onAdminAccess, onCheckAppointments }) 
     >
       <div className="navbar-left">
         <AdminButton onAdminAccess={onAdminAccess} />
-        <a href="/" className="navbar-brand">
+        <a href="/" className="navbar-brand gradient-text">
           Dr. K. Madhusudana
         </a>
       </div>
       <div className="navbar-right">
         <motion.button
-          className="navbar-button btn btn-primary"
+          className="navbar-button btn btn-gradient"
           onClick={onBookAppointmentClick}
           whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
           whileTap={{ scale: 0.95 }}

@@ -17,9 +17,9 @@ const AppointmentCard = ({ onBookAppointmentClick, clinicName, tagline, address 
     ) : null}
     {address ? <p className="clinic-address">{address}</p> : null}
       <motion.button
-        className="btn btn-primary"
+        className="btn btn-gradient"
         onClick={onBookAppointmentClick}
-        whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
+        whileHover={{ scale: 1.05, boxShadow: '0 10px 24px rgba(37, 99, 235, 0.28)' }}
         whileTap={{ scale: 0.95 }}
       >
         Book an Appointment

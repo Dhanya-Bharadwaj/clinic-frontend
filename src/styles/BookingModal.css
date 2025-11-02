@@ -7,19 +7,21 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(2, 6, 23, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
 }
 
 .modal-content {
-  background-color: var(--card-bg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur-amount));
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--glass-shadow);
   max-width: 650px;
   width: 90%;
   position: relative;
@@ -36,12 +38,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255,255,255,0.5);
   padding-bottom: 15px;
   margin-bottom: 20px;
   position: sticky;
   top: 0;
-  background-color: var(--card-bg);
+  background-color: transparent;
   z-index: 2001;
   padding-top: 0;
 }
