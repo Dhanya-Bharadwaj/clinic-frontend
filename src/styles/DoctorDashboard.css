@@ -212,6 +212,7 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2.5rem;
     animation: fadeInGrid 0.6s ease-out;
+    align-items: stretch; /* ensure equal height items */
 }
 
 @keyframes fadeInGrid {
@@ -234,7 +235,7 @@
     position: relative;
     overflow: hidden;
     animation: cardSlideIn 0.5s ease-out backwards;
-    height: fit-content;
+    height: 100%; /* stretch to equal height in grid */
     margin-bottom: 0.5rem;
 }
 
@@ -520,6 +521,102 @@
 
 .prescription-btn i {
     font-size: 1.1rem;
+}
+
+/* Reviews button styling to match other buttons */
+.review-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: #0ea5e9; /* sky blue */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.review-btn:hover { background: #0284c7; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(14, 165, 233, 0.3); }
+.review-btn:active { transform: translateY(0); }
+.review-btn.active { outline: 2px solid rgba(14, 165, 233, 0.3); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+
+/* Doctor Review Section */
+.doctor-review-section { margin-top: 1rem; }
+.doctor-review-section .reviews-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+.doctor-review-section .reviews-toolbar h3 { margin: 0; color: #1f2937; }
+.doctor-review-section .reviews-toolbar .muted { color: #6b7280; font-weight: 600; }
+.doctor-review-section .toolbar-actions { display: flex; gap: 0.75rem; align-items: center; }
+.doctor-review-section .review-search,
+.doctor-review-section .review-filter,
+.doctor-review-section .review-sort {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    min-width: 140px;
+}
+
+.doctor-review-section .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: stretch; /* equal height cards */
+}
+
+.doctor-review-section .review-card.admin {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.doctor-review-section .review-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+.doctor-review-section .review-author { display: flex; flex-direction: column; gap: 0.15rem; }
+.doctor-review-section .review-author strong { color: #111827; }
+.doctor-review-section .review-date { color: #6b7280; font-size: 0.8rem; }
+.doctor-review-section .review-stars { display: flex; align-items: center; gap: 0.35rem; }
+.doctor-review-section .rating-text { color: #374151; font-weight: 600; font-size: 0.85rem; margin-left: 0.25rem; }
+.doctor-review-section .review-text { color: #374151; line-height: 1.5; margin: 0.5rem 0 0.75rem; }
+.doctor-review-section .review-actions { display: flex; justify-content: flex-end; margin-top: auto; }
+.doctor-review-section .delete-review-btn { background: #ef4444; color: white; border: none; padding: 0.45rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.doctor-review-section .delete-review-btn:hover { background: #dc2626; }
+
+/* Icon version: circular red button with cross */
+.doctor-review-section .delete-review-btn.icon {
+    background: transparent !important;
+    color: #ef4444 !important; /* red cross */
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px; /* cross size */
+    line-height: 1;
+    box-shadow: none !important;
+}
+.doctor-review-section .delete-review-btn.icon:hover {
+    color: #dc2626; /* darker red */
+    transform: none;
 }
 
 /* No Appointments */

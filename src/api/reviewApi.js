@@ -1,3 +1,20 @@
+/**
+ * Fetches all reviews (no rating filter, for admin)
+ * @returns {Promise<Array>} Array of review objects
+ */
+export const getAllReviews = async () => {
+  try {
+    const response = await fetch(`${REVIEWS_BASE_URL}?all=true`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch all reviews: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.reviews || [];
+  } catch (error) {
+    console.error('Error fetching all reviews:', error);
+    throw error;
+  }
+};
 // Frontend API for reviews
 export const REVIEWS_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://clinic-backend-flame.vercel.app/api/reviews'

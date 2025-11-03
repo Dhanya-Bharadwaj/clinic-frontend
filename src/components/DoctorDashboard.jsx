@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DoctorDashboard.css';
 import EditAvailabilityModal from './EditAvailabilityModal';
 import PrescriptionModal from './PrescriptionModal.jsx';
+import DoctorReviewSection from './DoctorReviewSection';
 
 // Small hook to encapsulate fetching logic
 function useAppointments(statusFilter, startDate, endDate) {
@@ -53,6 +54,7 @@ function DoctorDashboard({ onClose }) {
     const [activeVideoCall, setActiveVideoCall] = useState(null);
     const [editAvailabilityOpen, setEditAvailabilityOpen] = useState(false);
     const [prescriptionOpen, setPrescriptionOpen] = useState(false);
+    const [showReviews, setShowReviews] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState(null);
 
     const { appointments, loading, error, setAppointments } = useAppointments(statusFilter, startDate, endDate);
@@ -136,16 +138,20 @@ function DoctorDashboard({ onClose }) {
 
     return (
         <div className="doctor-dashboard-modal">
-                        <div className="dashboard-header">
-                                <h2>Doctor Dashboard</h2>
-                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                    <button className="prescription-btn" type="button" onClick={() => { setSelectedPatient(null); setPrescriptionOpen(true); }}>
-                                        <i className="fas fa-prescription"></i> Prescription
-                                    </button>
-                                    <button className="confirm-btn" type="button" onClick={() => setEditAvailabilityOpen(true)}>Edit Availability</button>
-                                    <button className="close-btn" onClick={onClose} type="button">X</button>
-                                </div>
-                        </div>
+            <div className="dashboard-header">
+                <h2>Doctor Dashboard</h2>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button className={`prescription-btn${!showReviews ? ' active' : ''}`} type="button" onClick={() => { setShowReviews(false); setSelectedPatient(null); setPrescriptionOpen(true); }}>
+                        <i className="fas fa-prescription"></i> Prescription
+                    </button>
+                    <button className={`review-btn${showReviews ? ' active' : ''}`} type="button" onClick={() => { setShowReviews(true); setPrescriptionOpen(false); }}>
+                        <i className="fas fa-star"></i> Reviews
+                    </button>
+                    <button className="confirm-btn" type="button" onClick={() => setEditAvailabilityOpen(true)}>Edit Availability</button>
+                    <button className="close-btn" onClick={onClose} type="button">X</button>
+                </div>
+            </div>
+            {!showReviews && (
             <div className="dashboard-filters">
                 <div className="filter-group">
                     <label htmlFor="statusFilter">Status:</label>
@@ -187,58 +193,66 @@ function DoctorDashboard({ onClose }) {
                     <span className="count-number">{appointments.length}</span>
                 </div>
             </div>
-            {error && <div className="error-message" role="alert">{error}</div>}
-            {loading ? (
-                <LoadingSpinner />
-            ) : appointments.length === 0 ? (
-                <div className="no-appointments">No appointments found for the selected criteria.</div>
-            ) : (
-                <div className="appointments-list">
-                    {appointments.map(apt => {
-                        const id = apt._id || apt.bookingId;
-                        const paymentStatus = apt.paymentStatus || 'not_provided';
-                        const showConfirm = apt.consultType === 'online' && apt.status === 'booked' && paymentStatus === 'pending_verification';
-                        const showJoinCall = apt.consultType === 'online' && canJoinCall(apt);
-                        return (
-                            <div key={id} className="appointment-card compact">
-                                <div className="card-header">
-                                    <div className="title">
-                                        <span className="patient-name">{apt.patientName || 'Unknown'}</span>
-                                        <span className="meta">{apt.gender ? apt.gender.charAt(0).toUpperCase() + apt.gender.slice(1) : ''}{apt.age ? ` • ${apt.age}` : ''}</span>
+            )}
+            {!showReviews && (
+                <>
+                {error && <div className="error-message" role="alert">{error}</div>}
+                {loading ? (
+                    <LoadingSpinner />
+                ) : appointments.length === 0 ? (
+                    <div className="no-appointments">No appointments found for the selected criteria.</div>
+                ) : (
+                    <div className="appointments-list">
+                        {appointments.map(apt => {
+                            const id = apt._id || apt.bookingId;
+                            const paymentStatus = apt.paymentStatus || 'not_provided';
+                            const showConfirm = apt.consultType === 'online' && apt.status === 'booked' && paymentStatus === 'pending_verification';
+                            const showJoinCall = apt.consultType === 'online' && canJoinCall(apt);
+                            return (
+                                <div key={id} className="appointment-card compact">
+                                    <div className="card-header">
+                                        <div className="title">
+                                            <span className="patient-name">{apt.patientName || 'Unknown'}</span>
+                                            <span className="meta">{apt.gender ? apt.gender.charAt(0).toUpperCase() + apt.gender.slice(1) : ''}{apt.age ? ` • ${apt.age}` : ''}</span>
+                                        </div>
+                                        <div className="badges">
+                                            <span className="time-badge-large">{apt.time || '-'}</span>
+                                            <span className="date-badge">{apt.date ? new Date(apt.date).toLocaleDateString() : '-'}</span>
+                                        </div>
                                     </div>
-                                    <div className="badges">
-                                        <span className="time-badge-large">{apt.time || '-'}</span>
-                                        <span className="date-badge">{apt.date ? new Date(apt.date).toLocaleDateString() : '-'}</span>
+                                    <div className="card-body">
+                                        <div className="info"><label>Phone</label><span>{apt.patientPhone || '-'}</span></div>
+                                        <div className="info"><label>Consult</label><span>{apt.consultType || '-'}</span></div>
+                                        {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
+                                        {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
                                     </div>
-                                </div>
-                                <div className="card-body">
-                                    <div className="info"><label>Phone</label><span>{apt.patientPhone || '-'}</span></div>
-                                    <div className="info"><label>Consult</label><span>{apt.consultType || '-'}</span></div>
-                                    {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
-                                    {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
-                                </div>
-                                <div className="card-actions">
-                                    {showConfirm && (
-                                        <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
-                                    )}
-                                    {showJoinCall && (
-                                        <button className="join-call-btn" type="button" onClick={() => joinVideoCall(apt)}>
-                                            <i className="fas fa-video"></i> Join Video Call
+                                    <div className="card-actions">
+                                        {showConfirm && (
+                                            <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
+                                        )}
+                                        {showJoinCall && (
+                                            <button className="join-call-btn" type="button" onClick={() => joinVideoCall(apt)}>
+                                                <i className="fas fa-video"></i> Join Video Call
+                                            </button>
+                                        )}
+                                        <button 
+                                            className="prescription-btn" 
+                                            type="button" 
+                                            onClick={() => openPrescriptionForPatient(apt)}
+                                            title="Write Prescription"
+                                        >
+                                            <i className="fas fa-prescription"></i> Prescription
                                         </button>
-                                    )}
-                                    <button 
-                                        className="prescription-btn" 
-                                        type="button" 
-                                        onClick={() => openPrescriptionForPatient(apt)}
-                                        title="Write Prescription"
-                                    >
-                                        <i className="fas fa-prescription"></i> Prescription
-                                    </button>
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
+                </>
+            )}
+            {showReviews && (
+                <DoctorReviewSection />
             )}
             {activeVideoCall && (
                 <VideoCall
@@ -249,7 +263,7 @@ function DoctorDashboard({ onClose }) {
                 />
             )}
             <EditAvailabilityModal isOpen={editAvailabilityOpen} onClose={() => setEditAvailabilityOpen(false)} />
-            {prescriptionOpen && (
+            {prescriptionOpen && !showReviews && (
                 <PrescriptionModal 
                     isOpen={prescriptionOpen} 
                     onClose={closePrescription}

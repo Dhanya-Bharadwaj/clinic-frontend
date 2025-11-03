@@ -121,6 +121,7 @@ const HappyClientsSection = ({ isAdmin = false }) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [newReview, setNewReview] = useState({
     name: '',
@@ -133,17 +134,32 @@ const HappyClientsSection = ({ isAdmin = false }) => {
     fetchReviews();
   }, []);
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (showRefreshState = false) => {
     try {
-      setLoading(true);
+      if (showRefreshState) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      console.log('Fetching reviews from API...');
       const fetchedReviews = await getReviews();
-      setReviews(fetchedReviews);
+      console.log('Fetched reviews:', fetchedReviews);
+      
+      if (fetchedReviews && fetchedReviews.length > 0) {
+        setReviews(fetchedReviews);
+        console.log('Reviews set successfully:', fetchedReviews.length);
+      } else {
+        console.warn('No reviews fetched, using sample reviews');
+        setReviews(sampleReviews);
+      }
     } catch (error) {
       console.error('Error fetching reviews:', error);
+      console.error('Error details:', error.message);
       // Keep sample reviews as fallback
       setReviews(sampleReviews);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -163,28 +179,49 @@ const HappyClientsSection = ({ isAdmin = false }) => {
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     
-    if (!newReview.name.trim() || !newReview.review.trim() || newReview.rating === 0) {
+    // Client-side validation to match backend rules
+    const name = (newReview.name || '').trim();
+    const reviewText = (newReview.review || '').trim();
+    const rating = Number(newReview.rating) || 0;
+
+    if (!name || !reviewText || rating === 0) {
       alert('Please fill in all fields and provide a rating');
       return;
     }
 
+    // Backend requires review length >= 10 characters
+    if (reviewText.length < 10) {
+      alert('Please write a slightly longer review (at least 10 characters).');
+      return;
+    }
+
     try {
-      const response = await submitReview(newReview);
+      console.log('Submitting review:', { name, reviewText, rating });
+      const response = await submitReview({ name, review: reviewText, rating });
+      console.log('Submit response:', response);
       
-      if (response.saved) {
-        // Review was saved (rating >= 3.5)
-        await fetchReviews(); // Refresh the reviews list
-        alert('Thank you for your review!');
-      } else {
-        // Review was not saved (rating < 3.5)
-        alert(response.message);
-      }
-      
+      // Reset form first
       setNewReview({ name: '', review: '', rating: 0 });
       setShowReviewForm(false);
+      
+      // All reviews are now saved (response.saved is always true)
+      if (response.displayOnPublic) {
+        // Review will appear on public page (rating > 3)
+        alert('Thank you for your review! It will appear on our website shortly.');
+        
+        // Add delay to allow Firestore serverTimestamp to be set, then refresh
+        setTimeout(async () => {
+          await fetchReviews(true); // Pass true to show "Refreshing..." instead of "Loading..."
+        }, 1500); // 1.5 second delay for Firestore to process
+      } else {
+        // Review saved but won't show publicly (rating <= 3)
+        alert(response.message || 'Thank you for your feedback. We appreciate your input and will work to improve our services.');
+      }
+      
     } catch (error) {
       console.error('Error submitting review:', error);
-      alert('Failed to submit review. Please try again.');
+      console.error('Error details:', error.message);
+      alert(`Failed to submit review. Error: ${error.message}. Please check your internet connection and try again.`);
     }
   };
 
@@ -302,6 +339,8 @@ const HappyClientsSection = ({ isAdmin = false }) => {
             <div className="reviews-list">
               {loading ? (
                 <p className="loading-reviews">Loading reviews...</p>
+              ) : refreshing ? (
+                <p className="loading-reviews">Refreshing reviews...</p>
               ) : reviews.length > 0 ? (
                 reviews.map((review) => (
                   <ReviewCard 
