@@ -53,6 +53,7 @@ function DoctorDashboard({ onClose }) {
     const [activeVideoCall, setActiveVideoCall] = useState(null);
     const [editAvailabilityOpen, setEditAvailabilityOpen] = useState(false);
     const [prescriptionOpen, setPrescriptionOpen] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState(null);
 
     const { appointments, loading, error, setAppointments } = useAppointments(statusFilter, startDate, endDate);
 
@@ -118,13 +119,30 @@ function DoctorDashboard({ onClose }) {
         setActiveVideoCall(null);
     }, []);
 
+    const openPrescriptionForPatient = useCallback((apt) => {
+        setSelectedPatient({
+            name: apt.patientName || '',
+            age: apt.age || '',
+            gender: apt.gender || '',
+            phone: apt.patientPhone || ''
+        });
+        setPrescriptionOpen(true);
+    }, []);
+
+    const closePrescription = useCallback(() => {
+        setPrescriptionOpen(false);
+        setSelectedPatient(null);
+    }, []);
+
     return (
         <div className="doctor-dashboard-modal">
                         <div className="dashboard-header">
                                 <h2>Doctor Dashboard</h2>
                                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                    <button className="confirm-btn" type="button" onClick={() => setPrescriptionOpen(true)}>Prescription</button>
-                                    <button className="confirm-btn" type="button" onClick={() => setEditAvailabilityOpen(true)}>Edit</button>
+                                    <button className="prescription-btn" type="button" onClick={() => { setSelectedPatient(null); setPrescriptionOpen(true); }}>
+                                        <i className="fas fa-prescription"></i> Prescription
+                                    </button>
+                                    <button className="confirm-btn" type="button" onClick={() => setEditAvailabilityOpen(true)}>Edit Availability</button>
                                     <button className="close-btn" onClick={onClose} type="button">X</button>
                                 </div>
                         </div>
@@ -189,32 +207,34 @@ function DoctorDashboard({ onClose }) {
                                         <span className="meta">{apt.gender ? apt.gender.charAt(0).toUpperCase() + apt.gender.slice(1) : ''}{apt.age ? ` • ${apt.age}` : ''}</span>
                                     </div>
                                     <div className="badges">
-                                        <span className={`status-badge ${apt.status}`}>{(apt.status || 'BOOKED').toUpperCase()}</span>
-                                        <span className="time-badge">{apt.date ? new Date(apt.date).toLocaleDateString() : '-'} • {apt.time || '-'}</span>
-                                        {apt.consultType === 'online' && (
-                                            <span className={`payment-badge ${paymentStatus}`}>{paymentStatus.replace('_', ' ')}</span>
-                                        )}
+                                        <span className="time-badge-large">{apt.time || '-'}</span>
+                                        <span className="date-badge">{apt.date ? new Date(apt.date).toLocaleDateString() : '-'}</span>
                                     </div>
                                 </div>
                                 <div className="card-body">
                                     <div className="info"><label>Phone</label><span>{apt.patientPhone || '-'}</span></div>
                                     <div className="info"><label>Consult</label><span>{apt.consultType || '-'}</span></div>
-                                    <div className="info"><label>Booking ID</label><span>{id}</span></div>
                                     {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
                                     {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
                                 </div>
-                                {(showConfirm || showJoinCall) && (
-                                    <div className="card-actions">
-                                        {showConfirm && (
-                                            <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
-                                        )}
-                                        {showJoinCall && (
-                                            <button className="join-call-btn" type="button" onClick={() => joinVideoCall(apt)}>
-                                                <i className="fas fa-video"></i> Join Video Call
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
+                                <div className="card-actions">
+                                    {showConfirm && (
+                                        <button className="confirm-btn" type="button" onClick={() => confirmAppointment(apt)}>Confirm</button>
+                                    )}
+                                    {showJoinCall && (
+                                        <button className="join-call-btn" type="button" onClick={() => joinVideoCall(apt)}>
+                                            <i className="fas fa-video"></i> Join Video Call
+                                        </button>
+                                    )}
+                                    <button 
+                                        className="prescription-btn" 
+                                        type="button" 
+                                        onClick={() => openPrescriptionForPatient(apt)}
+                                        title="Write Prescription"
+                                    >
+                                        <i className="fas fa-prescription"></i> Prescription
+                                    </button>
+                                </div>
                             </div>
                         );
                     })}
@@ -230,7 +250,11 @@ function DoctorDashboard({ onClose }) {
             )}
             <EditAvailabilityModal isOpen={editAvailabilityOpen} onClose={() => setEditAvailabilityOpen(false)} />
             {prescriptionOpen && (
-                <PrescriptionModal isOpen={prescriptionOpen} onClose={() => setPrescriptionOpen(false)} />
+                <PrescriptionModal 
+                    isOpen={prescriptionOpen} 
+                    onClose={closePrescription}
+                    patientData={selectedPatient}
+                />
             )}
         </div>
     );

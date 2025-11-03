@@ -1,7 +1,7 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import '../styles/Prescription.css';
 
-export default function PrescriptionModal({ isOpen, onClose }) {
+export default function PrescriptionModal({ isOpen, onClose, patientData }) {
   const [clinicName, setClinicName] = useState('Balakrishna Clinic');
   const [doctorName, setDoctorName] = useState('Dr. K. Madhusudana');
   const [doctorQualification, setDoctorQualification] = useState('M.B.B.S | F.A.G.E   KMC No. 50635');
@@ -18,6 +18,16 @@ export default function PrescriptionModal({ isOpen, onClose }) {
   const [newDays, setNewDays] = useState('');
   const [newPattern, setNewPattern] = useState('');
   const [newNotes, setNewNotes] = useState('');
+
+  // Auto-fill patient data when provided
+  useEffect(() => {
+    if (patientData) {
+      if (patientData.name) setPatientName(patientData.name);
+      if (patientData.age) setPatientAge(String(patientData.age));
+      if (patientData.gender) setPatientGender(patientData.gender);
+      if (patientData.phone) setPatientPhone(patientData.phone);
+    }
+  }, [patientData]);
 
   const todayString = useMemo(() => {
     const d = new Date();

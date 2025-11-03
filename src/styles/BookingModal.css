@@ -7,21 +7,20 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(2, 6, 23, 0.55);
+  background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  backdrop-filter: blur(8px);
+  /* Removed backdrop blur for a plain background */
 }
 
 .modal-content {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--blur-amount));
+  background: #ffffff;
+  border: 1px solid #e5e7eb; /* neutral light gray */
   padding: 40px;
-  border-radius: 15px;
-  box-shadow: var(--glass-shadow);
+  border-radius: 8px;
+  box-shadow: none; /* No shadow for plain look */
   max-width: 650px;
   width: 90%;
   position: relative;
@@ -38,7 +37,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid #eee;
   padding-bottom: 15px;
   margin-bottom: 20px;
   position: sticky;
@@ -63,14 +62,12 @@
   color: var(--secondary-color);
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s ease, transform 0.2s ease;
   box-shadow: none;
   transform: none;
 }
 .modal-close-button:hover {
   color: var(--text-color);
   background: none;
-  transform: rotate(90deg);
 }
 
 /* --- Date Picker Section (Inline) --- */
@@ -104,7 +101,7 @@
 .react-datepicker {
   font-family: 'Montserrat', sans-serif;
   border: 1px solid var(--border-color);
-  box-shadow: 0 5px 20px var(--shadow-light);
+  box-shadow: none;
   border-radius: 10px;
   position: relative;
   display: inline-block; /* Allows the calendar to size itself */
@@ -230,7 +227,7 @@
   border-radius: 8px;
   padding: 15px;
   background-color: var(--background-light);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 .time-slot-button {
@@ -240,16 +237,14 @@
   padding: 10px 15px;
   border-radius: 5px;
   font-size: 1rem;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: none;
+  box-shadow: none;
   transform: none;
 }
 
 .time-slot-button:hover:not(:disabled) {
   background-color: var(--primary-color);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
 .time-slot-button:disabled {
@@ -266,7 +261,7 @@
   color: white;
   border-color: var(--primary-color);
   font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  box-shadow: none;
 }
 
 
@@ -302,7 +297,7 @@
   border-radius: 8px;
   font-size: 1rem;
   color: var(--text-color);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: none;
   background-color: var(--background-light);
 }
 
@@ -310,7 +305,7 @@
 .appointment-form textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  box-shadow: none;
   background-color: white;
 }
 
@@ -335,12 +330,11 @@
 
 .modal-actions .cancel-button {
   background-color: var(--secondary-color);
-  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+  box-shadow: none;
 }
 
 .modal-actions .cancel-button:hover {
   background-color: #5a6268;
-  box-shadow: 0 6px 15px rgba(108, 117, 125, 0.4);
 }
 
 .modal-message {
@@ -390,13 +384,9 @@
     font-size: 5rem;
     color: var(--success-color);
     margin-bottom: 20px;
-    animation: scaleIn 0.5s ease-out forwards;
+  /* Removed entry animation for plain look */
 }
-
-@keyframes scaleIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+/* Removed keyframes */
 
 .confirmation-message {
     font-size: 1.8rem;
@@ -422,11 +412,11 @@
 
 /* Video Call Info in Confirmation */
 .video-call-info {
-    margin: 1.5rem 0;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-radius: 12px;
-    border: 2px solid #4caf50;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #f9fafb; /* plain light background */
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 .video-call-notice {
@@ -735,15 +725,15 @@ body.modal-open {
   border-radius: 50%;
   border: 2px solid #007bff;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  transition: none;
 }
 .consult-type-radio.selected .custom-radio {
   border-color: #0056b3;
-  box-shadow: 0 0 0 4px rgba(0,123,255,0.12);
+  box-shadow: none;
 }
 .consult-type-radio input[type="radio"]:checked + .custom-radio {
-  background: radial-gradient(circle at 50% 50%, #007bff 60%, #fff 100%);
+  background: #007bff;
   border-color: #0056b3;
 }
 .consult-type-next {
@@ -801,15 +791,15 @@ body.modal-open {
   border-radius: 50%;
   border: 2px solid #007bff;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  transition: none;
 }
 .gender-radio.selected .custom-radio {
   border-color: #0056b3;
-  box-shadow: 0 0 0 3px rgba(0,123,255,0.12);
+  box-shadow: none;
 }
 .gender-radio input[type="radio"]:checked + .custom-radio {
-  background: radial-gradient(circle at 50% 50%, #007bff 60%, #fff 100%);
+  background: #007bff;
   border-color: #0056b3;
 }
 
@@ -862,13 +852,12 @@ body.modal-open {
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: none;
   margin-right: 12px;
 }
 
 .razorpay-pay-btn:hover:not(:disabled) {
   background: #0751d4;
-  box-shadow: 0 4px 12px rgba(10, 99, 255, 0.3);
 }
 
 .razorpay-pay-btn:disabled {
@@ -881,9 +870,9 @@ body.modal-open {
 .whatsapp-notifications {
   margin-top: 20px;
   padding: 15px;
-  background: #f0fdf4;
-  border-radius: 12px;
-  border: 2px solid #86efac;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 .whatsapp-button {
@@ -899,12 +888,12 @@ body.modal-open {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: none;
 }
 
 .whatsapp-button:hover {
   background: #1fb855;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  /* No shadow */
 }
 
 .whatsapp-button i {
@@ -927,9 +916,9 @@ body.modal-open {
 .meet-link-section {
   margin-top: 15px;
   padding: 15px;
-  background: #eff6ff;
-  border-radius: 10px;
-  border: 2px solid #93c5fd;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 .meet-link-button {
@@ -940,13 +929,54 @@ body.modal-open {
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: none;
   word-break: break-all;
   margin-top: 8px;
 }
 
 .meet-link-button:hover {
   background: #0751d4;
-  box-shadow: 0 4px 12px rgba(10, 99, 255, 0.3);
-  transform: translateY(-2px);
+  /* No shadow or movement */
+}
+
+/* Clinic Visit Info Section */
+.clinic-visit-info {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.clinic-visit-notice {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clinic-visit-notice i {
+  color: #f59e0b;
+  font-size: 1.3rem;
+}
+
+.clinic-address-section {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.clinic-address-section p {
+  margin: 0;
+  color: #475569;
+}
+
+.clinic-address-section p:first-child {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
 }

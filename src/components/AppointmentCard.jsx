@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import '../styles/AppointmentCard.css';
 
 // Accept clinicName, tagline and address as props
-const AppointmentCard = ({ onBookAppointmentClick, clinicName, tagline, address }) => {
+const AppointmentCard = ({ onBookAppointmentClick, clinicName, tagline, address, extraClass = '' }) => {
   return (
-    <div className="appointment-card">
+    <div className={`appointment-card ${extraClass}`}>
   <h3>{clinicName || 'Dr madhusudhana Clinic'}</h3> {/* Use prop or fallback */}
     {tagline ? (
       <p className="clinic-tagline" aria-label="clinic tagline">

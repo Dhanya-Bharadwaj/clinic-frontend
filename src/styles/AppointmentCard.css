@@ -1,7 +1,7 @@
 /* src/styles/AppointmentCard.css - REVISED */
   .appointment-card {
     background: var(--glass-bg);
-    padding: 32px; /* Same as doctor-info */
+    padding: 32px; /* Same as doctor-info - equal on all sides */
     border-radius: 14px; /* Same as doctor-info */
     box-shadow: var(--glass-shadow);
     text-align: center;
@@ -9,25 +9,27 @@
     height: 460px; /* Fixed height to match doctor-info */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertically center content */
+    justify-content: center; /* Match doctor-info centering */
     align-items: center;
     border: 1px solid var(--glass-border); /* Subtle border */
     backdrop-filter: blur(var(--blur-amount));
     -webkit-backdrop-filter: blur(var(--blur-amount));
     flex-shrink: 0; /* Prevent shrinking */
   }  .appointment-card h3 {
-    font-size: 1.8rem; /* Reduced from 2.5rem for professional look */
+    font-size: 1.8rem;
     color: var(--primary-color);
-    margin-bottom: 20px; /* More space below heading */
+    margin-bottom: 10px;
     font-family: 'Playfair Display', serif;
     font-weight: 700;
+    line-height: 1.2;
   }
   
   .appointment-card p {
-    font-size: 0.95rem; /* Reduced from 1.25rem */
+    font-size: 0.95rem;
     color: var(--secondary-color);
-    margin-bottom: 28px; /* Reduced from 35px */
-    line-height: 1.5;
+    margin-bottom: 0;
+    line-height: 1.6;
+    margin-top: 10px;
   }
 
   /* Tagline under clinic name */
@@ -35,8 +37,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    /* Keep tagline smaller than the clinic heading (~50%) */
-    font-size: 0.9rem; /* 50% of 1.8rem base h3 */
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--primary-color);
     letter-spacing: 0.3px;
@@ -44,8 +45,8 @@
     background: rgba(10, 99, 255, 0.08);
     border: 1px solid #93c5fd;
     border-radius: 999px;
-    margin-top: -2px;
-    margin-bottom: 12px; /* slightly tighter than address */
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 
   .appointment-card .clinic-tagline .quote-mark {
@@ -60,16 +61,17 @@
 
   /* Address paragraph spacing */
   .appointment-card .clinic-address {
-    margin-top: 4px;
-    margin-bottom: 24px;
+    margin-top: 10px;
+    margin-bottom: 0;
   }
   
   /* Inherits button styles from index.css */
   .appointment-card button {
     width: 100%;
-    max-width: 280px; /* Reduced from 320px */
-    padding: 12px 24px; /* Reduced from 15px 30px */
-    font-size: 0.95rem; /* Reduced from 1.1rem */
+    max-width: 280px;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    margin-top: 10px;
   }
   
   /* Responsive adjustments for Appointment Card */

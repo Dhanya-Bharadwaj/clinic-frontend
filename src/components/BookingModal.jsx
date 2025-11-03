@@ -1,7 +1,7 @@
 // src/components/BookingModal.jsx - REVISED for Step-by-Step Booking Flow with Razorpay
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Removed framer-motion for a plain, no-animation UI
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { IoCloseSharp } from 'react-icons/io5';
@@ -10,15 +10,7 @@ import LoadingSpinner from './LoadingSpinner';
 import '../styles/BookingModal.css';
 // import 'react-datepicker/dist/react-datepicker.css'; // This import is redundant
 
-const modalVariants = {
-  hidden: { opacity: 0, scale: 0.7 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.3, type: 'spring', damping: 20, stiffness: 200 },
-  },
-  exit: { opacity: 0, scale: 0.7, transition: { duration: 0.2 } },
-};
+// No modal variants needed
 
 const BookingModal = ({ isOpen, onClose }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -214,6 +206,11 @@ const BookingModal = ({ isOpen, onClose }) => {
       setBookingStatus({ message: result.message, type: 'success' });
       fetchSlots(selectedDate); // Refresh slots immediately
       setBookingConfirmedData(result.appointment); // Store confirmed details from backend response
+      
+      // Store WhatsApp notification URLs
+      if (result.whatsappNotifications) {
+        setWhatsappNotifications(result.whatsappNotifications);
+      }
 
       // Removed immediate onClose() to show confirmation screen
       // setTimeout(() => { onClose(); }, 2000); // This will now be handled by confirmation view
@@ -391,23 +388,8 @@ const BookingModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="modal-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={handleBackdropClick}
-        >
-          <motion.div
-            className="modal-content"
-            variants={modalVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            ref={modalRef}
-          >
+    <div className="modal-backdrop" onClick={handleBackdropClick}>
+      <div className="modal-content" ref={modalRef}>
             <div className="modal-header">
               <h3>{bookingConfirmedData ? 'Appointment Confirmed!' : 'Book Your Appointment'}</h3>
               <button onClick={onClose} className="modal-close-button" aria-label="Close modal">
@@ -443,16 +425,14 @@ const BookingModal = ({ isOpen, onClose }) => {
                     Offline Consulting
                   </label>
                 </div>
-                <motion.button
+                <button
                   className="consult-type-next"
                   onClick={() => consultType && setStep(1)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   disabled={!consultType}
                   style={{ marginTop: '24px', width: '100%' }}
                 >
                   Next
-                </motion.button>
+                </button>
               </div>
             )}
 
@@ -517,16 +497,14 @@ const BookingModal = ({ isOpen, onClose }) => {
                               <h5 className="slot-section-title">Morning</h5>
                               <div className="time-slots-container">
                                 {morningSlots.map((time) => (
-                                  <motion.button
+                                  <button
                                     key={`m-${time}`}
                                     className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
                                     onClick={() => { handleTimeSelect(time); setStep(3); }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
                                     disabled={submittingBooking}
                                   >
                                     {time}
-                                  </motion.button>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -536,16 +514,14 @@ const BookingModal = ({ isOpen, onClose }) => {
                               <h5 className="slot-section-title">Afternoon</h5>
                               <div className="time-slots-container">
                                 {afternoonSlots.map((time) => (
-                                  <motion.button
+                                  <button
                                     key={`a-${time}`}
                                     className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
                                     onClick={() => { handleTimeSelect(time); setStep(3); }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
                                     disabled={submittingBooking}
                                   >
                                     {time}
-                                  </motion.button>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -555,16 +531,14 @@ const BookingModal = ({ isOpen, onClose }) => {
                               <h5 className="slot-section-title">Evening</h5>
                               <div className="time-slots-container">
                                 {eveningSlots.map((time) => (
-                                  <motion.button
+                                  <button
                                     key={`e-${time}`}
                                     className={`time-slot-button ${selectedTime === time ? 'selected' : ''}`}
                                     onClick={() => { handleTimeSelect(time); setStep(3); }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
                                     disabled={submittingBooking}
                                   >
                                     {time}
-                                  </motion.button>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -671,24 +645,20 @@ const BookingModal = ({ isOpen, onClose }) => {
                   </p>
                 )}
                 <div className="modal-actions">
-                  <motion.button
+                  <button
                     type="button"
                     onClick={onClose}
                     className="cancel-button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                     disabled={submittingBooking}
                   >
                     Cancel
-                  </motion.button>
-                  <motion.button
+                  </button>
+                  <button
                     type="submit"
                     disabled={submittingBooking}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     Next
-                  </motion.button>
+                  </button>
                 </div>
               </form>
             )}
@@ -718,15 +688,13 @@ const BookingModal = ({ isOpen, onClose }) => {
                     )}
                   </div>
                 </div>
-                <motion.button
+                <button
                   onClick={handleOnlinePayment}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   disabled={loadingPayment || !razorpayKeyPresent || !razorpayReady}
                   className="razorpay-pay-btn"
                 >
                   {loadingPayment ? 'Processing...' : (!razorpayKeyPresent ? 'Payment Not Configured' : (!razorpayReady ? 'Loading Payment…' : 'Pay & Confirm Booking'))}
-                </motion.button>
+                </button>
                 {/* Test-mode skip removed for production safety */}
               </div>
             )}
@@ -768,36 +736,27 @@ const BookingModal = ({ isOpen, onClose }) => {
                   </p>
                 )}
                 <div className="modal-actions">
-                  <motion.button
+                  <button
                     type="button"
                     onClick={onClose}
                     className="cancel-button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                     disabled={submittingBooking}
                   >
                     Cancel
-                  </motion.button>
-                  <motion.button
+                  </button>
+                  <button
                     type="submit"
                     disabled={submittingBooking}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     {submittingBooking ? 'Booking...' : 'Confirm Booking'}
-                  </motion.button>
+                  </button>
                 </div>
               </form>
             )}
 
             {/* Conditional Rendering: Show Confirmation View or Booking Form */}
             {bookingConfirmedData && (
-              <motion.div
-                className="booking-confirmation-view"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-              >
+              <div className="booking-confirmation-view">
                 <div className="confirmation-icon">
                   <i className="fas fa-check-circle"></i> {/* Font Awesome check icon */}
                 </div>
@@ -830,56 +789,81 @@ const BookingModal = ({ isOpen, onClose }) => {
                     <p className="video-call-notice">
                       <i className="fas fa-video"></i> This is an <strong>Online Consultation</strong>
                     </p>
-                    {bookingConfirmedData.meetLink && (
+                    {(bookingConfirmedData.jitsiLink || bookingConfirmedData.meetLink) && (
                       <div className="meet-link-section">
-                        <p className="video-call-instruction">
-                          <strong>📹 Google Meet Link:</strong>
-                        </p>
-                        <a 
-                          href={bookingConfirmedData.meetLink} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="meet-link-button"
-                        >
-                          {bookingConfirmedData.meetLink}
-                        </a>
+                        {bookingConfirmedData.jitsiLink && (
+                          <>
+                            <p className="video-call-instruction"><strong>🔗 Join via Jitsi (no login required):</strong></p>
+                            <a href={bookingConfirmedData.jitsiLink} target="_blank" rel="noopener noreferrer" className="meet-link-button">
+                              {bookingConfirmedData.jitsiLink}
+                            </a>
+                          </>
+                        )}
+                        {bookingConfirmedData.meetLink && (
+                          <>
+                            <p className="video-call-instruction" style={{ marginTop: '10px' }}><strong>📹 Or join via Google Meet:</strong></p>
+                            <a href={bookingConfirmedData.meetLink} target="_blank" rel="noopener noreferrer" className="meet-link-button">
+                              {bookingConfirmedData.meetLink}
+                            </a>
+                          </>
+                        )}
                         <p className="video-call-instruction" style={{ marginTop: '10px', fontSize: '0.9rem' }}>
                           Please join the meeting <strong>5 minutes before</strong> your appointment time.
                         </p>
                       </div>
                     )}
+                  </div>
+                )}
 
-                    {whatsappNotifications && (
-                      <div className="whatsapp-notifications">
-                        <p style={{ marginTop: '15px', marginBottom: '10px', fontWeight: '600' }}>
-                          📱 Send Meeting Details via WhatsApp:
-                        </p>
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                          <motion.a
-                            href={whatsappNotifications.patientUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="whatsapp-button patient-button"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <i className="fab fa-whatsapp"></i> Send to My WhatsApp
-                          </motion.a>
-                          <motion.button
-                            onClick={() => window.open(whatsappNotifications.doctorUrl, '_blank')}
-                            className="whatsapp-button doctor-button"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{ background: '#25D366', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                          >
-                            <i className="fab fa-whatsapp"></i> Notify Doctor
-                          </motion.button>
-                        </div>
-                        <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '8px' }}>
-                          💡 Click to send the Google Meet link and appointment details via WhatsApp
-                        </p>
-                      </div>
+                {bookingConfirmedData.consultType === 'offline' && (
+                  <div className="clinic-visit-info">
+                    <p className="clinic-visit-notice">
+                      <i className="fas fa-hospital"></i> This is an <strong>In-Clinic Consultation</strong>
+                    </p>
+                    <div className="clinic-address-section">
+                      <p><strong>📍 Clinic Address:</strong></p>
+                      <p style={{ marginTop: '8px', lineHeight: '1.6' }}>
+                        Dr. K. Madhusudana Clinic<br />
+                        SPARSH Hospital Road<br />
+                        Near Anand Nursing Home<br />
+                        Marathahalli, Bangalore - 560037
+                      </p>
+                      <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#666' }}>
+                        Please arrive <strong>10 minutes before</strong> your appointment time.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {whatsappNotifications && (
+                  <div className="whatsapp-notifications">
+                    <p style={{ marginTop: '15px', marginBottom: '10px', fontWeight: '600' }}>📱 Send Appointment Details via WhatsApp:</p>
+                    {whatsappNotifications.autoSend && (
+                      <p style={{ fontSize: '0.9rem', color: '#1f2937', margin: '0 0 8px 0' }}>
+                        {whatsappNotifications.autoSend.patientSent ? '✅ Sent to patient automatically. ' : '⚠️ Could not auto-send to patient. '}
+                        {whatsappNotifications.autoSend.doctorSent ? '✅ Sent to doctor automatically.' : '⚠️ Could not auto-send to doctor.'}
+                      </p>
                     )}
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                      <a
+                        href={whatsappNotifications.patientUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="whatsapp-button patient-button"
+                      >
+                        <i className="fab fa-whatsapp"></i> {whatsappNotifications.autoSend?.patientSent ? 'Resend to My WhatsApp' : 'Send to My WhatsApp'}
+                      </a>
+                      <button
+                        onClick={() => window.open(whatsappNotifications.doctorUrl, '_blank')}
+                        className="whatsapp-button doctor-button"
+                        style={{ background: '#25D366', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                      >
+                        <i className="fab fa-whatsapp"></i> {whatsappNotifications.autoSend?.doctorSent ? 'Resend to Doctor' : 'Notify Doctor'}
+                      </button>
+                    </div>
+                    <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '8px' }}>
+                      💡 Click to send the {bookingConfirmedData.consultType === 'online' ? 'video call link and ' : ''}appointment details via WhatsApp
+                    </p>
                   </div>
                 )}
 
@@ -888,20 +872,16 @@ const BookingModal = ({ isOpen, onClose }) => {
                   details has also been sent.
                 </p>
 
-                <motion.button
+                <button
                   onClick={onClose}
                   className="close-confirmation-button"
-                  whileHover={{ scale: 1.05, boxShadow: '0 6px 15px rgba(0, 123, 255, 0.4)' }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   Close
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
             )}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      </div>
+    </div>
   );
 };
 

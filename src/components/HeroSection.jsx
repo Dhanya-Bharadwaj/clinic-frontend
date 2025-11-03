@@ -58,7 +58,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <motion.div
-          className="doctor-info"
+          className="doctor-info hero-equal-card"
           initial="hidden"
           animate="visible"
           variants={doctorInfoVariants}
@@ -89,6 +89,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
             clinicName={'Balakrishna Clinic'}
             tagline={'Empathy, Expertise, Earnestness'}
             address={'4th cross road, New Bank Colony, Bank Colony, Konankunte, Bangalore - 560078'}
+            extraClass="hero-equal-card"
           />
         </motion.div>
       </div>
