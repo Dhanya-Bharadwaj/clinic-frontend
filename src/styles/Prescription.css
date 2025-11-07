@@ -2,7 +2,7 @@
 
 .prescription-modal {
   max-width: 950px;
-  max-height: 92vh;
+  max-height: 90vh;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(var(--blur-amount));
@@ -15,6 +15,17 @@
 
 .modal-content.prescription-modal {
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  max-height: 90vh;
+  box-sizing: border-box;
+}
+
+.modal-backdrop {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rx-editor {
@@ -105,6 +116,7 @@
 .rx-print-wrapper { 
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px;
   background: rgba(255,255,255,0.7);
   border-radius: 10px;
@@ -118,6 +130,8 @@
   padding: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   min-height: auto;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .rx-header { 
@@ -184,11 +198,17 @@
   margin-top: 0; 
   font-size: 0.85rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  table-layout: fixed;
+  min-width: 100%;
 }
 .rx-table th, .rx-table td { 
   border: 1px solid #cbd5e1; 
   padding: 8px; 
   vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .rx-table th { 
   background: linear-gradient(to bottom, #f8fafc, #f1f5f9); 
@@ -206,11 +226,17 @@
   align-items: center; 
   justify-content: space-between; 
   gap: 8px;
+  max-width: 100%;
 }
 .rx-medline span { 
   font-weight: 600; 
   color: #1e293b;
   font-size: 0.88rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .rx-remove { 
@@ -276,12 +302,27 @@
 }
 
 .rx-sign { 
-  border-top: 2px solid #1e293b; 
-  padding-top: 8px; 
-  width: 220px; 
-  text-align: center; 
-  color: #1e293b; 
-  font-weight: 600; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 220px;
+}
+
+.doctor-signature-img {
+  max-width: 180px;
+  max-height: 60px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.signature-label {
+  border-top: 2px solid #1e293b;
+  padding-top: 8px;
+  width: 100%;
+  text-align: center;
+  color: #1e293b;
+  font-weight: 600;
   font-size: 0.85rem;
 }
 
@@ -319,45 +360,486 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .prescription-modal {
-    max-width: 95%;
+    max-width: 98%;
+    max-height: 95vh;
+    margin: 10px;
   }
   
-  .rx-split {
+  .modal-content.prescription-modal {
+    overflow-x: hidden;
+    max-height: 95vh;
+  }
+  
+  .rx-editor {
     grid-template-columns: 1fr;
+    padding: 10px;
   }
   
   .rx-add-panel {
-    flex-wrap: wrap;
-  }
-  
-  .rx-add-panel input {
-    min-width: 100px;
-  }
-  
-  .rx-paper {
-    padding: 20px;
-  }
-  
-  .rx-title {
-    font-size: 1.4rem;
-  }
-  
-  .rx-meta {
-    font-size: 0.8rem;
+    grid-template-columns: 1fr;
     gap: 8px;
   }
   
+  .rx-add-panel .secondary-button {
+    width: 100%;
+  }
+  
+  .rx-add-panel input {
+    width: 100%;
+  }
+  
+  .rx-paper {
+    padding: 12px;
+    overflow-x: auto;
+  }
+  
+  .rx-title {
+    font-size: 1.1rem;
+  }
+  
+  .rx-doctor-name {
+    font-size: 0.9rem;
+  }
+  
+  .rx-doctor-qualification {
+    font-size: 0.7rem;
+  }
+  
+  .rx-sub {
+    font-size: 0.7rem;
+  }
+  
+  .rx-meta {
+    font-size: 0.7rem;
+    gap: 4px;
+    flex-direction: column;
+  }
+  
+  .rx-meta span {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+  }
+  
   .rx-table {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
   
   .rx-table th, .rx-table td {
-    padding: 8px;
+    padding: 4px 3px;
+    font-size: 0.7rem;
+  }
+  
+  .rx-pills {
+    gap: 2px;
   }
   
   .rx-pills span {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
+    font-size: 0.65rem;
+  }
+  
+  .doctor-signature-img {
+    max-width: 100px;
+    max-height: 35px;
+  }
+  
+  .rx-sign {
+    width: 120px;
+  }
+  
+  .signature-label {
+    font-size: 0.65rem;
+    padding-top: 4px;
+  }
+  
+  .rx-medline span {
+    font-size: 0.75rem;
+  }
+  
+  .rx-instructions {
+    font-size: 0.7rem;
+  }
+}
+
+/* ViewPrescriptionModal specific styles */
+.view-prescription-modal {
+  max-width: 1000px;
+  max-height: 90vh;
+}
+
+.view-prescription-content {
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(90vh - 80px);
+}
+
+.search-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.search-label {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  min-width: 0;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #0a63ff;
+  box-shadow: 0 0 0 3px rgba(10, 99, 255, 0.1);
+}
+
+.search-btn,
+.reset-btn {
+  padding: 12px 24px;
+  min-width: 120px;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.results-section {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.no-prescriptions {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
+  border: 2px dashed #cbd5e1;
+}
+
+.no-prescriptions-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-prescriptions-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.no-prescriptions-text {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.prescriptions-list {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.prescriptions-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.prescriptions-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.prescriptions-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.prescriptions-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.prescriptions-count {
+  margin: 0 0 20px 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-radius: 8px;
+  border-left: 4px solid #0a63ff;
+}
+
+.prescription-card {
+  margin-bottom: 24px;
+  animation: slideIn 0.3s ease;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.prescription-card .rx-paper {
+  background: white;
+  border: 2px solid #cbd5e1;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.prescription-card .rx-paper:hover {
+  border-color: #0a63ff;
+  box-shadow: 0 8px 24px rgba(10, 99, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.sent-badge {
+  display: inline-block;
+  margin: 8px 0;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 2px solid #10b981;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+}
+
+.download-btn {
+  width: 100%;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.download-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10, 99, 255, 0.3);
+}
+
+/* Responsive for ViewPrescriptionModal */
+@media (max-width: 768px) {
+  .view-prescription-modal {
+    max-width: 98%;
+    max-height: 95vh;
+    margin: 10px;
+  }
+  
+  .view-prescription-content {
+    padding: 10px;
+    overflow-x: hidden;
+    max-height: calc(95vh - 70px);
+  }
+  
+  .search-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+  
+  .search-label {
+    min-width: auto;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .search-btn,
+  .reset-btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .prescriptions-list {
+    max-height: 400px;
+    padding-right: 4px;
+  }
+  
+  .prescriptions-count {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+  
+  .prescription-card .rx-paper {
+    padding: 10px;
+    overflow-x: auto;
+  }
+  
+  .no-prescriptions {
+    padding: 30px 16px;
+  }
+  
+  .no-prescriptions-icon {
+    font-size: 2.5rem;
+  }
+  
+  .no-prescriptions-title {
+    font-size: 1rem;
+  }
+  
+  .no-prescriptions-text {
     font-size: 0.8rem;
+  }
+  
+  .download-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .view-prescription-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .view-prescription-content {
+    padding: 8px;
+    max-height: calc(100vh - 60px);
+  }
+  
+  .prescription-card .rx-paper {
+    padding: 8px;
+  }
+  
+  .rx-table th,
+  .rx-table td {
+    font-size: 0.65rem;
+    padding: 3px 2px;
+  }
+  
+  .rx-pills {
+    gap: 1px;
+  }
+  
+  .rx-pills span {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+  }
+  
+  .doctor-signature-img {
+    max-width: 80px;
+    max-height: 28px;
+  }
+  
+  .rx-sign {
+    width: 100px;
+  }
+  
+  .signature-label {
+    font-size: 0.6rem;
+    padding-top: 3px;
+  }
+  
+  .rx-title {
+    font-size: 1rem;
+  }
+  
+  .rx-doctor-name {
+    font-size: 0.8rem;
+  }
+  
+  .rx-doctor-qualification {
+    font-size: 0.65rem;
+  }
+  
+  .rx-sub {
+    font-size: 0.65rem;
+  }
+  
+  .rx-meta span {
+    font-size: 0.6rem;
+    padding: 1px 4px;
+  }
+  
+  .rx-medline span {
+    font-size: 0.65rem;
+  }
+  
+  .rx-instructions {
+    font-size: 0.65rem;
+  }
+  
+  .search-section {
+    padding: 8px;
+  }
+  
+  .search-label {
+    font-size: 0.85rem;
+  }
+  
+  .search-input {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .search-btn,
+  .reset-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .prescriptions-count {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+  
+  .sent-badge {
+    font-size: 0.7rem;
+    padding: 4px 10px;
   }
 }

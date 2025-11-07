@@ -1,12 +1,12 @@
 /* src/styles/AppointmentCard.css - REVISED */
   .appointment-card {
     background: var(--glass-bg);
-    padding: 32px; /* Same as doctor-info - equal on all sides */
+    padding: 24px; /* Reduced from 32px */
     border-radius: 14px; /* Same as doctor-info */
     box-shadow: var(--glass-shadow);
     text-align: center;
     width: 380px; /* Same as doctor-info */
-    height: 460px; /* Fixed height to match doctor-info */
+    height: 420px; /* Reduced from 460px to match doctor-info */
     display: flex;
     flex-direction: column;
     justify-content: center; /* Match doctor-info centering */
@@ -16,20 +16,20 @@
     -webkit-backdrop-filter: blur(var(--blur-amount));
     flex-shrink: 0; /* Prevent shrinking */
   }  .appointment-card h3 {
-    font-size: 1.8rem;
+    font-size: 1.7rem; /* Reduced from 1.8rem */
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Reduced from 10px */
     font-family: 'Playfair Display', serif;
     font-weight: 700;
     line-height: 1.2;
   }
   
   .appointment-card p {
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Reduced from 0.95rem */
     color: var(--secondary-color);
     margin-bottom: 0;
-    line-height: 1.6;
-    margin-top: 10px;
+    line-height: 1.5; /* Reduced from 1.6 */
+    margin-top: 8px; /* Reduced from 10px */
   }
 
   /* Tagline under clinic name */
@@ -37,7 +37,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Reduced from 0.9rem */
     font-weight: 700;
     color: var(--primary-color);
     letter-spacing: 0.3px;
@@ -45,8 +45,8 @@
     background: rgba(10, 99, 255, 0.08);
     border: 1px solid #93c5fd;
     border-radius: 999px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 6px; /* Reduced from 8px */
+    margin-bottom: 6px; /* Reduced from 8px */
   }
 
   .appointment-card .clinic-tagline .quote-mark {
@@ -61,7 +61,7 @@
 
   /* Address paragraph spacing */
   .appointment-card .clinic-address {
-    margin-top: 10px;
+    margin-top: 8px; /* Reduced from 10px */
     margin-bottom: 0;
   }
   
@@ -69,66 +69,73 @@
   .appointment-card button {
     width: 100%;
     max-width: 280px;
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    margin-top: 10px;
+    padding: 11px 22px; /* Slightly reduced */
+    font-size: 0.92rem; /* Reduced from 0.95rem */
+    margin-top: 8px; /* Reduced from 10px */
   }
   
   /* Responsive adjustments for Appointment Card */
   @media (max-width: 1200px) {
     .appointment-card {
       width: 340px;
-      height: 420px; /* Maintain fixed height to match doctor-info */
-      padding: 28px;
+      height: 400px; /* Match doctor-info */
+      padding: 22px; /* Match doctor-info */
     }
     .appointment-card h3 {
-      font-size: 1.6rem; /* Reduced from 2.2rem */
+      font-size: 1.55rem;
     }
     .appointment-card .clinic-tagline {
-      font-size: 0.8rem; /* 50% of 1.6rem */
+      font-size: 0.78rem;
     }
     .appointment-card p {
-      font-size: 0.9rem; /* Reduced from 1.1rem */
+      font-size: 0.86rem;
     }
     .appointment-card button {
-      padding: 10px 20px; /* Reduced from 12px 25px */
-      font-size: 0.9rem; /* Reduced from 1.05rem */
+      padding: 10px 20px;
+      font-size: 0.88rem;
     }
   }
   
   @media (max-width: 992px) {
     .appointment-card {
       width: 90%;
-      max-width: 450px; /* Limit width to not be too wide on tablets */
-      height: auto; /* Allow auto height on mobile */
-      min-height: 380px;
+      max-width: 450px;
+      height: auto;
+      min-height: 300px; /* Increased from 380px to match doctor card */
+      padding: 20px; /* Increased from auto */
+    }
+    .appointment-card h3 {
+      font-size: 1.6rem; /* Increased for better visibility */
+    }
+    .appointment-card p {
+      font-size: 0.92rem; /* Increased for better visibility */
     }
   }
   
   @media (max-width: 600px) {
     .appointment-card {
-      padding: 20px 16px;
+      padding: 18px 16px; /* Increased from 20px 16px */
       width: 90%;
       max-width: 100%;
-      height: auto; /* Auto height for mobile */
-      min-height: 320px;
+      height: auto;
+      min-height: 280px; /* Increased from 320px to match doctor card */
     }
     .appointment-card h3 {
-      font-size: 1.35rem;
+      font-size: 1.4rem; /* Increased from 1.35rem */
       line-height: 1.3;
       word-wrap: break-word;
-      margin-bottom: 15px;
+      margin-bottom: 12px; /* Reduced from 15px */
     }
     .appointment-card .clinic-tagline {
-      font-size: 0.68rem; /* 50% of 1.35rem */
-      margin-bottom: 10px;
+      font-size: 0.7rem; /* Increased from 0.68rem */
+      margin-bottom: 8px; /* Reduced from 10px */
       padding: 4px 8px;
       gap: 4px;
     }
     .appointment-card p {
-      font-size: 0.85rem;
+      font-size: 0.88rem; /* Increased from 0.85rem */
       line-height: 1.5;
-      margin-bottom: 18px;
+      margin-bottom: 12px; /* Reduced from 18px */
     }
     .appointment-card button {
       padding: 11px 18px;
@@ -139,19 +146,19 @@
   
   @media (max-width: 400px) {
     .appointment-card {
-      padding: 18px 14px;
-      min-height: 300px;
+      padding: 16px 14px; /* Increased from 18px 14px */
+      min-height: 260px; /* Increased from 300px to match doctor card */
     }
     .appointment-card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
+      font-size: 1.3rem; /* Increased from 1.25rem */
+      margin-bottom: 10px; /* Reduced from 12px */
     }
     .appointment-card .clinic-tagline {
-      font-size: 0.625rem; /* 50% of 1.25rem */
+      font-size: 0.65rem; /* Increased from 0.625rem */
     }
     .appointment-card p {
-      font-size: 0.8rem;
-      margin-bottom: 16px;
+      font-size: 0.82rem; /* Increased from 0.8rem */
+      margin-bottom: 10px; /* Reduced from 16px */
     }
     .appointment-card button {
       padding: 10px 16px;

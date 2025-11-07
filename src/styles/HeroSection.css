@@ -1,13 +1,17 @@
 /* src/styles/HeroSection.css - REVISED */
 .hero-section {
     position: relative;
-    height: 90vh; /* Reduced from 90vh */
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     text-align: center;
     overflow: hidden;
+    padding-top: 0;
+    box-sizing: border-box;
+    z-index: 1; /* Lower than navbar */
   }
   
   .hero-background {
@@ -20,7 +24,7 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    z-index: 1;
+    z-index: -2; /* Negative to stay behind everything */
   }
   
   /* Prevent mobile zoom/cropping glitches from background-attachment: fixed */
@@ -37,26 +41,28 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for contrast */
-    z-index: 2;
+    z-index: -1; /* Negative to stay behind content but above background */
   }
   
   .hero-content {
     position: relative;
-    z-index: 3;
+    z-index: 1; /* Positive but still lower than navbar (9999) */
     display: flex;
     flex-direction: row;
-    align-items: stretch; /* Force equal height for children */
+    align-items: center; /* Changed from stretch to center */
     justify-content: center;
-    gap: 50px; /* Reduced from 70px */
+    gap: 40px; /* Reduced from 50px */
     padding: 0 5%;
-    max-width: 1100px; /* Reduced from 1300px */
+    max-width: 1100px;
     width: 100%;
+    margin-top: 0; /* Remove margin-top, use transform instead */
+    transform: translateY(-20px); /* Shift up slightly to better center */
   }
 
   /* Shared card style for equal height/width */
   .hero-equal-card {
     width: 380px !important;
-    height: 460px !important;
+    height: 420px !important; /* Reduced from 460px */
     min-height: 0 !important;
     max-width: none !important;
     max-height: none !important;
@@ -65,7 +71,7 @@
   
   .doctor-info {
     background-color: rgba(255, 255, 255, 0.18); /* Slightly less transparent */
-    padding: 32px; /* Reduced from 44px */
+    padding: 24px; /* Reduced from 32px */
     border-radius: 14px; /* Reduced from 18px */
     backdrop-filter: blur(8px); /* Stronger frosty glass effect */
     border: 1px solid rgba(255, 255, 255, 0.4); /* More defined border */
@@ -79,35 +85,35 @@
 }
   
   .doctor-photo {
-    width: 160px; /* Reduced from 200px */
-    height: 160px; /* Reduced from 200px */
+    width: 140px; /* Reduced from 160px */
+    height: 140px; /* Reduced from 160px */
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--primary-color); /* Reduced from 6px */
-    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.3), /* Reduced outer glow */
-                0 0 24px rgba(0, 0, 0, 0.6); /* Reduced shadow */
-    margin-bottom: 20px; /* Reduced from 25px */
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.3), /* Reduced outer glow */
+                0 0 20px rgba(0, 0, 0, 0.6); /* Reduced shadow */
+    margin-bottom: 16px; /* Reduced from 20px */
   }
   
   .doctor-info h2 {
-    font-size: 1.85rem; /* Reduced to fit name on one line */
-    margin-bottom: 8px;
+    font-size: 1.75rem; /* Reduced from 1.85rem */
+    margin-bottom: 6px; /* Reduced from 8px */
     color: white;
     font-family: 'Playfair Display', serif; /* Elegant font for name */
     white-space: nowrap; /* Prevent line breaks */
-    line-height: 1.3;
+    line-height: 1.2;
   }
   
   .doctor-info p {
-    font-size: 1.1rem; /* Reduced from 1.3rem */
+    font-size: 1rem; /* Reduced from 1.1rem */
     font-weight: 500;
     color: rgba(255, 255, 255, 0.95); /* Brighter text */
     margin-top: 0;
-    margin-bottom: 10px; /* Added margin for second paragraph */
+    margin-bottom: 8px; /* Reduced from 10px */
   }
   .doctor-info p:last-of-type { /* Adjust last paragraph */
     margin-bottom: 0;
-    font-size: 0.95rem; /* Reduced from 1.1rem */
+    font-size: 0.88rem; /* Reduced from 0.95rem */
     color: rgba(255, 255, 255, 0.8);
   }
   
@@ -117,106 +123,138 @@
     .hero-content {
       gap: 30px; /* Reduced from 40px */
     }
+    .hero-equal-card {
+      width: 340px !important;
+      height: 400px !important;
+    }
     .doctor-info {
-      width: 340px;
-      height: 420px; /* Maintain fixed height */
-      padding: 28px;
+      padding: 22px;
     }
     .doctor-photo {
-      width: 140px; /* Reduced from 180px */
-      height: 140px; /* Reduced from 180px */
+      width: 130px; /* Reduced */
+      height: 130px;
     }
     .doctor-info h2 {
-      font-size: 1.8rem; /* Reduced from 2.0rem */
+      font-size: 1.65rem;
     }
     .doctor-info p {
-      font-size: 0.9rem; /* Reduced from 1.0rem */
+      font-size: 0.92rem;
     }
   }
   
   @media (max-width: 992px) {
     .hero-content {
       flex-direction: column;
-      gap: 50px; /* More vertical space when stacked */
-      padding-top: 80px; /* Ensure content isn't too high */
-      padding-bottom: 80px;
+      gap: 25px; /* Reduced gap */
+      padding-top: 15px;
+      padding-bottom: 15px;
+      margin-top: 0;
+      transform: translateY(-10px);
     }
     .hero-section {
-      height: auto;
-      min-height: 90vh; /* Ensure it still looks tall */
+      height: 100vh;
+      max-height: 100vh;
+      min-height: 100vh;
+    }
+    .hero-equal-card {
+      width: 85% !important;
+      max-width: 380px !important;
+      height: auto !important;
+      min-height: 300px !important; /* Increased from auto */
     }
     .doctor-info {
-      width: 90%;
-      max-width: 450px; /* Limit width to not be too wide on tablets */
-      height: auto; /* Allow auto height on mobile */
-      min-height: 380px;
+      padding: 20px; /* Increased from 18px */
+    }
+    .doctor-photo {
+      width: 120px; /* Increased from 110px */
+      height: 120px;
+      margin-bottom: 14px; /* Increased from 12px */
+    }
+    .doctor-info h2 {
+      font-size: 1.6rem; /* Increased from 1.5rem */
+    }
+    .doctor-info p {
+      font-size: 0.92rem; /* Increased from 0.88rem */
+      margin-bottom: 7px; /* Increased from 6px */
     }
     .doctor-info p:last-of-type {
-      font-size: 1rem;
+      font-size: 0.86rem; /* Increased from 0.82rem */
     }
   }
   
   @media (max-width: 600px) {
     .hero-content {
-      padding: 20px 15px;
-      gap: 25px;
+      padding: 12px 15px;
+      gap: 18px;
+      margin-top: 0;
+      transform: translateY(0);
+    }
+    .hero-section {
+      height: 100vh;
+      max-height: 100vh;
+      min-height: 100vh;
+    }
+    .hero-equal-card {
+      width: 92% !important;
+      max-width: 100% !important;
+      min-height: 280px !important; /* Increased from auto */
     }
     .doctor-info {
-      padding: 20px 16px;
-      width: 90%;
-      max-width: 100%;
-      height: auto; /* Auto height for mobile */
-      min-height: 320px;
+      padding: 16px 14px; /* Increased from 14px 12px */
     }
     .doctor-photo {
-      width: 100px;
-      height: 100px;
+      width: 95px; /* Increased from 85px */
+      height: 95px;
       border-width: 3px;
       box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3),
                   0 0 12px rgba(0, 0, 0, 0.5);
-      margin-bottom: 12px;
+      margin-bottom: 12px; /* Increased from 10px */
     }
     .doctor-info h2 {
-      font-size: 1.4rem;
+      font-size: 1.35rem; /* Increased from 1.25rem */
       white-space: normal;
       word-wrap: break-word;
       line-height: 1.3;
-      margin-bottom: 6px;
+      margin-bottom: 6px; /* Increased from 5px */
     }
     .doctor-info p {
-      font-size: 0.88rem;
+      font-size: 0.88rem; /* Increased from 0.82rem */
       line-height: 1.4;
-      margin-bottom: 6px;
+      margin-bottom: 5px; /* Increased from 4px */
     }
     .doctor-info p:last-of-type {
-      font-size: 0.8rem;
+      font-size: 0.8rem; /* Increased from 0.75rem */
     }
     .hero-overlay {
       background-color: rgba(0, 0, 0, 0.8);
     }
-    .hero-section {
-      min-height: 100vh;
-      height: auto;
-    }
   }
 
   @media (max-width: 400px) {
+    .hero-content {
+      gap: 14px;
+      padding: 10px 12px;
+    }
+    .hero-equal-card {
+      min-height: 260px !important; /* Increased from auto */
+    }
     .doctor-info {
-      padding: 18px 14px;
-      min-height: 300px;
+      padding: 14px 12px; /* Increased from 12px 10px */
     }
     .doctor-photo {
-      width: 90px;
-      height: 90px;
-      margin-bottom: 10px;
+      width: 85px; /* Increased from 75px */
+      height: 85px;
+      margin-bottom: 10px; /* Increased from 8px */
     }
     .doctor-info h2 {
-      font-size: 1.3rem;
+      font-size: 1.25rem; /* Increased from 1.15rem */
+      margin-bottom: 5px; /* Increased from 4px */
     }
     .doctor-info p {
-      font-size: 0.82rem;
+      font-size: 0.82rem; /* Increased from 0.78rem */
+      margin-bottom: 4px; /* Increased from 3px */
     }
     .doctor-info p:last-of-type {
-      font-size: 0.75rem;
+      font-size: 0.75rem; /* Increased from 0.7rem */
     }
   }

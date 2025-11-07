@@ -143,7 +143,7 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
 
   return (
     <div className="modal-backdrop" onClick={(e) => { if (e.target.classList.contains('modal-backdrop')) onClose(); }}>
-      <div className="modal-content prescription-modal" role="dialog" aria-label="View Prescription">
+      <div className="modal-content prescription-modal view-prescription-modal" role="dialog" aria-label="View Prescription">
         <div className="modal-header">
           <h3 style={{ margin: 0, color: '#1e293b', fontSize: '1.5rem' }}>📋 View Prescription</h3>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -151,9 +151,9 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        <div style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px' }}>
-            <label style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.95rem', minWidth: '120px' }}>
+        <div className="view-prescription-content">
+          <div className="search-section">
+            <label className="search-label">
               Phone Number:
             </label>
             <input
@@ -162,100 +162,67 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
               onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
               placeholder="Enter 10-digit phone number"
               maxLength={10}
-              style={{
-                flex: 1,
-                padding: '10px 12px',
-                border: '2px solid #e2e8f0',
-                borderRadius: '8px',
-                fontSize: '0.95rem',
-              }}
+              className="search-input"
             />
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="btn btn-primary"
-              style={{ padding: '10px 24px', minWidth: '100px' }}
+              className="btn btn-primary search-btn"
             >
-              {loading ? 'Searching...' : 'Search'}
+              {loading ? '🔍 Searching...' : '🔍 Search'}
             </button>
             {searchPerformed && (
               <button
                 onClick={handleReset}
-                className="btn btn-secondary"
-                style={{ padding: '10px 24px' }}
+                className="btn btn-secondary reset-btn"
               >
-                Reset
+                🔄 Reset
               </button>
             )}
           </div>
 
           {searchPerformed && !loading && (
-            <div>
+            <div className="results-section">
               {prescriptions.length === 0 ? (
-                <div style={{
-                  textAlign: 'center',
-                  padding: '40px 20px',
-                  background: '#f8fafc',
-                  borderRadius: '12px',
-                  border: '2px dashed #cbd5e1',
-                  color: '#64748b',
-                }}>
-                  <p style={{ fontSize: '1.1rem', margin: 0 }}>
-                    No prescriptions found for this phone number.
+                <div className="no-prescriptions">
+                  <div className="no-prescriptions-icon">📋</div>
+                  <p className="no-prescriptions-title">
+                    No prescriptions found
                   </p>
-                  <p style={{ fontSize: '0.9rem', marginTop: '8px', color: '#94a3b8' }}>
+                  <p className="no-prescriptions-text">
                     Make sure you entered the same number used during consultation.
                   </p>
                 </div>
               ) : (
-                <div className="prescriptions-list" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                  <h4 style={{ marginBottom: '15px', color: '#1e293b' }}>
-                    Sent prescriptions: {prescriptions.length}
+                <div className="prescriptions-list">
+                  <h4 className="prescriptions-count">
+                    Found {prescriptions.length} prescription{prescriptions.length !== 1 ? 's' : ''}
                   </h4>
                   {prescriptions.map((prescription) => (
-                    <div key={prescription.id} style={{ marginBottom: '20px' }}>
+                    <div key={prescription.id} className="prescription-card">
                       <div
                         ref={el => prescriptionRefs.current[prescription.id] = el}
-                        className="rx-paper" 
-                        style={{ 
-                          background: 'white',
-                          border: '2px solid #cbd5e1'
-                        }}
+                        className="rx-paper"
                       >
                         <div className="rx-header">
-                          <h2 className="rx-clinic-name">{prescription.clinicName}</h2>
+                          <div className="rx-title">{prescription.clinicName}</div>
                           {prescription.sent && (
-                            <span style={{
-                              display: 'inline-block',
-                              marginTop: '6px',
-                              background: '#d1fae5',
-                              color: '#065f46',
-                              padding: '4px 10px',
-                              borderRadius: '999px',
-                              fontSize: '0.8rem',
-                              fontWeight: 700
-                            }}>SENT</span>
+                            <span className="sent-badge">✓ SENT</span>
                           )}
                           <div className="rx-doctor-name">{prescription.doctorName}</div>
                           <div className="rx-doctor-qualification">{prescription.doctorQualification}</div>
-                          <div className="rx-address">{prescription.clinicAddress}</div>
+                          <div className="rx-sub">{prescription.clinicAddress}</div>
                           
                           <div className="rx-meta">
-                            <div>
-                              <strong>Name:</strong> {prescription.patientName} &nbsp;|&nbsp; 
-                              <strong>Age:</strong> {prescription.patientAge} &nbsp;|&nbsp; 
-                              <strong>Gender:</strong> {prescription.patientGender}
-                            </div>
-                            <div>
-                              <strong>Phone:</strong> {prescription.patientPhone}
-                            </div>
-                            <div style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '4px' }}>
-                              <strong>Date:</strong> {new Date(prescription.createdAt).toLocaleDateString('en-IN', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                              })}
-                            </div>
+                            <span><strong>Name:</strong> {prescription.patientName}</span>
+                            <span><strong>Age:</strong> {prescription.patientAge}</span>
+                            <span><strong>Gender:</strong> {prescription.patientGender}</span>
+                            <span><strong>Phone:</strong> {prescription.patientPhone}</span>
+                            <span><strong>Date:</strong> {new Date(prescription.createdAt).toLocaleDateString('en-IN', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}</span>
                           </div>
                         </div>
 
@@ -264,62 +231,58 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
                         <table className="rx-table">
                           <thead>
                             <tr>
-                              <th>Medicine/Tablet</th>
-                              <th>Days</th>
-                              <th>M-A-N</th>
-                              <th>Instructions</th>
+                              <th style={{ width: '40%' }}>Medicine/Tablet</th>
+                              <th style={{ width: '10%', textAlign: 'center' }}>Days</th>
+                              <th style={{ width: '20%', textAlign: 'center' }}>M-A-N</th>
+                              <th style={{ width: '30%' }}>Instructions</th>
                             </tr>
                           </thead>
                           <tbody>
                             {prescription.items.map((item, idx) => (
                               <tr key={idx}>
-                                <td>{item.medicine}</td>
-                                <td>{item.days}</td>
+                                <td style={{ fontWeight: 600, color: '#1e293b' }}>{item.medicine}</td>
+                                <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.days}</td>
                                 <td>
                                   <div className="rx-pills">
                                     {item.pattern.split('').map((v, i) => (
-                                      <div key={i} className={`pill ${v === '1' ? 'active' : ''}`} />
+                                      <span key={i} className={v === '1' ? 'on' : 'off'}>
+                                        {['M', 'A', 'N'][i]}
+                                      </span>
                                     ))}
                                   </div>
                                 </td>
-                                <td>{item.notes || '—'}</td>
+                                <td style={{ fontStyle: 'italic', color: '#475569' }}>{item.notes || '—'}</td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
 
                         <div className="rx-footer">
-                          <div className="signature-line">Doctor's Signature</div>
+                          <div className="rx-sign">
+                            <img src="/drsign.jpg" alt="Doctor's Signature" className="doctor-signature-img" />
+                            <div className="signature-label">Doctor's Signature</div>
+                          </div>
                         </div>
                       </div>
                       
                       {/* Download button below prescription */}
-                      <div style={{ marginTop: '12px', textAlign: 'right' }}>
-                        <button
-                          onClick={() => handleDownload(prescription.id)}
-                          disabled={downloading === prescription.id}
-                          className="btn btn-primary"
-                          style={{
-                            padding: '10px 24px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            opacity: downloading === prescription.id ? 0.6 : 1
-                          }}
-                        >
-                          {downloading === prescription.id ? (
-                            <>
-                              <span>⏳</span>
-                              <span>Downloading...</span>
-                            </>
-                          ) : (
-                            <>
-                              <span>📥</span>
-                              <span>Download PDF</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => handleDownload(prescription.id)}
+                        disabled={downloading === prescription.id}
+                        className="btn btn-primary download-btn"
+                      >
+                        {downloading === prescription.id ? (
+                          <>
+                            <span>⏳</span>
+                            <span>Downloading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>📥</span>
+                            <span>Download PDF</span>
+                          </>
+                        )}
+                      </button>
                     </div>
                   ))}
                 </div>

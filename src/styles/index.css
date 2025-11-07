@@ -41,7 +41,8 @@ body {
   background: var(--gradient-1);
   line-height: 1.6;
   scroll-behavior: smooth; /* Smooth scrolling for anchor links */
-  padding-top: 64px; /* Offset for fixed navbar */
+  padding-top: 0; /* Remove padding - handled in individual sections */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 h1, h2, h3, h4, h5, h6 {

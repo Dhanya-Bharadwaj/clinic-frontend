@@ -380,7 +380,10 @@ export default function PrescriptionModal({ isOpen, onClose, patientData }) {
             </table>
 
             <div className="rx-footer">
-              <div className="rx-sign">Doctor's Signature</div>
+              <div className="rx-sign">
+                <img src="/drsign.jpg" alt="Doctor's Signature" className="doctor-signature-img" />
+                <div className="signature-label">Doctor's Signature</div>
+              </div>
             </div>
           </div>
         </div>
