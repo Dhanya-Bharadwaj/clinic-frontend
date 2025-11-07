@@ -222,7 +222,14 @@ function DoctorDashboard({ onClose }) {
                                     </div>
                                     <div className="card-body">
                                         <div className="info"><label>Phone</label><span>{apt.patientPhone || '-'}</span></div>
-                                        <div className="info"><label>Consult</label><span>{apt.consultType || '-'}</span></div>
+                                        <div className="info">
+                                            <label>Consult</label>
+                                            <span>
+                                                {apt.consultType === 'online' ? 'Video Call' : 
+                                                 apt.consultType === 'offline' ? 'In-Clinic' : 
+                                                 apt.consultType || '-'}
+                                            </span>
+                                        </div>
                                         {apt.paymentReference && <div className="info"><label>Pay Ref</label><span>{apt.paymentReference}</span></div>}
                                         {apt.createdAt && <div className="info"><label>Booked At</label><span>{new Date(apt.createdAt).toLocaleDateString()} {new Date(apt.createdAt).toLocaleTimeString()}</span></div>}
                                     </div>

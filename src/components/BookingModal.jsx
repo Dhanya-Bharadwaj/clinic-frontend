@@ -411,7 +411,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                       onChange={() => setConsultType('online')}
                     />
                     <span className="custom-radio"></span>
-                    Online Consulting
+                    Video Call Consultation
                   </label>
                   <label className={`consult-type-radio${consultType === 'offline' ? ' selected' : ''}`}>
                     <input
@@ -422,7 +422,7 @@ const BookingModal = ({ isOpen, onClose }) => {
                       onChange={() => setConsultType('offline')}
                     />
                     <span className="custom-radio"></span>
-                    Offline Consulting
+                    In-Clinic Consultation
                   </label>
                 </div>
                 <button
@@ -439,7 +439,25 @@ const BookingModal = ({ isOpen, onClose }) => {
             {/* Step 1: Show consult mode, then calendar */}
             {!bookingConfirmedData && step === 1 && (
               <div className="consult-mode-step">
-                <h4>{consultType === 'online' ? 'Video Consult' : 'In Clinic Consulting'}</h4>
+                <h4>{consultType === 'online' ? 'Video Call Consultation' : 'In-Clinic Consultation'}</h4>
+                
+                {/* Notice for Sunday/Monday in-clinic closure */}
+                {consultType === 'offline' && (
+                  <div className="clinic-notice" style={{
+                    backgroundColor: '#fff3cd',
+                    border: '1px solid #ffc107',
+                    borderRadius: '8px',
+                    padding: '12px 16px',
+                    marginBottom: '16px',
+                    fontSize: '14px',
+                    color: '#856404'
+                  }}>
+                    <strong>⚠️ Clinic Closed:</strong> Sunday & Monday - Clinic is closed for in-person visits. 
+                    <br />
+                    Please book a <strong>Video Call Consultation</strong> for these days.
+                  </div>
+                )}
+                
                 <div className="date-picker-container">
                   <label>Select Date:</label>
                   <DatePicker
@@ -451,26 +469,39 @@ const BookingModal = ({ isOpen, onClose }) => {
                       return today;
                     })()}
                     maxDate={(() => {
-                      const tomorrow = new Date();
-                      tomorrow.setDate(tomorrow.getDate() + 1);
-                      tomorrow.setHours(0, 0, 0, 0);
-                      return tomorrow;
+                      const maxDate = new Date();
+                      maxDate.setDate(maxDate.getDate() + 2); // Today + 2 more days = 3 days total
+                      maxDate.setHours(0, 0, 0, 0);
+                      return maxDate;
                     })()}
                     filterDate={(date) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
-                      const tomorrow = new Date(today);
-                      tomorrow.setDate(tomorrow.getDate() + 1);
+                      const maxDate = new Date(today);
+                      maxDate.setDate(maxDate.getDate() + 2); // 3 days from today
                       const checkDate = new Date(date);
                       checkDate.setHours(0, 0, 0, 0);
-                      // Allow today and tomorrow (within 48 hours from now)
-                      return checkDate >= today && checkDate <= tomorrow;
+                      
+                      // For in-clinic consultation, block Sunday (0) and Monday (1)
+                      if (consultType === 'offline') {
+                        const dayOfWeek = checkDate.getDay();
+                        if (dayOfWeek === 0 || dayOfWeek === 1) {
+                          return false; // Block Sunday and Monday for in-clinic
+                        }
+                      }
+                      
+                      // Allow today and next 2 days (total 3 days)
+                      return checkDate >= today && checkDate <= maxDate;
                     }}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="Click to select a date"
                     inline
                   />
-                  <p className="booking-notice">You can book for today or tomorrow (next 48 hours)</p>
+                  <p className="booking-notice">
+                    {consultType === 'offline' 
+                      ? 'You can book for the next 3 days (Clinic closed on Sunday & Monday)'
+                      : 'You can book for the next 3 days (including today)'}
+                  </p>
                 </div>
               </div>
             )}
