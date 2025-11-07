@@ -21,32 +21,58 @@ export default function ViewPrescriptionModal({ isOpen, onClose }) {
     setSearchPerformed(true);
 
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
-        ? `${import.meta.env.VITE_API_BASE_URL}/api/prescriptions`
-        : (import.meta.env.MODE === 'production'
-          ? 'https://clinic-backend-flame.vercel.app/api/prescriptions'
-          : 'http://localhost:5001/api/prescriptions');
+      // Construct API URL based on environment
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+        (import.meta.env.MODE === 'production' 
+          ? 'https://clinic-backend-flame.vercel.app' 
+          : 'http://localhost:5001');
 
-      const response = await fetch(`${API_BASE_URL}?phone=${phoneNumber}&sent=true`, {
+      const url = `${API_BASE_URL}/api/prescriptions?phone=${phoneNumber}&sent=true`;
+      
+      console.log('Fetching prescriptions from:', url);
+      console.log('Environment mode:', import.meta.env.MODE);
+      console.log('VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        mode: 'cors'
       });
 
-      const data = await response.json();
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch prescriptions');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        
+        let errorMessage = `Server returned ${response.status}`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
 
-      console.log('Prescriptions fetched:', data);
+      const data = await response.json();
+      console.log('Prescriptions data received:', data);
+
       setPrescriptions(data.prescriptions || []);
+
+      if (!data.prescriptions || data.prescriptions.length === 0) {
+        console.log('No prescriptions found for phone:', phoneNumber);
+      }
 
     } catch (error) {
       console.error('Error fetching prescriptions:', error);
-      alert(`Failed to fetch prescriptions: ${error.message}`);
+      console.error('Error stack:', error.stack);
+      alert(`Failed to fetch prescriptions: ${error.message}\n\nPlease check:\n- Phone number is correct\n- You have prescriptions marked as "sent"\n- Internet connection is working`);
       setPrescriptions([]);
     } finally {
       setLoading(false);
