@@ -33,6 +33,65 @@
     gap: 15px;
   }
 
+  /* make nav-right a positioned container so dropdown can be positioned relative to it */
+  .navbar-right { position: relative; }
+
+  /* New hamburger and dropdown styles */
+  .hamburger {
+    display: none; /* visible on small screens */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    transition: background-color 0.15s ease, transform 0.12s ease;
+  }
+
+  /* Use small dots for a cleaner mobile menu icon */
+  .hamburger-dot {
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    margin: 3px 0;
+    border-radius: 50%;
+    transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
+  }
+
+  .nav-dropdown {
+    position: absolute;
+    right: 0; /* align under the hamburger */
+    top: calc(100% + 8px);
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10001;
+  }
+
+  /* Make dropdown items full width and visually separated */
+  .nav-dropdown .dropdown-item {
+    width: 180px;
+    padding: 10px 12px;
+    text-align: left;
+    border-radius: 6px;
+    color: var(--primary-color);
+  }
+  .nav-dropdown .dropdown-item:hover { background: rgba(0,0,0,0.04); }
+
+  .dropdown-item {
+    text-align: left;
+    width: 200px;
+  }
+
   /* Removed ordering and left margin on admin icon to allow it to appear first */
   
   .navbar-brand {
@@ -77,6 +136,10 @@
     padding: 8px 16px; /* Reduced from 10px 20px */
     font-size: 0.85rem; /* Reduced from 0.95rem */
   }
+
+  /* Helper classes to control visibility per device */
+  .desktop-only { display: inline-flex; }
+  .mobile-only { display: none; }
   
   @media (max-width: 768px) {
     .navbar {
@@ -98,6 +161,16 @@
       width: 100%;              /* take full row when wrapping */
       justify-content: flex-end; /* push actions to right corner */
     }
+
+    /* On smaller screens hide the inline desktop-only buttons and show mobile-only menu */
+    .desktop-only { display: none; }
+    .mobile-only { display: flex; }
+
+    /* Ensure Book button remains visible and hamburger sits at the far right */
+    .book-btn { order: 1; margin-right: 56px; }
+    .mobile-only .hamburger { order: 2; margin-left: 8px; display: flex; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+    /* Keep right alignment */
+    .navbar-right { justify-content: flex-end; }
     
     .navbar-brand {
       font-size: 1.2rem;
@@ -137,4 +210,20 @@
       padding: 7px 14px;
       font-size: 0.8rem;
     }
+    /* Keep only the Book button visible on very small screens */
+    .desktop-only { display: none; }
+    .mobile-only { display: flex; }
+
+    .book-btn { order: 1; margin-right: 52px; }
+    .mobile-only .hamburger { order: 2; margin-left: 8px; display: flex; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
   }
+
+  /* Hamburger open state: subtle background and animated lines */
+    /* show hamburger only on mobile */
+    .mobile-only .hamburger { display: flex; }
+
+    .hamburger.open { background: rgba(0,0,0,0.04); }
+    /* Animate dots slightly when open */
+    .hamburger.open .hamburger-dot:nth-child(1) { transform: translateY(4px); }
+    .hamburger.open .hamburger-dot:nth-child(2) { transform: scale(0.85); opacity: 0.8; }
+    .hamburger.open .hamburger-dot:nth-child(3) { transform: translateY(-4px); }

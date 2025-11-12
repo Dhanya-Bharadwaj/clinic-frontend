@@ -19,6 +19,9 @@
   --glass-shadow: 0 10px 30px rgba(2, 6, 23, 0.12);
   --blur-amount: 14px;
 
+  /* Navbar height used to size hero section precisely */
+  --nav-height: 64px;
+
   --gradient-1: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 50%, #ecfeff 100%);
   --gradient-2: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #38bdf8 100%);
   --gradient-accent: linear-gradient(135deg, #10b981 0%, #22c55e 100%);

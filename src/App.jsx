@@ -5,6 +5,7 @@ import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import BookingModal from './components/BookingModal';
 import CheckAppointmentModal from './components/CheckAppointmentModal';
+import ViewPrescriptionModal from './components/ViewPrescriptionModal';
 import AdminButton from './components/AdminButton';
 import DoctorDashboard from './components/DoctorDashboard';
 import ServicesSection from './components/ServicesSection'; // Importing ServicesSection component
@@ -18,6 +19,7 @@ import WhatsappButton from './components/WhatsappButton';
 function App() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isCheckAppointmentModalOpen, setIsCheckAppointmentModalOpen] = useState(false);
+  const [isViewPrescriptionOpen, setIsViewPrescriptionOpen] = useState(false);
   const [isDashboardVisible, setIsDashboardVisible] = useState(false);
 
   const handleOpenBookingModal = () => {
@@ -46,6 +48,7 @@ function App() {
             onBookAppointmentClick={handleOpenBookingModal}
             onAdminAccess={() => setIsDashboardVisible(true)}
             onCheckAppointments={handleOpenCheckAppointments}
+            onOpenPrescriptions={() => setIsViewPrescriptionOpen(true)}
           />
           <HeroSection onBookAppointmentClick={handleOpenBookingModal} />
           <AboutSection />
@@ -66,6 +69,10 @@ function App() {
       <CheckAppointmentModal
         isOpen={isCheckAppointmentModalOpen}
         onClose={handleCloseCheckAppointments}
+      />
+      <ViewPrescriptionModal
+        isOpen={isViewPrescriptionOpen}
+        onClose={() => setIsViewPrescriptionOpen(false)}
       />
     </div>
   );
