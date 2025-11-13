@@ -21,7 +21,7 @@ const HeroSection = ({ onBookAppointmentClick }) => {
             specialization: 'M.B.B.S | F.A.G.E',
             experience: 25,
             clinicName: 'Dr. K. Madhusudana Clinic',
-            address: '4th cross road, New Bank Colony, Bank Colony,Konankunte, Bangalore - 560078',
+            address: '4th cross road, New Bank Colony, Bank Colony, Konanakunte, Bangalore - 560078',
             photoUrl: '/doctor-photo.jpg' // Use public path for local image
         });
       }
